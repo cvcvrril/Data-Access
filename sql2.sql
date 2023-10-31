@@ -1,0 +1,1 @@
+select round(avg(sits)) as average_sits from restaurant.table_rest 
