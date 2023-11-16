@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.Screens.OrderScreens.OrderListController">
+      <TableView fx:id="OrderList0" layoutX="21.0" layoutY="72.0" prefHeight="256.0" prefWidth="270.0">
+        <columns>
+            <TableColumn fx:id="OrderList1" prefWidth="35.99999809265137" text="ID" />
+            <TableColumn fx:id="OrderList2" prefWidth="87.99999618530273" text="Date Time" />
+            <TableColumn fx:id="OrderList3" prefWidth="85.66668701171875" text="CustomerID" />
+            <TableColumn fx:id="OrderList4" prefWidth="59.00001525878906" text="Table #" />
+        </columns>
+      </TableView>
+      <Label layoutX="21.0" layoutY="42.0" prefHeight="29.0" prefWidth="270.0" text="List of orders:">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="OrderListCustomerName" layoutX="329.0" layoutY="72.0" />
+      <Label layoutX="329.0" layoutY="56.0" prefHeight="17.0" prefWidth="96.0" text="Customer name:" />
+      <TableView fx:id="OrderList5" layoutX="329.0" layoutY="100.0" prefHeight="185.0" prefWidth="255.0">
+        <columns>
+            <TableColumn fx:id="OrderList6" prefWidth="84.33331298828125" text="Item Name" />
+            <TableColumn fx:id="OrderList7" prefWidth="60.3333740234375" text="Quantity" />
+            <TableColumn fx:id="OrderList8" prefWidth="47.999969482421875" text="PPU" />
+            <TableColumn fx:id="OrderList9" prefWidth="62.0" text="Total" />
+        </columns>
+      </TableView>
+      <Label fx:id="OrderListTotal" layoutX="329.0" layoutY="287.0" prefHeight="17.0" prefWidth="96.0" text="Total amount:" />
+      <TextField layoutX="329.0" layoutY="303.0" />
+      <ComboBox fx:id="combox" layoutX="21.0" layoutY="335.0" onAction="#filter" prefHeight="25.0" prefWidth="103.0" promptText="Filter" />
+    <ComboBox fx:id="dateField" layoutX="134.0" layoutY="334.0" prefHeight="26.0" prefWidth="150.0" promptText="Date" onAction="#filterByDate"/>
+    <ComboBox fx:id="customerOrderField" layoutX="134.0" layoutY="334.0" promptText="Customer" onAction="#filterByID" />
+</AnchorPane>

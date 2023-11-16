@@ -1,0 +1,21 @@
+
+R
+"src/main/java/model/OrderItem.java,1\6\167b8d66074bc236df1ebb0ba4dbeb2f1f0e659c
+Q
+!src/main/java/common/Queries.java,2\e\2ee5c9d97fdd5c2ab4c3c318bd57c1659350e6f5
+^
+.src/main/java/dao/implJDBC/OrderItemDAOdb.java,1\f\1f0da0104e72eacd148ba10ec0d67a57b29befb0
+O
+src/main/java/dao/OrderDAO.java,1\d\1deb001c3dac2a5a6f69bccce5dd416ad1fa7dfe
+[
++src/main/java/dao/implJDBC/OrdersDAOdb.java,a\4\a4c3794d41c1cca45e430a4013d9813812238803
+X
+(src/main/java/services/OrderService.java,d\3\d3417ea18ec5288efedf4efd3812090ae6909d58
+n
+>src/main/java/ui/Screens/OrderScreens/OrdersAddController.java,0\1\013a8d258921d52812f3f1a3a9813797668bbbdb
+t
+Dsrc/main/java/ui/Screens/CustomerScreens/CustomersAddController.java,9\c\9c8a12f3f70bbd9a085d2839b5d75e67cb548c8d
+7
+pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
+W
+'src/main/java/common/Configuration.java,3\1\31c1d6b41491557480347e9fae44fe60b31ac9d6

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="662.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.Screens.OrderScreens.OrdersAddController">
+    <Label layoutX="297.0" layoutY="14.0" text="Add order">
+        <font>
+            <Font size="22.0" />
+        </font>
+    </Label>
+    <Label layoutX="396.0" layoutY="97.0" text="Order Items">
+        <font>
+            <Font size="16.0" />
+        </font>
+    </Label>
+    <TableView fx:id="orderAdd0" layoutX="255.0" layoutY="123.0" prefHeight="238.0" prefWidth="390.0">
+        <columns>
+            <TableColumn fx:id="orderAdd1" prefWidth="50" text="Id" />
+            <TableColumn fx:id="orderAdd2" prefWidth="85" text="Name" />
+            <TableColumn fx:id="orderAdd3" prefWidth="60" text="Price" />
+            <TableColumn fx:id="orderAdd4" prefWidth="195" text="Quantity" />
+        </columns>
+    </TableView>
+    <Button layoutX="402.0" layoutY="361.0" mnemonicParsing="false" onAction="#addOrder" text="Add Order" />
+
+    <TextField fx:id="orderAdd5" disable="true" layoutX="153.0" layoutY="54.0" prefHeight="26.0" prefWidth="116.0" promptText="Date" />
+    <ComboBox fx:id="orderAdd6" layoutX="289.0" layoutY="54.0" prefHeight="26.0" prefWidth="116.0" promptText="Table number" />
+   <ComboBox fx:id="orderAdd7" layoutX="425.0" layoutY="54.0" prefHeight="26.0" prefWidth="116.0" promptText="Customer" />
+    <ComboBox fx:id="orderAdd8" layoutX="21.0" layoutY="138.0" prefHeight="26.0" prefWidth="116.0" promptText="Menu items" />
+    <Spinner fx:id="orderAdd9" layoutX="21.0" layoutY="187.0" prefHeight="11.0" prefWidth="116.0" promptText="Quantity" min="1" max="20" />
+    <Button layoutX="178.0" layoutY="138.0" mnemonicParsing="false" onAction="#addItem" text="Add" />
+    <Button layoutX="167.0" layoutY="187.0" mnemonicParsing="false" onAction="#removeItem" text="Remove" />
+
+</AnchorPane>

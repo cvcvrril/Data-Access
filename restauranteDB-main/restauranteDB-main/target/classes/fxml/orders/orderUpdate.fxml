@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.Screens.OrderScreens.OrderUpdateController">
+    <Label layoutX="140.0" layoutY="26.0" text="Orders">
+        <font>
+            <Font size="22.0" />
+        </font>
+    </Label>
+    <TableView fx:id="ordersTable" layoutX="5.0" layoutY="58.0" prefHeight="331.0" prefWidth="364.0">
+        <columns>
+            <TableColumn fx:id="idOrderColumn" prefWidth="50" text="Id" />
+            <TableColumn fx:id="dateOrderColumn" prefWidth="100.39999389648438" text="Date" />
+            <TableColumn fx:id="customerOrderColumn" prefWidth="90.59996032714844" text="Customer Id" />
+            <TableColumn fx:id="tableOrderColumn" prefWidth="120.39996337890625" text="Table number" />
+        </columns>
+    </TableView>
+    <Label layoutX="523.0" layoutY="161.0" text="Order Items">
+        <font>
+            <Font size="16.0" />
+        </font>
+    </Label>
+    <TableView fx:id="itemsTable" layoutX="387.0" layoutY="189.0" prefHeight="200.0" prefWidth="390.0">
+        <columns>
+            <TableColumn fx:id="idItemColumn" prefWidth="50" text="Id" />
+            <TableColumn fx:id="nameItemColumn" prefWidth="85" text="Name" />
+            <TableColumn fx:id="priceItemColumn" prefWidth="60" text="Price" />
+            <TableColumn fx:id="descriptionItemColumn" prefWidth="195" text="Description" />
+        </columns>
+    </TableView>
+    <Button layoutX="537.0" layoutY="394.0" mnemonicParsing="false" onAction="#updateOrder" text="Update Order" />
+    <TextField fx:id="dateOrderField" disable="true" layoutX="398.0" layoutY="58.0" prefHeight="26.0" prefWidth="150.0" promptText="Date" />
+    <ComboBox fx:id="tableOrderField" layoutX="398.0" layoutY="93.0" promptText="Table number" />
+    <ComboBox fx:id="customerOrderField" layoutX="398.0" layoutY="131.0" promptText="Customer" />
+    <ComboBox fx:id="itemsComboBox" layoutX="578.0" layoutY="58.0" prefHeight="26.0" prefWidth="150.0" promptText="Menu items" />
+    <Spinner fx:id="quantityItemField" layoutX="578.0" layoutY="93.0" promptText="Quantity" min="1" max="20" />
+    <Button layoutX="689.0" layoutY="131.0" mnemonicParsing="false" onAction="#addItem" text="Add" />
+    <Button layoutX="578.0" layoutY="131.0" mnemonicParsing="false" onAction="#removeItem" text="Remove" />
+   <Label layoutX="294.0" layoutY="-2.0" prefHeight="32.0" prefWidth="150.0" text="Order Update">
+      <font>
+         <Font size="22.0" />
+      </font>
+   </Label>
+</AnchorPane>

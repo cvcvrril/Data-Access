@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.Screens.CustomerScreens.CustomersAddController">
+    <children>
+        <TableView fx:id="CustAdd0" layoutX="15.0" layoutY="43.0" prefHeight="311.0" prefWidth="409.0">
+            <columns>
+                <TableColumn fx:id="CustAdd1" prefWidth="32.0" text="ID" />
+                <TableColumn fx:id="CustAdd2" prefWidth="67.33332443237305" text="First Name" />
+                <TableColumn fx:id="CustAdd3" prefWidth="78.66666412353516" text="Last Name" />
+                <TableColumn fx:id="CustAdd4" prefWidth="59.333343505859375" text="DOB" />
+                <TableColumn fx:id="CustAdd5" prefWidth="104.66665649414062" text="Email" />
+                <TableColumn fx:id="CustAdd6" prefWidth="65.33331298828125" text="Phone #" />
+            </columns>
+        </TableView>
+        <Label layoutX="18.0" layoutY="6.0" prefHeight="56.0" prefWidth="205.0" text="List of Customers:">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <TextField fx:id="CustAdd7" layoutX="451.0" layoutY="77.0" prefHeight="25.0" prefWidth="114.0" promptText="FirstName" />
+      <TextField fx:id="CustAdd8" layoutX="451.0" layoutY="127.0" prefHeight="25.0" prefWidth="114.0" promptText="Last Name" />
+      <TextField fx:id="CustAdd9" layoutX="451.0" layoutY="177.0" prefHeight="25.0" prefWidth="114.0" promptText="DoB(yyyy/mm/dd)" />
+      <TextField fx:id="CustAdd10" layoutX="451.0" layoutY="227.0" prefHeight="25.0" prefWidth="114.0" promptText="Email" />
+        <TextField fx:id="CustAdd11" layoutX="451.0" layoutY="270.0" prefHeight="25.0" prefWidth="114.0" promptText="Phone number" />
+        <TextField fx:id="CustAdd12" layoutX="451.0" layoutY="307.0" prefHeight="25.0" prefWidth="114.0" promptText="id" />
+      <Button fx:id="CustAdd13" layoutX="478.0" layoutY="345.0" mnemonicParsing="false" onAction="#add" prefHeight="34.0" prefWidth="60.0" text="ADD" />
+      <Label layoutX="444.0" layoutY="32.0" prefHeight="34.0" prefWidth="125.0" text="New Customer:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+    </children>
+</AnchorPane>

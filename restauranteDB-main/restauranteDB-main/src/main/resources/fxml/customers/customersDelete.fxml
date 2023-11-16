@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.Screens.CustomerScreens.CustomersDeleteController">
+    <children>
+        <TableView fx:id="CustDel0" layoutX="11.0" layoutY="57.0" prefHeight="306.0" prefWidth="355.0" onMouseClicked="#customerOrder">
+            <columns>
+                <TableColumn fx:id="CustDel1" prefWidth="32.0" text="ID"  />
+                <TableColumn fx:id="CustDel2" prefWidth="67.33332824707031" text="First Name" />
+                <TableColumn fx:id="CustDel3" prefWidth="75.33334350585938" text="Last Name" />
+                <TableColumn fx:id="CustDel4" prefWidth="48.333343505859375" text="DOB" />
+                <TableColumn fx:id="CustDel5" prefWidth="79.0" text="Email" />
+                <TableColumn fx:id="CustDel6" prefWidth="51.333343505859375" text="Phone #" />
+            </columns>
+        </TableView>
+        <Label layoutX="10.0" layoutY="18.0" prefHeight="50.0" prefWidth="194.0" text="List of Customers:">
+            <font>
+                <Font size="24.0" />
+            </font></Label>
+      <TableView  fx:id="CustDel7" layoutX="377.0" layoutY="58.0" prefHeight="281.0" prefWidth="215.0">
+        <columns>
+            <TableColumn fx:id="CustDel8" prefWidth="28.33331298828125" text="ID" />
+            <TableColumn fx:id="CustDel9" prefWidth="39.66668701171875" text="Date" />
+            <TableColumn fx:id="CustDel10" prefWidth="87.33331298828125" text="customer_ID" />
+            <TableColumn fx:id="CustDel11" prefWidth="58.66668701171875" text="Table #" />
+        </columns>
+      </TableView>
+      <Label layoutX="377.0" layoutY="35.0" prefHeight="29.0" prefWidth="145.0" text="Customer orders:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button  fx:id="CustDel12" layoutX="459.0" layoutY="351.0" mnemonicParsing="false" text="DELETE" onAction="#delete"/>
+    </children>
+</AnchorPane>

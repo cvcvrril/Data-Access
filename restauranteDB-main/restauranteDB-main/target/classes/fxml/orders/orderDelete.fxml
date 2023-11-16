@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.Screens.OrderScreens.OrderDeleteController">
+        <TableView fx:id="OrderDel0" layoutX="21.0" layoutY="72.0" prefHeight="256.0" prefWidth="280.0">
+            <columns>
+                <TableColumn fx:id="OrderDel1" prefWidth="43.00000190734863" text="ID" />
+                <TableColumn fx:id="OrderDel2" prefWidth="86.99999237060547" text="Date Time" />
+                <TableColumn fx:id="OrderDel3" prefWidth="89.33334350585938" text="CustomerID" />
+                <TableColumn fx:id="OrderDel4" prefWidth="59.66670227050781" text="Table #" />
+            </columns>
+        </TableView>
+        <Label layoutX="21.0" layoutY="42.0" prefHeight="29.0" prefWidth="270.0" text="List of orders:">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <Label layoutX="326.0" layoutY="77.0" prefHeight="25.0" prefWidth="112.0" text="Order items:">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+        <TableView fx:id="OrderDel5" layoutX="326.0" layoutY="100.0" prefHeight="185.0" prefWidth="255.0">
+            <columns>
+                <TableColumn fx:id="OrderDel6" prefWidth="84.33331298828125" text="Item Name" />
+                <TableColumn fx:id="OrderDel7" prefWidth="60.3333740234375" text="Quantity" />
+                <TableColumn fx:id="OrderDel8" prefWidth="47.999969482421875" text="PPU" />
+                <TableColumn fx:id="OrderDel9" prefWidth="62.0" text="Total" />
+            </columns>
+        </TableView>
+      <Button fx:id="OrderDel10" layoutX="408.0" layoutY="300.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="59.0" text="DELETE" onAction="#delete" />
+</AnchorPane>
