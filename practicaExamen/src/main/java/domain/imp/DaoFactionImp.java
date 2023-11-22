@@ -1,4 +1,6 @@
 package domain.imp;
 
-public class DaoFactionImp {
+import domain.DaoFaction;
+
+public class DaoFactionImp implements DaoFaction {
 }

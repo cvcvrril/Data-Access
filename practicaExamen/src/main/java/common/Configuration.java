@@ -11,6 +11,7 @@ import java.util.Properties;
 @Log4j2
 @Data
 public class Configuration {
+    private static Configuration instance;
     private Properties pxml;
     private String pathDB;
     private String userDB;
@@ -20,13 +21,20 @@ public class Configuration {
     private Configuration(){
         try {
             pxml = new Properties();
-            pxml.load(getClass().getClassLoader().getResourceAsStream("config/properties.xml"));
-            this.pathDB = pxml.getProperty("pathDB");
-            this.userDB = pxml.getProperty("userDB");
-            this.passDB = pxml.getProperty("passDB");
+            pxml.load(Configuration.class.getClassLoader().getResourceAsStream("config/properties.xml"));
+            this.pathDB = pxml.getProperty("path");
+            this.userDB = pxml.getProperty("user");
+            this.passDB = pxml.getProperty("pass");
             this.driver = pxml.getProperty("driver");
         } catch (IOException e) {
             log.error(e.getMessage(),e);
         }
+    }
+
+    public static Configuration getInstance() {
+        if (instance == null){
+            instance = new Configuration();
+        }
+        return instance;
     }
 }
