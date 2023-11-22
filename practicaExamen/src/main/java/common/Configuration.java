@@ -21,7 +21,7 @@ public class Configuration {
     private Configuration(){
         try {
             pxml = new Properties();
-            pxml.load(Configuration.class.getClassLoader().getResourceAsStream("config/properties.xml"));
+            pxml.loadFromXML(Configuration.class.getClassLoader().getResourceAsStream("config/properties.xml"));
             this.pathDB = pxml.getProperty("path");
             this.userDB = pxml.getProperty("user");
             this.passDB = pxml.getProperty("pass");

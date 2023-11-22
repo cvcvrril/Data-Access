@@ -17,6 +17,5 @@ public class Prueba {
         ServWeapon servWeapon = new ServWeaponImp(daoWeapon);
         List<Weapon> weaponList = servWeapon.getAll().get();
         System.out.println(weaponList);
-
     }
 }
