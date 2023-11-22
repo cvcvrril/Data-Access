@@ -10,10 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import model.Weapon;
 import model.error.ErrorDb;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +46,23 @@ public class DaoWeaponImp implements DaoWeapon {
 
     @Override
     public Either<ErrorDb, Weapon> get(int id) {
-        return null;
+        List<Weapon> weaponList;
+        Either<ErrorDb, Weapon> res;
+        try (Connection connection = db.getConnection()) {
+            PreparedStatement pstmt = connection.prepareStatement("select * from weapons where id =?");
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            weaponList = readRS(rs);
+            if (!weaponList.isEmpty()){
+                res = Either.right(weaponList.get(0));
+            } else {
+                res = Either.left(new ErrorDb("There's no weapon with that id", 0, LocalDateTime.now()));
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage(),e);
+            res = Either.left(new ErrorDb("There was an error", 0, LocalDateTime.now()));
+        }
+        return res;
     }
 
     @Override
