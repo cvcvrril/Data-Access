@@ -12,5 +12,6 @@ import java.time.LocalDate;
 public class Sale {
     private int id;
     private int units;
+    private int idWeaponsFaction;
     private LocalDate date;
 }

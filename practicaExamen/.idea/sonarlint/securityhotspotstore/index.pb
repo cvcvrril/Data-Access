@@ -86,3 +86,9 @@ S
 #src/main/java/services/ServSpy.java,3\1\314b06783890d589795baf7e80a7af77246a63a2
 ]
 -src/main/java/ui/exercises/MainExercise3.java,6\3\63257dca0a48ac3abae2ce2720125fcc2712cfc9
+A
+data/Factions.xml,8\b\8b63dfc3e33af4fd25ecc62e4afe68aea52928a0
+X
+(src/main/java/domain/imp/DaoSaleImp.java,0\3\0332d54ff1ff69e064768f670730379c6303b562
+Q
+!src/main/java/domain/DaoSale.java,8\3\83256a344db7af0ae2f68c3749aabcf352031ff0
