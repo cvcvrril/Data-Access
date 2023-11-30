@@ -16,8 +16,13 @@ public class PruebaSpy {
         System.out.println(spyList);
         Spy spy = servSpy.get(1).get();
         System.out.println(spy);
-        Spy nuevoSpy = new Spy("Hera", "Syndulla");
-        Integer res = servSpy.add(nuevoSpy).get();
+        //Spy nuevoSpy = new Spy("Hera", "Syndulla");
+        //Integer res = servSpy.add(nuevoSpy).get();
+        //System.out.println(res);
+        //Spy actualizadoSpy = new Spy(3,"Hera Syndulla", "Twi'lek");
+        //Integer res2 = servSpy.update(actualizadoSpy).get();
+        //System.out.println(res2);
+        Integer res = servSpy.delete(5).get();
         System.out.println(res);
     }
 }
