@@ -84,3 +84,5 @@ P
  src/main/java/domain/DaoSpy.java,1\b\1baaf9e8e9ca40e89d046926b9d0484ec2a443a7
 S
 #src/main/java/services/ServSpy.java,3\1\314b06783890d589795baf7e80a7af77246a63a2
+]
+-src/main/java/ui/exercises/MainExercise3.java,6\3\63257dca0a48ac3abae2ce2720125fcc2712cfc9

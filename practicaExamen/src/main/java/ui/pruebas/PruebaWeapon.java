@@ -16,5 +16,8 @@ public class PruebaWeapon {
         ServWeapon servWeapon = new ServWeapon(daoWeapon);
         List<Weapon> weaponList = servWeapon.getAll().get();
         System.out.println(weaponList);
+        Weapon actualizadoWeapon = new Weapon(2, "Prueba", 50.40);
+        Integer res = servWeapon.update(actualizadoWeapon).get();
+        System.out.println(res);
     }
 }

@@ -67,17 +67,74 @@ public class DaoWeaponImp implements DaoWeapon {
 
     @Override
     public Either<ErrorDb, Integer> add(Weapon newWeapon) {
-        return null;
+        int rowsAffected;
+        Either<ErrorDb, Integer> res;
+        try (Connection connection = db.getConnection()) {
+            connection.setAutoCommit(false);
+            PreparedStatement pstmt = connection.prepareStatement("insert into weapons (wname, wprice) values (?,?)", Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, newWeapon.getName());
+            pstmt.setDouble(2, newWeapon.getPrice());
+            rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected != 1) {
+                connection.rollback();
+                return Either.left(new ErrorDb("There was an error adding the new weapon", 0, LocalDateTime.now()));
+            }
+            ResultSet generatedKeys = pstmt.getGeneratedKeys();
+            int generatedId;
+            if (generatedKeys.next()) {
+                generatedId = generatedKeys.getInt(1);
+            } else {
+                connection.rollback();
+                return Either.left(new ErrorDb("There was an error obtaining the id", 0, LocalDateTime.now()));
+            }
+            pstmt.setInt(1, generatedId);
+            connection.commit();
+            res = Either.right(rowsAffected);
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+            res = Either.left(new ErrorDb("There was an error", 0, LocalDateTime.now()));
+        }
+        return res;
     }
 
     @Override
     public Either<ErrorDb, Integer> update(Weapon updatedWeapon) {
-        return null;
+        int rowsAffected;
+        Either<ErrorDb, Integer> res;
+        try (Connection connection = db.getConnection()) {
+            connection.setAutoCommit(false);
+            PreparedStatement pstmt = connection.prepareStatement("update weapons set wname=?, wprice=? where id=?");
+            pstmt.setString(1, updatedWeapon.getName());
+            pstmt.setDouble(2, updatedWeapon.getPrice());
+            pstmt.setInt(3, updatedWeapon.getId());
+            rowsAffected = pstmt.executeUpdate();
+            connection.commit();
+            res = Either.right(rowsAffected);
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+            res = Either.left(new ErrorDb("There was an error", 0, LocalDateTime.now()));
+        }
+        return res;
     }
 
     @Override
     public Either<ErrorDb, Integer> delete(int id) {
-        return null;
+        int rowsAffected;
+        Either<ErrorDb, Integer> res;
+        try (Connection connection = db.getConnection()){
+            PreparedStatement pstmt = connection.prepareStatement("delete from weapons where id =?");
+            pstmt.setInt(1, id);
+            rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected !=1){
+                res = Either.left(new ErrorDb("There was an error deleting the weapon", 0, LocalDateTime.now()));
+            } else {
+                res = Either.right(rowsAffected);
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+            res = Either.left(new ErrorDb("There was an error", 0, LocalDateTime.now()));
+        }
+        return res;
     }
 
     private List<Weapon> readRS(ResultSet rs) throws SQLException {
