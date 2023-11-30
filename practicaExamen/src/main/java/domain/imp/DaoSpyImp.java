@@ -6,11 +6,10 @@ import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import lombok.extern.log4j.Log4j2;
 import model.Spy;
+import model.Weapon;
 import model.error.ErrorDb;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +38,43 @@ public class DaoSpyImp implements DaoSpy {
         }
         return res;
     }
+
+    @Override
+    public Either<ErrorDb, Spy> get(int id) {
+        List<Spy> spyList;
+        Either<ErrorDb, Spy> res;
+        try (Connection connection = db.getConnection()) {
+            PreparedStatement pstmt = connection.prepareStatement("select * from spies where id =?");
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            spyList = readRS(rs);
+            if (!spyList.isEmpty()){
+                res = Either.right(spyList.get(0));
+            } else {
+                res = Either.left(new ErrorDb("There's no spies with that id", 0, LocalDateTime.now()));
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage(),e);
+            res = Either.left(new ErrorDb("There was an error", 0, LocalDateTime.now()));
+        }
+        return res;
+    }
+
+    @Override
+    public Either<ErrorDb, Integer> add(Spy spy) {
+        return null;
+    }
+
+    @Override
+    public Either<ErrorDb, Integer> update(Spy spy) {
+        return null;
+    }
+
+    @Override
+    public Either<ErrorDb, Integer> delete(int id) {
+        return null;
+    }
+
     private List<Spy> readRS(ResultSet rs) throws SQLException {
         List<Spy> weaponList = new ArrayList<>();
         while (rs.next()){

@@ -14,5 +14,10 @@ public class PruebaSpy {
         ServSpy servSpy = new ServSpy(daoSpy);
         List<Spy> spyList = servSpy.getAll().get();
         System.out.println(spyList);
+        Spy spy = servSpy.get(1).get();
+        System.out.println(spy);
+        Spy nuevoSpy = new Spy("Hera", "Syndulla");
+        Integer res = servSpy.add(nuevoSpy).get();
+        System.out.println(res);
     }
 }

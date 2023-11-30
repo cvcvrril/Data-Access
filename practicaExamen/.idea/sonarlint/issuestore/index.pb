@@ -71,3 +71,16 @@ V
 &src/main/java/services/ServWeapon.java,a\e\aef2503f2794de2d57dc7468d3cad74f14145c65
 Z
 *src/main/java/domain/imp/DaoWeaponImp.java,6\8\689ed8c2ec6e7283e825217b1db269ac33f952fd
+:
+
+.gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
+W
+'src/main/java/domain/imp/DaoSpyImp.java,f\b\fbbd3adc37d529b10b14a0755bf30d29f575f115
+Z
+*src/main/java/ui/pruebas/PruebaWeapon.java,9\8\98d5e2dd8cc021ee95fdb2e5a2e632bb28915b4a
+W
+'src/main/java/ui/pruebas/PruebaSpy.java,6\e\6ee2d29e0627bb8b1cb9827e120c37d92a63f38c
+P
+ src/main/java/domain/DaoSpy.java,1\b\1baaf9e8e9ca40e89d046926b9d0484ec2a443a7
+S
+#src/main/java/services/ServSpy.java,3\1\314b06783890d589795baf7e80a7af77246a63a2
