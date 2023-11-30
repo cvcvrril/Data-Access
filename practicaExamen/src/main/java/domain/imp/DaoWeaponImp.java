@@ -34,7 +34,7 @@ public class DaoWeaponImp implements DaoWeapon {
         try (Connection connection = db.getConnection()){
             Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
-            ResultSet rs = stmt.executeQuery(SqlQueries.SELECT_ALL_FROM_WEAPONS);
+            ResultSet rs = stmt.executeQuery("select * from weapons");
             weaponList = readRS(rs);
             res = Either.right(weaponList);
         } catch (SQLException e) {

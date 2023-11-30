@@ -1,13 +1,13 @@
 package domain;
 
 import io.vavr.control.Either;
-import model.Faction;
+import model.Spy;
 import model.error.ErrorDb;
 
 import java.util.List;
 
-public interface DaoFaction {
+public interface DaoSpy {
 
-    Either<ErrorDb, List<Faction>> getAll();
+    Either<ErrorDb, List<Spy>> getAll();
 
 }

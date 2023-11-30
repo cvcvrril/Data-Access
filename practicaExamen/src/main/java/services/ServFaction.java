@@ -1,4 +1,4 @@
 package services;
 
-public interface ServFaction {
+public class ServFaction {
 }
