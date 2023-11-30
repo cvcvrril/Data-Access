@@ -1,31 +1,102 @@
 package domain.imp;
 
+import common.Configuration;
+import common.DBConnection;
 import domain.DaoSale;
 import io.vavr.control.Either;
+import jakarta.inject.Inject;
+import lombok.extern.log4j.Log4j2;
 import model.Sale;
 import model.Spy;
 import model.error.ErrorDb;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Log4j2
 public class DaoSaleImp implements DaoSale {
+
+    private final Configuration config;
+    private final DBConnection db;
+
+    @Inject
+    public DaoSaleImp(Configuration config, DBConnection db) {
+        this.config = config;
+        this.db = db;
+    }
+
     @Override
     public Either<ErrorDb, List<Sale>> getAll() {
-        return null;
+        List<Sale> saleList;
+        Either<ErrorDb, List<Sale>> res;
+        try (Connection connection = db.getConnection()) {
+            Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+            ResultSet rs = stmt.executeQuery("select * from sales");
+            saleList = readRS(rs);
+            res = Either.right(saleList);
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+            res = Either.left(new ErrorDb("There was an error", 0, LocalDateTime.now()));
+        }
+        return res;
     }
 
     @Override
     public Either<ErrorDb, Sale> get(int id) {
-        return null;
+        List<Sale> saleList;
+        Either<ErrorDb, Sale> res;
+        try (Connection connection = db.getConnection()) {
+            PreparedStatement pstmt = connection.prepareStatement("select * from sales where id =?");
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            saleList = readRS(rs);
+            if (!saleList.isEmpty()) {
+                res = Either.right(saleList.get(0));
+            } else {
+                res = Either.left(new ErrorDb("There's no spies with that id", 0, LocalDateTime.now()));
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+            res = Either.left(new ErrorDb("There was an error", 0, LocalDateTime.now()));
+        }
+        return res;
     }
 
     @Override
     public Either<ErrorDb, Integer> add(Sale sale) {
-        return null;
+        int rowsAffected;
+        Either<ErrorDb, Integer> res;
+        try (Connection connection = db.getConnection()) {
+            connection.setAutoCommit(false);
+            PreparedStatement pstmt = connection.prepareStatement("insert into sales (units, id_weapons_faction, sldate) values (?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            pstmt.setInt(1, sale.getUnits());
+            pstmt.setInt(2, sale.getIdWeaponsFaction());
+            pstmt.setDate(3, Date.valueOf(sale.getDate()));
+            rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected != 1) {
+                connection.rollback();
+                return Either.left(new ErrorDb("There was an error adding the new spy", 0, LocalDateTime.now()));
+            }
+            ResultSet generatedKeys = pstmt.getGeneratedKeys();
+            int generatedSpyId;
+            if (generatedKeys.next()) {
+                generatedSpyId = generatedKeys.getInt(1);
+            } else {
+                connection.rollback();
+                return Either.left(new ErrorDb("There was an error obtaining the id", 0, LocalDateTime.now()));
+            }
+            pstmt.setInt(1, generatedSpyId);
+            connection.commit();
+            res = Either.right(rowsAffected);
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+            res = Either.left(new ErrorDb("There was an error", 0, LocalDateTime.now()));
+        }
+        return res;
     }
 
     @Override
