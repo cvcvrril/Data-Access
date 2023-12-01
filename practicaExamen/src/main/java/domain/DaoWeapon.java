@@ -10,6 +10,7 @@ public interface DaoWeapon {
 
     Either<ErrorDb, List<Weapon>>getAll();
     Either<ErrorDb, Weapon>get(int id);
+    Either<ErrorDb, List<Weapon>> getByName(String name);
     Either<ErrorDb, Integer> add(Weapon newWeapon);
     Either<ErrorDb, Integer> update(Weapon updatedWeapon);
     Either<ErrorDb, Integer> delete(int id);

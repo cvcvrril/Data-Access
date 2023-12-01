@@ -66,6 +66,27 @@ public class DaoWeaponImp implements DaoWeapon {
     }
 
     @Override
+    public Either<ErrorDb, List<Weapon>> getByName(String name) {
+        List<Weapon> weaponList;
+        Either<ErrorDb, List<Weapon>> res;
+        try (Connection connection = db.getConnection()) {
+            PreparedStatement pstmt = connection.prepareStatement("select * from weapons w join weapons_factions wf on w.id = wf.id_weapon join faction f on wf.name_faction = f.fname where f.fname =?");
+            pstmt.setString(1, name);
+            ResultSet rs = pstmt.executeQuery();
+            weaponList = readRS(rs);
+            if (!weaponList.isEmpty()){
+                res = Either.right(weaponList);
+            } else {
+                res = Either.left(new ErrorDb("There's no weapon with that id", 0, LocalDateTime.now()));
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage(),e);
+            res = Either.left(new ErrorDb("There was an error", 0, LocalDateTime.now()));
+        }
+        return res;
+    }
+
+    @Override
     public Either<ErrorDb, Integer> add(Weapon newWeapon) {
         int rowsAffected;
         Either<ErrorDb, Integer> res;

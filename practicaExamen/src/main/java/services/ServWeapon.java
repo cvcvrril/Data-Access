@@ -25,6 +25,8 @@ public class ServWeapon{
         return daoWeapon.get(id);
     }
 
+    public Either<ErrorDb, List<Weapon>> getByName(String name){return daoWeapon.getByName(name);}
+
     public Either<ErrorDb, Integer> add(Weapon weapon){
         return daoWeapon.add(weapon);
     }

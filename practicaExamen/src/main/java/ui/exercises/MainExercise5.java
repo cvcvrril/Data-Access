@@ -1,4 +1,4 @@
-package ui.pruebas;
+package ui.exercises;
 
 import common.Configuration;
 import common.DBConnection;
@@ -9,14 +9,14 @@ import services.ServWeapon;
 
 import java.util.List;
 
-public class PruebaWeapon {
+public class MainExercise5 {
+
     public static void main(String[] args) {
         DBConnection dbConnection = new DBConnection(Configuration.getInstance());
-        DaoWeapon daoWeapon = new DaoWeaponImp(Configuration.getInstance(),dbConnection);
+        DaoWeapon daoWeapon = new DaoWeaponImp(Configuration.getInstance(), dbConnection);
         ServWeapon servWeapon = new ServWeapon(daoWeapon);
-        List<Weapon> weaponList = servWeapon.getAll().get();
-        System.out.println(weaponList);
-        List<Weapon> weaponPorName = servWeapon.getByName("Empire").get();
-        System.out.println(weaponPorName);
+        List<Weapon> weaponListName = servWeapon.getByName("Empire").get();
+        System.out.println(weaponListName);
     }
+
 }

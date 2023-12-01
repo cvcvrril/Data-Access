@@ -5,4 +5,5 @@
     <entry key="user">root</entry>
     <entry key="pass">root</entry>
     <entry key="driver">com.mysql.cj.jdbc.Driver</entry>
+    <entry key="xmlPath">data/Factions.xml</entry>
 </properties>

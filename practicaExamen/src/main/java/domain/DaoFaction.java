@@ -9,5 +9,6 @@ import java.util.List;
 public interface DaoFaction {
 
     Either<ErrorDb, List<Faction>> getAll();
+    Either<ErrorDb, Integer>readXML();
 
 }

@@ -8,25 +8,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@XmlRootElement(name = "faction")
+@XmlRootElement(name = "weapon")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class FactionXml {
+public class WeaponXml {
     @XmlElement
     private String name;
     @XmlElement
-    private String contact;
-    @XmlElement
-    private String planet;
-    @XmlElement(name = "numberCS")
-    private int numberControlledSystems;
-    @XmlElement(name = "dateLastPurchase")
-    private LocalDate datePurchase;
-    @XmlElement(name = "weapons")
-    private WeaponsXml weaponsXml;
+    private int price;
 }

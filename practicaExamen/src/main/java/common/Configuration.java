@@ -17,6 +17,7 @@ public class Configuration {
     private String userDB;
     private String passDB;
     private String driver;
+    private String pathXml;
 
     private Configuration(){
         try {
@@ -26,6 +27,7 @@ public class Configuration {
             this.userDB = pxml.getProperty("user");
             this.passDB = pxml.getProperty("pass");
             this.driver = pxml.getProperty("driver");
+            this.pathXml = pxml.getProperty("xmlPath");
         } catch (IOException e) {
             log.error(e.getMessage(),e);
         }
