@@ -21,7 +21,7 @@ public class DaoBattleImp implements DaoBattle {
         this.config = config;
         this.db = db;
     }
-    
+
     @Override
     public Either<ErrorDb, List<Battle>> getAll() {
         return null;
