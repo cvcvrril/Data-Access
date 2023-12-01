@@ -22,7 +22,7 @@ public class PruebaSpy {
         //Spy actualizadoSpy = new Spy(3,"Hera Syndulla", "Twi'lek");
         //Integer res2 = servSpy.update(actualizadoSpy).get();
         //System.out.println(res2);
-        Integer res = servSpy.delete(5).get();
+        Integer res = servSpy.delete(3).get();
         System.out.println(res);
     }
 }

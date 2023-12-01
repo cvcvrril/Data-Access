@@ -120,12 +120,15 @@ public class DaoSpyImp implements DaoSpy {
         int rowsAffected;
         Either<ErrorDb, Integer> res;
         try (Connection connection = db.getConnection()){
-            PreparedStatement pstmt = connection.prepareStatement("delete from spies where id =?");
+            PreparedStatement pstmt = connection.prepareStatement("delete from battles where id_spy=?");
             pstmt.setInt(1, id);
             rowsAffected = pstmt.executeUpdate();
             if (rowsAffected !=1){
                 res = Either.left(new ErrorDb("There was an error deleting the spy", 0, LocalDateTime.now()));
             } else {
+                PreparedStatement pstmt2 = connection.prepareStatement("delete from spies where id =?");
+                pstmt2.setInt(1, id);
+                rowsAffected = pstmt2.executeUpdate();
                 res = Either.right(rowsAffected);
             }
         } catch (SQLException e) {
