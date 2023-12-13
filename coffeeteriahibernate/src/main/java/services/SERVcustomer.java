@@ -35,7 +35,8 @@ public class SERVcustomer {
     }
 
     public Either<ErrorCCustomer, Customer> get(int id) {
-        return daOcustomerSpring.get(id);
+        //return daOcustomerSpring.get(id);
+        return daoCustomerHibernate.get(id);
     }
 
     public Either<ErrorCCustomer, Integer> delete(int i, boolean conf) {

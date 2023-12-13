@@ -41,11 +41,13 @@ public class DaoCustomerHibernate {
         return res;
     }
 
-    public Customer get(int id) {
+    public Either<ErrorCCustomer, Customer> get(int id) {
+        Either<ErrorCCustomer, Customer> res;
         Customer customer = null;
         em = jpaUtil.getEntityManager();
         try {
             customer = em.find(Customer.class, id);
+            res = Either.right(customer);
 
             // Hibernate session uses get instead of find
             //Session session= em.unwrap(Session.class);
@@ -53,10 +55,11 @@ public class DaoCustomerHibernate {
 
         } catch (Exception e) {
             log.error(e.getMessage(), e);
+            res = Either.left(new ErrorCCustomer(e.getMessage(), 0));
         } finally {
             if (em != null) em.close();
         }
-        return customer;
+        return res;
     }
 
 }
