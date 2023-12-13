@@ -43,7 +43,7 @@ public class DaoCustomerHibernate {
 
     public Either<ErrorCCustomer, Customer> get(int id) {
         Either<ErrorCCustomer, Customer> res;
-        Customer customer = null;
+        Customer customer;
         em = jpaUtil.getEntityManager();
         try {
             customer = em.find(Customer.class, id);
@@ -59,6 +59,11 @@ public class DaoCustomerHibernate {
         } finally {
             if (em != null) em.close();
         }
+        return res;
+    }
+
+    public Either<ErrorCCustomer, Integer> add(Customer newCustomer){
+        Either<ErrorCCustomer, Integer> res = null;
         return res;
     }
 
