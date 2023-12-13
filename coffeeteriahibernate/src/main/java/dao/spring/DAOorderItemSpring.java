@@ -8,7 +8,6 @@ import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import lombok.extern.log4j.Log4j2;
 import model.OrderItem;
-import model.errors.ErrorCOrder;
 import model.errors.ErrorCOrderItem;
 import org.springframework.jdbc.core.JdbcTemplate;
 

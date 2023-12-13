@@ -1,7 +1,6 @@
 package dao.spring;
 
 import common.SQLqueries;
-import dao.DAOorder;
 import dao.connection.DBConnectionPool;
 import dao.mappers.OrderMapper;
 import io.vavr.control.Either;
@@ -9,14 +8,9 @@ import jakarta.inject.Inject;
 import lombok.extern.log4j.Log4j2;
 import model.Order;
 import model.errors.ErrorCOrder;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Log4j2
 public class DAOorderSpring {

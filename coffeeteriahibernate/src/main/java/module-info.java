@@ -8,19 +8,19 @@ module coffeeteria {
     requires lombok;
     requires org.apache.logging.log4j;
     requires javafx.controls;
-    requires jakarta.cdi;
-    requires jakarta.inject;
     requires jakarta.xml.bind;
     requires org.glassfish.jaxb.runtime;
     requires MaterialFX;
-    requires io.reactivex.rxjava3;
-    requires org.pdfsam.rxjavafx;
     requires java.logging;
     requires java.sql;
     requires commons.dbcp2;
     requires com.zaxxer.hikari;
+    requires jakarta.persistence;
+    requires jakarta.inject;
+    requires jakarta.annotation;
     requires spring.jdbc;
     requires spring.tx;
+    requires jakarta.cdi;
 
     /*Pantallas*/
 
@@ -48,6 +48,8 @@ module coffeeteria {
     exports dao;
     exports dao.db;
     exports dao.mappers;
+    exports dao.spring;
+    exports dao.hibernate;
 
     /*Abrir módulos*/
 
@@ -67,9 +69,9 @@ module coffeeteria {
     opens ui.pantallas.customer.customeradd to javafx.fxml;
     opens ui.pantallas.customer.customerdelete to javafx.fxml;
     opens ui.pantallas.order.orderadd to javafx.fxml;
-    opens model to jakarta.xml.bind;
+    //opens model to jakarta.xml.bind;
     exports model.xml;
     opens model.xml to jakarta.xml.bind;
     exports dao.connection;
-    exports dao.spring;
+    opens model to org.hibernate.orm.core;
 }
