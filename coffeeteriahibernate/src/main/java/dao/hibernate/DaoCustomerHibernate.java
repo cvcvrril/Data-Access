@@ -65,15 +65,19 @@ public class DaoCustomerHibernate {
     }
 
     public Either<ErrorCCustomer, Integer> delete(int id){
-        Either<ErrorCCustomer, Integer> res = null;
+        Either<ErrorCCustomer, Integer> res;
         em = jpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try{
-            //TODO: CAMBIAR ESTO PORQUE NO SÉ MUY BIEN CÓMO HACER LO DE ELIMINAR
-            em.remove(em.merge(id));
-            tx.commit();
-
+            Customer customerToDelete = em.find(Customer.class, id);
+            if (customerToDelete!= null){
+                em.remove(em.merge(customerToDelete));
+                tx.commit();
+                res = Either.right(1);
+            }else {
+                res = Either.left(new ErrorCCustomer("No se encontró el customer", 0));
+            }
         }catch (Exception e){
             log.error(e.getMessage(), e);
             res = Either.left(new ErrorCCustomer(e.getMessage(), 0));
