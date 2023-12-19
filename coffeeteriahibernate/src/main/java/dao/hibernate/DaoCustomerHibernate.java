@@ -5,6 +5,7 @@ import dao.connection.JPAUtil;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.PersistenceException;
 import lombok.extern.log4j.Log4j2;
 import model.Customer;
@@ -49,10 +50,6 @@ public class DaoCustomerHibernate {
             customer = em.find(Customer.class, id);
             res = Either.right(customer);
 
-            // Hibernate session uses get instead of find
-            //Session session= em.unwrap(Session.class);
-            //s = session.get(BasicSupplier.class,id);
-
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = Either.left(new ErrorCCustomer(e.getMessage(), 0));
@@ -64,6 +61,46 @@ public class DaoCustomerHibernate {
 
     public Either<ErrorCCustomer, Integer> add(Customer newCustomer){
         Either<ErrorCCustomer, Integer> res = null;
+        return res;
+    }
+
+    public Either<ErrorCCustomer, Integer> delete(int id){
+        Either<ErrorCCustomer, Integer> res = null;
+        em = jpaUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        try{
+            //TODO: CAMBIAR ESTO PORQUE NO SÉ MUY BIEN CÓMO HACER LO DE ELIMINAR
+            em.remove(em.merge(id));
+            tx.commit();
+
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+            res = Either.left(new ErrorCCustomer(e.getMessage(), 0));
+        }
+        finally {
+            if (em != null)  em.close();
+        }
+        return res;
+    }
+
+    public Either<ErrorCCustomer, Integer> update(Customer updatedCustomer){
+        Either<ErrorCCustomer, Integer> res;
+        int conf;
+        em = jpaUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        try {
+            em.merge(updatedCustomer);
+            tx.commit();
+            conf = 1;
+            res = Either.right(conf);
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+            res = Either.left(new ErrorCCustomer(e.getMessage(), 0));
+        }finally {
+            if (em != null)  em.close();
+        }
         return res;
     }
 
