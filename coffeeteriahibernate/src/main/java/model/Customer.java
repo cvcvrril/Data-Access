@@ -34,6 +34,6 @@ public class Customer {
     //TODO: MIRAR CÓMO HACER LO DEL CREDENTIAL
 
     @OneToOne(mappedBy = "credential", cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "credential")
+    @JoinColumn
     private Credential credential;
 }
