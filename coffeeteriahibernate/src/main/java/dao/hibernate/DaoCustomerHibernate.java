@@ -64,6 +64,8 @@ public class DaoCustomerHibernate {
         return res;
     }
 
+    //TODO: CHANGE THE DELETE; TWO ACCESS TO THE DATABASE [DEBUG]
+
     public Either<ErrorCCustomer, Integer> delete(int id){
         Either<ErrorCCustomer, Integer> res;
         em = jpaUtil.getEntityManager();
@@ -76,7 +78,7 @@ public class DaoCustomerHibernate {
                 tx.commit();
                 res = Either.right(1);
             }else {
-                res = Either.left(new ErrorCCustomer("No se encontró el customer", 0));
+                res = Either.left(new ErrorCCustomer("The customer hasn't been found", 0));
             }
         }catch (Exception e){
             log.error(e.getMessage(), e);
