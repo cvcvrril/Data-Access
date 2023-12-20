@@ -31,6 +31,9 @@ public class Customer {
     @Column(name = "date_of_birth")
     private LocalDate dateBirth;
 
-    @Transient
+    //TODO: MIRAR CÓMO HACER LO DEL CREDENTIAL
+
+    @OneToOne(mappedBy = "credential", cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "credential")
     private Credential credential;
 }
