@@ -8,6 +8,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.PersistenceException;
 import lombok.extern.log4j.Log4j2;
+import model.Credential;
 import model.Customer;
 import model.errors.ErrorCCustomer;
 
@@ -59,38 +60,46 @@ public class DaoCustomerHibernate {
         return res;
     }
 
-    public Either<ErrorCCustomer, Integer> add(Customer newCustomer){
+    //TODO: NO IDEA HOW TO DO THE ADD OF CUSTOMER + CREDENTIAL
+
+    public Either<ErrorCCustomer, Integer> add(Customer newCustomer) {
         Either<ErrorCCustomer, Integer> res = null;
         return res;
     }
 
     //TODO: CHANGE THE DELETE; TWO ACCESS TO THE DATABASE [DEBUG]
 
-    public Either<ErrorCCustomer, Integer> delete(int id){
+    public Either<ErrorCCustomer, Integer> delete(int id) {
         Either<ErrorCCustomer, Integer> res;
         em = jpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-        try{
+        try {
             Customer customerToDelete = em.find(Customer.class, id);
-            if (customerToDelete!= null){
+            if (customerToDelete != null) {
                 em.remove(em.merge(customerToDelete));
-                tx.commit();
+
+                Credential credentialToDelete = em.find(Credential.class, id);
+                if (credentialToDelete != null) {
+                    em.remove(em.merge(credentialToDelete));
+                    tx.commit();
+                }else {
+                    res = Either.left(new ErrorCCustomer("The credential hasn't been found", 0));
+                }
                 res = Either.right(1);
-            }else {
+            } else {
                 res = Either.left(new ErrorCCustomer("The customer hasn't been found", 0));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = Either.left(new ErrorCCustomer(e.getMessage(), 0));
-        }
-        finally {
-            if (em != null)  em.close();
+        } finally {
+            if (em != null) em.close();
         }
         return res;
     }
 
-    public Either<ErrorCCustomer, Integer> update(Customer updatedCustomer){
+    public Either<ErrorCCustomer, Integer> update(Customer updatedCustomer) {
         Either<ErrorCCustomer, Integer> res;
         int conf;
         em = jpaUtil.getEntityManager();
@@ -101,11 +110,11 @@ public class DaoCustomerHibernate {
             tx.commit();
             conf = 1;
             res = Either.right(conf);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = Either.left(new ErrorCCustomer(e.getMessage(), 0));
-        }finally {
-            if (em != null)  em.close();
+        } finally {
+            if (em != null) em.close();
         }
         return res;
     }
