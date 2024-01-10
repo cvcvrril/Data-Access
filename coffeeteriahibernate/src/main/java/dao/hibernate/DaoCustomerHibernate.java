@@ -60,38 +60,53 @@ public class DaoCustomerHibernate {
         return res;
     }
 
-    //TODO: NO IDEA HOW TO DO THE ADD OF CUSTOMER + CREDENTIAL
-
-    public Either<ErrorCCustomer, Integer> add(Customer newCustomer) {
-        Either<ErrorCCustomer, Integer> res = null;
-        return res;
-    }
-
-    //TODO: CHANGE THE DELETE; TWO ACCESS TO THE DATABASE [DEBUG]
-
-    public Either<ErrorCCustomer, Integer> delete(int id) {
+    public Either<ErrorCCustomer, Integer> add(Customer newCustomer, Credential credential) {
         Either<ErrorCCustomer, Integer> res;
         em = jpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try {
+            em.persist(credential);
+            newCustomer.setIdC(credential.getId());
+            em.persist(newCustomer);
+            tx.commit();
+            res = Either.right(1);
+
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            if (tx.isActive()) tx.rollback();
+            res = Either.left(new ErrorCCustomer(e.getMessage(), 0));
+        } finally {
+            if (em != null) em.close();
+        }
+        return res;
+    }
+
+    //TODO: HACER LA COMPROBACION DE LOS ORDERS
+
+    public Either<ErrorCCustomer, Integer> delete(int id, boolean conf) {
+        Either<ErrorCCustomer, Integer> res;
+        em = jpaUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        try {
+            if (conf){
+                
+
+
+            }
+
             Customer customerToDelete = em.find(Customer.class, id);
             if (customerToDelete != null) {
                 em.remove(em.merge(customerToDelete));
-
-                Credential credentialToDelete = em.find(Credential.class, id);
-                if (credentialToDelete != null) {
-                    em.remove(em.merge(credentialToDelete));
-                    tx.commit();
-                }else {
-                    res = Either.left(new ErrorCCustomer("The credential hasn't been found", 0));
-                }
+                tx.commit();
                 res = Either.right(1);
             } else {
                 res = Either.left(new ErrorCCustomer("The customer hasn't been found", 0));
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
+            if (tx.isActive()) tx.rollback();
             res = Either.left(new ErrorCCustomer(e.getMessage(), 0));
         } finally {
             if (em != null) em.close();
