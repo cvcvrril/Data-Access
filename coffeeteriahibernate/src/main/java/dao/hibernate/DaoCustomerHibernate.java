@@ -25,6 +25,8 @@ public class DaoCustomerHibernate {
         this.jpaUtil = jpaUtil;
     }
 
+    //TODO: SOLUCIONAR LO DEL GRAMMAR SQL EXCEPTION????????????????
+
     public Either<ErrorCCustomer, List<Customer>> getAll() {
         Either<ErrorCCustomer, List<Customer>> res;
         List<Customer> customerList;
