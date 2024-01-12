@@ -40,10 +40,10 @@ public class SERVcustomer {
     }
 
     public Either<ErrorCCustomer, Integer> delete(int i, boolean conf) {
-        Either<ErrorCCustomer, Customer> res = daOcustomerDB.get(i);
+        Either<ErrorCCustomer, Customer> res = daoCustomerHibernate.get(i);
         if (res.isRight()) {
             //return daOcustomerSpring.delete(i, conf);
-            return daoCustomerHibernate.delete(i);
+            return daoCustomerHibernate.delete(i, conf);
         } else {
             return Either.left(res.getLeft());
         }
