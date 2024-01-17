@@ -5,6 +5,7 @@ import common.SQLqueries;
 import dao.ConstantsDAO;
 import dao.connection.DBConnection;
 import dao.connection.DBConnectionPool;
+import dao.spring.DAOorderItemSpring;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import lombok.extern.log4j.Log4j2;
@@ -25,14 +26,14 @@ public class DAOorderDB {
     private final Configuration config;
     private final DBConnection db;
     private final DBConnectionPool pool;
-    private final SERVorderItem serv;
+    private final DAOorderItemSpring daOorderItemSpring;
 
     @Inject
-    public DAOorderDB(Configuration config, DBConnection db, DBConnectionPool pool, SERVorderItem serv) {
+    public DAOorderDB(Configuration config, DBConnection db, DBConnectionPool pool, DAOorderItemSpring daOorderItemSpring) {
         this.config = config;
         this.db = db;
         this.pool = pool;
-        this.serv = serv;
+        this.daOorderItemSpring = daOorderItemSpring;
     }
 
     public Either<ErrorCOrder, List<Order>> getAll() {
@@ -200,7 +201,7 @@ public class DAOorderDB {
             }
             int customerId = rs.getInt(ConstantsDAO.CUSTOMER_ID);
             int tableId = rs.getInt(ConstantsDAO.TABLE_ID);
-            orderList.add(new Order(id, dateTime, customerId, tableId, serv.get(id).get()));
+            orderList.add(new Order(id, dateTime, customerId, tableId, daOorderItemSpring.get(id).get()));
         }
         return orderList;
     }
