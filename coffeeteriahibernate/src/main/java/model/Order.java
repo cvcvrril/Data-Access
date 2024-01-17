@@ -26,13 +26,14 @@ public class Order {
     private int idCo;
     @Column(name = "table_id")
     private int idTable;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     private List<OrderItem> orderItems;
 
 
 
-    //TODO: probar lo siguiente -> SELECT NAME FROM ORDERS O WHERE O.ORDERITEM.MENUITEM.NAME = "SALMON"
+    //TODO: probar lo siguiente -> SELECT NAME FROM ORDERS O WHERE O.ORDERITEM.MENUITEM.NAME = "SALMON" [
     // 1. select idOrd from Order o inner join OrderItem oi where oi.orderId = o.id
     // 2. select nameMItem from Order o inner join OrderItem oi inner join MenuItem mi where oi.orderId= o.id and oi.menuItemObject.nameMItem = mi.nameMItem
+    //TODO: probar lo siguiente -> SELECT NAME FROM ORDERS O WHERE O.ORDERITEM.MENUITEM.NAME = "SALMON" ]
 
 }
