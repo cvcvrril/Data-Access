@@ -19,9 +19,6 @@ public class OrderItem {
     private int id;             //order_item_id
     @Column(name = "order_id")
     private int orderId;        //order_id
-
-    @OneToOne
-    @JoinColumn(name = "menu_item_id")
     private int menuItem;       //menu_item_id
     private int quantity;       //quantity
     @OneToOne
