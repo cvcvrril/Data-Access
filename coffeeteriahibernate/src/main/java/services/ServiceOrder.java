@@ -2,6 +2,7 @@ package services;
 
 import dao.db.DaoCustomerDb;
 import dao.db.DaoOrderDb;
+import dao.hibernate.DaoOrderHibernate;
 import dao.imp.DaoOrderXML;
 import dao.spring.DaoCustomerSpring;
 import dao.spring.DaoOrderSpring;
@@ -21,15 +22,17 @@ import java.util.stream.Collectors;
 public class ServiceOrder {
     private final DaoCustomerDb daOcustomerDB;
     private final DaoOrderDb daOorderDB;
+    private final DaoOrderHibernate daoOrderHibernate;
     private final DaoOrderSpring daOorderSpring;
     private final DaoCustomerSpring daOcustomerSpring;
     private final DaoOrderXML daOorderXML;
 
 
     @Inject
-    public ServiceOrder(DaoCustomerDb daOcustomerDB, DaoOrderDb daOorderDB, DaoOrderSpring daOorderSpring, DaoCustomerSpring daOcustomerSpring, DaoOrderXML daOorderXML) {
+    public ServiceOrder(DaoCustomerDb daOcustomerDB, DaoOrderDb daOorderDB, DaoOrderHibernate daoOrderHibernate, DaoOrderSpring daOorderSpring, DaoCustomerSpring daOcustomerSpring, DaoOrderXML daOorderXML) {
         this.daOcustomerDB = daOcustomerDB;
         this.daOorderDB = daOorderDB;
+        this.daoOrderHibernate = daoOrderHibernate;
         this.daOorderSpring = daOorderSpring;
         this.daOcustomerSpring = daOcustomerSpring;
         this.daOorderXML = daOorderXML;
@@ -38,11 +41,13 @@ public class ServiceOrder {
     /*Métodos*/
 
     public List<Order> getAll() {
-        return daOorderSpring.getAll().getOrNull();
+        //return daOorderSpring.getAll().getOrNull();
+        return daoOrderHibernate.getAll().getOrNull();
     }
 
     public Either<ErrorCOrder, Order> getOrder(int i) {
-            return daOorderSpring.get(i);
+            //return daOorderSpring.get(i);
+        return daoOrderHibernate.get(i);
     }
 
     public Either<ErrorCOrder, List<Order>> getOrders(int i){
