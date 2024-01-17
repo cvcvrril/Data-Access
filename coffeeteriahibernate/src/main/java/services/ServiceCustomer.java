@@ -1,9 +1,9 @@
 package services;
 
-import dao.db.DAOcustomerDB;
+import dao.db.DaoCustomerDb;
 import dao.hibernate.DaoCustomerHibernate;
-import dao.imp.DAOorderXML;
-import dao.spring.DAOcustomerSpring;
+import dao.imp.DaoOrderXML;
+import dao.spring.DaoCustomerSpring;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import model.Credential;
@@ -12,20 +12,20 @@ import model.errors.ErrorCCustomer;
 
 import java.util.List;
 
-public class SERVcustomer {
+public class ServiceCustomer {
 
-    private final DAOcustomerDB daOcustomerDB;
-    private final DAOcustomerSpring daOcustomerSpring;
-    private final DAOorderXML daOorderXML;
-    private final SERVorder serVorder;
+    private final DaoCustomerDb daOcustomerDB;
+    private final DaoCustomerSpring daOcustomerSpring;
+    private final DaoOrderXML daOorderXML;
+    private final ServiceOrder serviceOrder;
     private final DaoCustomerHibernate daoCustomerHibernate;
 
     @Inject
-    public SERVcustomer(DAOcustomerDB daOcustomerDB, DAOcustomerSpring daOcustomerSpring, DAOorderXML daOorderXML, SERVorder serVorder, DaoCustomerHibernate daoCustomerHibernate) {
+    public ServiceCustomer(DaoCustomerDb daOcustomerDB, DaoCustomerSpring daOcustomerSpring, DaoOrderXML daOorderXML, ServiceOrder serviceOrder, DaoCustomerHibernate daoCustomerHibernate) {
         this.daOcustomerDB = daOcustomerDB;
         this.daOcustomerSpring = daOcustomerSpring;
         this.daOorderXML = daOorderXML;
-        this.serVorder = serVorder;
+        this.serviceOrder = serviceOrder;
         this.daoCustomerHibernate = daoCustomerHibernate;
     }
 

@@ -1,6 +1,6 @@
 package dao;
 
-public class ConstantsDAO {
+public class ConstantsDao {
 
     /*Customers*/
     public static final String ERROR_READING_DATABASE = "Error when reading from the database";

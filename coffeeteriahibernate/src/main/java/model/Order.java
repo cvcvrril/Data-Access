@@ -26,7 +26,6 @@ public class Order {
     private int idCo;
     @Column(name = "table_id")
     private int idTable;
-
     @OneToMany
     private List<OrderItem> orderItems;
 

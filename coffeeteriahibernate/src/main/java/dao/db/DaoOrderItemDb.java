@@ -2,34 +2,34 @@ package dao.db;
 
 import common.Configuration;
 import common.SQLqueries;
-import dao.ConstantsDAO;
-import dao.connection.DBConnection;
+import dao.ConstantsDao;
+import dao.connection.DbConnection;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import lombok.extern.log4j.Log4j2;
 import model.OrderItem;
 import model.errors.ErrorCOrderItem;
-import services.SERVmenuItems;
+import services.ServiceMenuItems;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
-public class DAOorderItemDB {
+public class DaoOrderItemDb {
 
     private final Configuration configuration;
-    private final DBConnection db;
-    //private final SERVmenuItems serVmenuItems;
-    private final DAOMenuItemDB daoMenuItemDB;
-    private final DAOorderDB daOorderDB;
+    private final DbConnection db;
+    //private final ServiceMenuItems serVmenuItems;
+    private final DaoMenuItemDb daoMenuItemDB;
+    private final DaoOrderDb daOorderDB;
 
     @Inject
-    public DAOorderItemDB(Configuration configuration, DBConnection db, SERVmenuItems serVmenuItems, DAOMenuItemDB daoMenuItemDB, DAOorderDB daOorderDB) {
+    public DaoOrderItemDb(Configuration configuration, DbConnection db, ServiceMenuItems serviceMenuItems, DaoMenuItemDb daoMenuItemDB, DaoOrderDb daOorderDB) {
         this.configuration = configuration;
         this.db = db;
         this.daoMenuItemDB = daoMenuItemDB;
-        //this.serVmenuItems = serVmenuItems;
+        //this.serviceMenuItems = serviceMenuItems;
         this.daOorderDB = daOorderDB;
     }
 
@@ -58,7 +58,7 @@ public class DAOorderItemDB {
             if (!orderItemList.isEmpty()) {
                 res = Either.right(orderItemList.get(0));
             } else {
-                res = Either.left(new ErrorCOrderItem(ConstantsDAO.ERROR_READING_DATABASE, 0));
+                res = Either.left(new ErrorCOrderItem(ConstantsDao.ERROR_READING_DATABASE, 0));
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -133,10 +133,10 @@ public class DAOorderItemDB {
     private List<OrderItem> readRS(ResultSet rs) throws SQLException {
         List<OrderItem> orderItemList = new ArrayList<>();
         while (rs.next()) {
-            int id = rs.getInt(ConstantsDAO.ORDER_ITEM_ID);
-            int orderId = rs.getInt(ConstantsDAO.ORDER_ID);
-            int menuItemId = rs.getInt(ConstantsDAO.MENU_ITEM_ID);
-            int quantity = rs.getInt(ConstantsDAO.QUANTITY);
+            int id = rs.getInt(ConstantsDao.ORDER_ITEM_ID);
+            int orderId = rs.getInt(ConstantsDao.ORDER_ID);
+            int menuItemId = rs.getInt(ConstantsDao.MENU_ITEM_ID);
+            int quantity = rs.getInt(ConstantsDao.QUANTITY);
             orderItemList.add(new OrderItem(id, orderId, menuItemId, quantity, daoMenuItemDB.get(id).getOrNull(), daOorderDB.get(orderId).getOrNull()));
         }
         return orderItemList;

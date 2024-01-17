@@ -2,16 +2,16 @@ package dao.db;
 
 import common.Configuration;
 import common.SQLqueries;
-import dao.ConstantsDAO;
-import dao.connection.DBConnection;
-import dao.connection.DBConnectionPool;
+import dao.ConstantsDao;
+import dao.connection.DbConnection;
+import dao.connection.DbConnectionPool;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import lombok.extern.log4j.Log4j2;
 import model.Credential;
 import model.Customer;
 import model.errors.ErrorCCustomer;
-import services.SERVcredential;
+import services.ServiceCredential;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -19,17 +19,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
-public class DAOcustomerDB {
+public class DaoCustomerDb {
 
 
     private final Configuration config;
-    private final DBConnection db;
-    private final DBConnectionPool pool;
-    //private final SERVcredential serv;
-    private final DAOcredentials daOcredentials;
+    private final DbConnection db;
+    private final DbConnectionPool pool;
+    //private final ServiceCredential serv;
+    private final DaoCredentials daOcredentials;
 
     @Inject
-    public DAOcustomerDB(Configuration config, DBConnection db, DBConnectionPool pool, SERVcredential serv, DAOcredentials daOcredentials) {
+    public DaoCustomerDb(Configuration config, DbConnection db, DbConnectionPool pool, ServiceCredential serv, DaoCredentials daOcredentials) {
         this.config = config;
         this.db = db;
         this.pool = pool;
@@ -63,7 +63,7 @@ public class DAOcustomerDB {
             if (!customerList.isEmpty()) {
                 res = Either.right(customerList.get(0));
             } else {
-                res = Either.left(new ErrorCCustomer(ConstantsDAO.ERROR_READING_DATABASE, 0));
+                res = Either.left(new ErrorCCustomer(ConstantsDao.ERROR_READING_DATABASE, 0));
             }
             rs.close();
         } catch (SQLException e) {
@@ -114,7 +114,7 @@ public class DAOcustomerDB {
                 pstmtCustomer.setInt(1, id);
                 int rowsAffected = pstmtCustomer.executeUpdate();
                 if (rowsAffected != 1) {
-                    res = Either.left(new ErrorCCustomer(ConstantsDAO.ERROR_DELETING_CUSTOMER, 0));
+                    res = Either.left(new ErrorCCustomer(ConstantsDao.ERROR_DELETING_CUSTOMER, 0));
                 } else {
                     res = Either.right(rowsAffected);
                 }
@@ -128,7 +128,7 @@ public class DAOcustomerDB {
                 }
             }
         } else {
-            res = Either.left(new ErrorCCustomer(ConstantsDAO.ERROR_DELETING_CUSTOMER, 0));
+            res = Either.left(new ErrorCCustomer(ConstantsDao.ERROR_DELETING_CUSTOMER, 0));
         }
         return res;
     }
@@ -153,7 +153,7 @@ public class DAOcustomerDB {
 
             if (rowsAffected != 1) {
                 myConnection.rollback();
-                return Either.left(new ErrorCCustomer(ConstantsDAO.ERROR_ADDDING_CUSTOMER, 0));
+                return Either.left(new ErrorCCustomer(ConstantsDao.ERROR_ADDDING_CUSTOMER, 0));
             }
 
             ResultSet generatedKeys = pstmtCustomer.getGeneratedKeys();
@@ -162,7 +162,7 @@ public class DAOcustomerDB {
                 generatedCustomerId = generatedKeys.getInt(1);
             } else {
                 myConnection.rollback();
-                return Either.left(new ErrorCCustomer(ConstantsDAO.ERROR_OBTAINING_ID, 0));
+                return Either.left(new ErrorCCustomer(ConstantsDao.ERROR_OBTAINING_ID, 0));
             }
 
             PreparedStatement pstmtCredential = myConnection.prepareStatement(SQLqueries.INSERT_CREDENTIAL, Statement.RETURN_GENERATED_KEYS);
@@ -208,13 +208,13 @@ public class DAOcustomerDB {
     private List<Customer> readRS(ResultSet rs) throws SQLException {
         List<Customer> customerList = new ArrayList<>();
         while (rs.next()) {
-            int id = rs.getInt(ConstantsDAO.ID);
-            String firstName = rs.getString(ConstantsDAO.FIRST_NAME);
-            String lastName = rs.getString(ConstantsDAO.LAST_NAME);
-            String email = rs.getString(ConstantsDAO.EMAIL);
-            int phone = rs.getInt(ConstantsDAO.PHONE);
+            int id = rs.getInt(ConstantsDao.ID);
+            String firstName = rs.getString(ConstantsDao.FIRST_NAME);
+            String lastName = rs.getString(ConstantsDao.LAST_NAME);
+            String email = rs.getString(ConstantsDao.EMAIL);
+            int phone = rs.getInt(ConstantsDao.PHONE);
             LocalDate date = null;
-            Date dateFromDB = rs.getDate(ConstantsDAO.DATE_OF_BIRTH);
+            Date dateFromDB = rs.getDate(ConstantsDao.DATE_OF_BIRTH);
             if (dateFromDB != null) {
                 date = dateFromDB.toLocalDate();
             }

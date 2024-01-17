@@ -17,13 +17,13 @@ public class OrderItem {
     @Id
     @Column(name = "order_item_id")
     private int id;             //order_item_id
-    @Column(name = "order_id")
     private int orderId;        //order_id
     private int menuItem;       //menu_item_id
     private int quantity;       //quantity
     @OneToOne
     private MenuItem menuItemObject;
     @ManyToOne
+    @JoinColumn(name = "order_id")
     private Order order;
 
 }

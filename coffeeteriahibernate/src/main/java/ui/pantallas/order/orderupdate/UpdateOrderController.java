@@ -15,10 +15,10 @@ import model.OrderItem;
 import model.TableRestaurant;
 import model.errors.ErrorCMenuItem;
 import model.errors.ErrorCTables;
-import services.SERVmenuItems;
-import services.SERVorder;
-import services.SERVorderItem;
-import services.SERVtablesRestaurant;
+import services.ServiceMenuItems;
+import services.ServiceOrder;
+import services.ServiceOrderItem;
+import services.ServiceTablesRestaurant;
 import ui.pantallas.common.BasePantallaController;
 
 
@@ -29,10 +29,10 @@ import java.util.List;
 
 public class UpdateOrderController extends BasePantallaController {
 
-    private final SERVorder serVorder;
-    private final SERVorderItem serVorderItem;
-    private final SERVmenuItems serVmenuItems;
-    private final SERVtablesRestaurant serVtablesRestaurant;
+    private final ServiceOrder serviceOrder;
+    private final ServiceOrderItem serviceOrderItem;
+    private final ServiceMenuItems serviceMenuItems;
+    private final ServiceTablesRestaurant serviceTablesRestaurant;
 
     @FXML
     private TableView<Order> tableOrders;
@@ -70,16 +70,16 @@ public class UpdateOrderController extends BasePantallaController {
     private int lastOrderItemId;
 
     @Inject
-    public UpdateOrderController(SERVorder serVorder, SERVorderItem serVorderItem, SERVmenuItems serVmenuItems, SERVtablesRestaurant serVtablesRestaurant) {
-        this.serVorder = serVorder;
-        this.serVorderItem = serVorderItem;
-        this.serVmenuItems = serVmenuItems;
-        this.serVtablesRestaurant = serVtablesRestaurant;
+    public UpdateOrderController(ServiceOrder serviceOrder, ServiceOrderItem serviceOrderItem, ServiceMenuItems serviceMenuItems, ServiceTablesRestaurant serviceTablesRestaurant) {
+        this.serviceOrder = serviceOrder;
+        this.serviceOrderItem = serviceOrderItem;
+        this.serviceMenuItems = serviceMenuItems;
+        this.serviceTablesRestaurant = serviceTablesRestaurant;
     }
 
     @Override
     public void principalCargado() {
-        lastOrderItemId = serVorderItem.getAll().get().size() + 1;
+        lastOrderItemId = serviceOrderItem.getAll().get().size() + 1;
         //Order Table Columns
         id_ord.setCellValueFactory(new PropertyValueFactory<>(Constantes.ID_ORD));
         id_c.setCellValueFactory(new PropertyValueFactory<>(Constantes.ID_CO));
@@ -87,9 +87,9 @@ public class UpdateOrderController extends BasePantallaController {
         date_order.setCellValueFactory(new PropertyValueFactory<>(Constantes.OR_DATE));
         //Llenar OrderTable
         if (getPrincipalController().getActualCredential().getId() > 0) {
-            tableOrders.getItems().addAll(serVorder.getOrders(this.getPrincipalController().getActualCredential().getId()).getOrNull());
+            tableOrders.getItems().addAll(serviceOrder.getOrders(this.getPrincipalController().getActualCredential().getId()).getOrNull());
         } else {
-            tableOrders.getItems().addAll(serVorder.getAll());
+            tableOrders.getItems().addAll(serviceOrder.getAll());
         }
         tableOrders.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -98,7 +98,7 @@ public class UpdateOrderController extends BasePantallaController {
                 if (selOrder != null) {
                     dateField.setText(String.valueOf(selOrder.getOrDate()));
                 }
-                orderItemTable.getItems().addAll(serVorderItem.get(tableOrders.getSelectionModel().getSelectedItem().getIdOrd()).getOrNull());
+                orderItemTable.getItems().addAll(serviceOrderItem.get(tableOrders.getSelectionModel().getSelectedItem().getIdOrd()).getOrNull());
 
             }
         });
@@ -112,18 +112,18 @@ public class UpdateOrderController extends BasePantallaController {
         //Llenar los campos de OrderItem
         orderItemTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                orderItemTable.getSelectionModel().getSelectedItem().setMenuItemObject(serVmenuItems.get(orderItemTable.getSelectionModel().getSelectedItem().getMenuItem()).getOrNull());
+                orderItemTable.getSelectionModel().getSelectedItem().setMenuItemObject(serviceMenuItems.get(orderItemTable.getSelectionModel().getSelectedItem().getMenuItem()).getOrNull());
                 menuItemComboBox.setValue(orderItemTable.getSelectionModel().getSelectedItem().getMenuItemObject().getNameMItem());
                 quantityField.setText(String.valueOf(orderItemTable.getSelectionModel().getSelectedItem().getQuantity()));
             }
         });
         //ComboBox
         ObservableList<String> observableList = FXCollections.observableArrayList();
-        for (MenuItem menuItem : serVmenuItems.getAll().getOrNull()) {
+        for (MenuItem menuItem : serviceMenuItems.getAll().getOrNull()) {
             observableList.add(menuItem.getNameMItem());
         }
         menuItemComboBox.getItems().addAll(observableList);
-        Either<ErrorCTables, List<TableRestaurant>> result = serVtablesRestaurant.getAll();
+        Either<ErrorCTables, List<TableRestaurant>> result = serviceTablesRestaurant.getAll();
         if (result.isRight()) {
             List<TableRestaurant> tables = result.get();
             for (TableRestaurant table : tables) {
@@ -134,7 +134,7 @@ public class UpdateOrderController extends BasePantallaController {
             errorAlert.setContentText("Error al obtener la lista de mesas");
             errorAlert.show();
         }
-        List<Integer> customerIDs = serVorder.getCustomerIDs();
+        List<Integer> customerIDs = serviceOrder.getCustomerIDs();
         customerComboBox.getItems().addAll(customerIDs);
         if (getPrincipalController().getActualCredential().getId() > 0) {
             customerComboBox.setVisible(false);
@@ -146,8 +146,8 @@ public class UpdateOrderController extends BasePantallaController {
     public void addItem() {
         String selectedItemName = menuItemComboBox.getSelectionModel().getSelectedItem();
         int quantity = Integer.parseInt(quantityField.getText());
-        MenuItem selectedMenuItem = serVmenuItems.getMenuItemByName(selectedItemName).getOrNull();
-        for (MenuItem menuItem : serVmenuItems.getAll().getOrElse(Collections.emptyList())) {
+        MenuItem selectedMenuItem = serviceMenuItems.getMenuItemByName(selectedItemName).getOrNull();
+        for (MenuItem menuItem : serviceMenuItems.getAll().getOrElse(Collections.emptyList())) {
             if (menuItem.getNameMItem().equals(selectedItemName)) {
                 selectedMenuItem = menuItem;
             }
@@ -158,8 +158,8 @@ public class UpdateOrderController extends BasePantallaController {
             a.setContentText(Constantes.THE_MENU_ITEM_HAS_BEEN_ADDED);
             a.show();
             // Agregar el nuevo OrderItem a la tabla
-            //orderItemTable.getItems().add(new OrderItem(lastOrderItemId, tableOrders.getSelectionModel().getSelectedItem().getIdOrd(), selectedMenuItem.getIdMItem(), quantity, serVmenuItems.get(lastOrderItemId).getOrNull()));
-            orderItemTable.getItems().add(new OrderItem(lastOrderItemId, tableOrders.getSelectionModel().getSelectedItem().getIdOrd(), selectedMenuItem.getIdMItem(), quantity, serVmenuItems.get(lastOrderItemId).getOrNull(), serVorder.getOrder(tableOrders.getSelectionModel().getSelectedItem().getIdOrd()).getOrNull()));
+            //orderItemTable.getItems().add(new OrderItem(lastOrderItemId, tableOrders.getSelectionModel().getSelectedItem().getIdOrd(), selectedMenuItem.getIdMItem(), quantity, serviceMenuItems.get(lastOrderItemId).getOrNull()));
+            orderItemTable.getItems().add(new OrderItem(lastOrderItemId, tableOrders.getSelectionModel().getSelectedItem().getIdOrd(), selectedMenuItem.getIdMItem(), quantity, serviceMenuItems.get(lastOrderItemId).getOrNull(), serviceOrder.getOrder(tableOrders.getSelectionModel().getSelectedItem().getIdOrd()).getOrNull()));
             menuItemComboBox.getSelectionModel().clearSelection();
             quantityField.clear();
             lastOrderItemId = lastOrderItemId + 1;
@@ -192,22 +192,22 @@ public class UpdateOrderController extends BasePantallaController {
         if (selectedOrder != null) {
             selectedOrder.setIdCo(customerId);
             selectedOrder.setIdTable(Integer.parseInt(String.valueOf(tableComboBox.getValue())));
-            serVorder.updateOrder(selectedOrder);
-            if (serVorderItem.get(selectedOrder.getIdOrd()) != null) {
-                serVorderItem.delete(selectedOrder.getIdOrd());
+            serviceOrder.updateOrder(selectedOrder);
+            if (serviceOrderItem.get(selectedOrder.getIdOrd()) != null) {
+                serviceOrderItem.delete(selectedOrder.getIdOrd());
             }
             List<OrderItem> orderItems =new ArrayList<>(orderItemTable.getItems());
-            serVorderItem.add(orderItems, selectedOrder.getIdOrd());
+            serviceOrderItem.add(orderItems, selectedOrder.getIdOrd());
             Alert a = new Alert(Alert.AlertType.CONFIRMATION);
             a.setContentText(Constantes.ORDER_UPDATED);
             a.show();
         }
         orderItemTable.getItems().clear();
-        orderItemTable.getItems().addAll(serVorderItem.getAll().getOrNull());
+        orderItemTable.getItems().addAll(serviceOrderItem.getAll().getOrNull());
     }
 
     public String getMenuItemNameById(int id) {
-        Either<ErrorCMenuItem, String> result = serVmenuItems.getMenuItemName(id);
+        Either<ErrorCMenuItem, String> result = serviceMenuItems.getMenuItemName(id);
         return result.get();
     }
 }

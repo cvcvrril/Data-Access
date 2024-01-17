@@ -1,16 +1,16 @@
 package dao.imp;
 
 import common.Configuration;
-import dao.DAOlogin;
+import dao.DaoLogin;
 import jakarta.inject.Inject;
 import model.Credential;
 
-public class DAOloginIMP implements DAOlogin {
+public class DaoLoginImp implements DaoLogin {
 
     private final Configuration conf;
 
     @Inject
-    public DAOloginIMP(Configuration conf) {
+    public DaoLoginImp(Configuration conf) {
         this.conf = conf;
     }
 

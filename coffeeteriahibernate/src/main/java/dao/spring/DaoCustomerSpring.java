@@ -1,9 +1,9 @@
 package dao.spring;
 
 import common.SQLqueries;
-import dao.ConstantsDAO;
-import dao.DAOcustomer;
-import dao.connection.DBConnectionPool;
+import dao.ConstantsDao;
+import dao.DaoCustomer;
+import dao.connection.DbConnectionPool;
 import dao.mappers.CustomerMapper;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
@@ -24,12 +24,12 @@ import java.util.Map;
 import java.util.Objects;
 
 @Log4j2
-public class DAOcustomerSpring implements DAOcustomer {
+public class DaoCustomerSpring implements DaoCustomer {
 
-    private final DBConnectionPool pool;
+    private final DbConnectionPool pool;
 
     @Inject
-    public DAOcustomerSpring(DBConnectionPool pool) {
+    public DaoCustomerSpring(DbConnectionPool pool) {
         this.pool = pool;
     }
 
@@ -70,9 +70,9 @@ public class DAOcustomerSpring implements DAOcustomer {
 
                 SimpleJdbcInsert customerInsert = new SimpleJdbcInsert(pool.getDataSource()).withTableName("customers");
                 Map<String, Object> customerParams = new HashMap<>();
-                customerParams.put(ConstantsDAO.ID, newCustomer.getIdC());
-                customerParams.put(ConstantsDAO.FIRST_NAME, newCustomer.getFirstName());
-                customerParams.put(ConstantsDAO.LAST_NAME, newCustomer.getSecondName());
+                customerParams.put(ConstantsDao.ID, newCustomer.getIdC());
+                customerParams.put(ConstantsDao.FIRST_NAME, newCustomer.getFirstName());
+                customerParams.put(ConstantsDao.LAST_NAME, newCustomer.getSecondName());
                 customerParams.put("email", newCustomer.getEmailCus());
                 customerParams.put("phone", newCustomer.getPhoneNumber());
                 customerParams.put("date_of_birth", newCustomer.getDateBirth());

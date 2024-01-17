@@ -2,7 +2,7 @@ package dao;
 
 import model.Credential;
 
-public interface DAOlogin {
+public interface DaoLogin {
     boolean doLogin(Credential credential);
 
 }

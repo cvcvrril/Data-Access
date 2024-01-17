@@ -1,8 +1,8 @@
 package dao.spring;
 
 import common.SQLqueries;
-import dao.ConstantsDAO;
-import dao.connection.DBConnectionPool;
+import dao.ConstantsDao;
+import dao.connection.DbConnectionPool;
 import dao.mappers.OrderItemMapper;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
@@ -14,13 +14,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.List;
 
 @Log4j2
-public class DAOorderItemSpring {
+public class DaoOrderItemSpring {
 
 
-    private final DBConnectionPool pool;
+    private final DbConnectionPool pool;
 
     @Inject
-    public DAOorderItemSpring(DBConnectionPool pool) {
+    public DaoOrderItemSpring(DbConnectionPool pool) {
         this.pool = pool;
     }
 
@@ -29,7 +29,7 @@ public class DAOorderItemSpring {
         JdbcTemplate jtm = new JdbcTemplate(pool.getDataSource());
         List<OrderItem> orderItemList = jtm.query(SQLqueries.SELECT_FROM_ORDER_ITEMS_JOIN, new OrderItemMapper());
         if (orderItemList.isEmpty()){
-            res = Either.left(new ErrorCOrderItem(ConstantsDAO.ERROR_ACCESSING_DB, 0));
+            res = Either.left(new ErrorCOrderItem(ConstantsDao.ERROR_ACCESSING_DB, 0));
         }else {
             res = Either.right(orderItemList);
         }

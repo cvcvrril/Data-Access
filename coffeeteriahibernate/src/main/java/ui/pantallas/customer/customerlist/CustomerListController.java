@@ -7,14 +7,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Customer;
-import services.SERVcustomer;
+import services.ServiceCustomer;
 import ui.pantallas.common.BasePantallaController;
 
 import java.time.LocalDate;
 
 public class CustomerListController extends BasePantallaController {
 
-    private final SERVcustomer serVcustomer;
+    private final ServiceCustomer serviceCustomer;
 
     @FXML
     private TableView<Customer> tableCustomers;
@@ -35,8 +35,8 @@ public class CustomerListController extends BasePantallaController {
     /*Constructores*/
 
     @Inject
-    public CustomerListController(SERVcustomer serVcustomer) {
-        this.serVcustomer = serVcustomer;
+    public CustomerListController(ServiceCustomer serviceCustomer) {
+        this.serviceCustomer = serviceCustomer;
     }
 
     /*Métodos*/
@@ -50,7 +50,7 @@ public class CustomerListController extends BasePantallaController {
         phoneNumber.setCellValueFactory(new PropertyValueFactory<>(Constantes.PHONE_NUMBER));
         email.setCellValueFactory(new PropertyValueFactory<>(Constantes.EMAIL));
         date.setCellValueFactory(new PropertyValueFactory<>(Constantes.DATE));
-        tableCustomers.getItems().addAll(serVcustomer.getAll().getOrNull());
+        tableCustomers.getItems().addAll(serviceCustomer.getAll().getOrNull());
 
     }
 }

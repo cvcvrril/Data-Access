@@ -2,8 +2,8 @@ package dao.db;
 
 import common.Configuration;
 import common.SQLqueries;
-import dao.ConstantsDAO;
-import dao.connection.DBConnection;
+import dao.ConstantsDao;
+import dao.connection.DbConnection;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import lombok.extern.log4j.Log4j2;
@@ -15,13 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
-public class DAOtablesDB {
+public class DaoTablesDb {
 
     private final Configuration configuration;
-    private final DBConnection db;
+    private final DbConnection db;
 
     @Inject
-    public DAOtablesDB(Configuration configuration, DBConnection db) {
+    public DaoTablesDb(Configuration configuration, DbConnection db) {
         this.configuration = configuration;
         this.db = db;
     }
@@ -51,7 +51,7 @@ public class DAOtablesDB {
             if (!tableRestaurantList.isEmpty()){
                 res = Either.right(tableRestaurantList.get(0));
             }else {
-                res = Either.left(new ErrorCTables(ConstantsDAO.ERROR_READING_DATABASE, 0));
+                res = Either.left(new ErrorCTables(ConstantsDao.ERROR_READING_DATABASE, 0));
             }
             rs.close();
         } catch (SQLException e) {
@@ -64,8 +64,8 @@ public class DAOtablesDB {
     private List<TableRestaurant> readRS(ResultSet rs) throws SQLException {
         List<TableRestaurant> tableRestaurantList = new ArrayList<>();
         while (rs.next()){
-            int id = rs.getInt(ConstantsDAO.TABLE_NUMBER_ID);
-            int seats = rs.getInt(ConstantsDAO.NUMBER_OF_SEATS);
+            int id = rs.getInt(ConstantsDao.TABLE_NUMBER_ID);
+            int seats = rs.getInt(ConstantsDao.NUMBER_OF_SEATS);
             tableRestaurantList.add(new TableRestaurant(id, seats));
         }
         return tableRestaurantList;

@@ -1,6 +1,6 @@
 package dao.imp;
 
-import dao.ConstantsDAO;
+import dao.ConstantsDao;
 import io.vavr.control.Either;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
@@ -20,12 +20,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
-public class DAOorderXML {
+public class DaoOrderXML {
 
     public Either<ErrorCOrder, Integer> saveOrderToXML(List<Order> orderList) {
         Either<ErrorCOrder, Integer> res;
@@ -34,7 +33,7 @@ public class DAOorderXML {
             Marshaller marshaller = jaxbContext.createMarshaller();
             OrdersXML orderXML = new OrdersXML(parseOrdertoXML(orderList));
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            Path xmlFile = Paths.get(ConstantsDAO.ROOT + orderList.get(0).getIdCo() + ConstantsDAO.XML);
+            Path xmlFile = Paths.get(ConstantsDao.ROOT + orderList.get(0).getIdCo() + ConstantsDao.XML);
             try (OutputStream outputStream = Files.newOutputStream(xmlFile, StandardOpenOption.CREATE)) {
                 marshaller.marshal(orderXML, outputStream);
                 res = Either.right(orderXML.getOrderXMLList().size());

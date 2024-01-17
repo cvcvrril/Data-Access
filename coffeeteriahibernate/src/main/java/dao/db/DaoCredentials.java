@@ -2,8 +2,8 @@ package dao.db;
 
 import common.Configuration;
 import common.SQLqueries;
-import dao.ConstantsDAO;
-import dao.connection.DBConnection;
+import dao.ConstantsDao;
+import dao.connection.DbConnection;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import lombok.extern.log4j.Log4j2;
@@ -15,13 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
-public class DAOcredentials {
+public class DaoCredentials {
 
 
-    private final DBConnection db;
+    private final DbConnection db;
 
     @Inject
-    public DAOcredentials(Configuration config, DBConnection db) {
+    public DaoCredentials(Configuration config, DbConnection db) {
         this.db = db;
     }
 
@@ -50,7 +50,7 @@ public class DAOcredentials {
             if (!credentialList.isEmpty()){
                 res = Either.right(credentialList.get(0));
             } else {
-                res = Either.left(new ErrorCCredential(ConstantsDAO.ERROR_READING_DATABASE, 0));
+                res = Either.left(new ErrorCCredential(ConstantsDao.ERROR_READING_DATABASE, 0));
             }
         } catch (SQLException e) {
             log.error(e.getMessage(),e);

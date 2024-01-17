@@ -6,7 +6,7 @@ import model.errors.ErrorCOrder;
 
 import java.util.List;
 
-public interface DAOorder {
+public interface DaoOrder {
 
     Either<ErrorCOrder, List<Order>> getAll();
 

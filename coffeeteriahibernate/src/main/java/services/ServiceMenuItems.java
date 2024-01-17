@@ -1,6 +1,6 @@
 package services;
 
-import dao.db.DAOMenuItemDB;
+import dao.db.DaoMenuItemDb;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import model.MenuItem;
@@ -9,12 +9,12 @@ import model.errors.ErrorCMenuItem;
 import java.util.Collections;
 import java.util.List;
 
-public class SERVmenuItems {
+public class ServiceMenuItems {
 
-    private final DAOMenuItemDB daoMenuItemDBd;
+    private final DaoMenuItemDb daoMenuItemDBd;
 
     @Inject
-    public SERVmenuItems(DAOMenuItemDB daoMenuItemDBd) {
+    public ServiceMenuItems(DaoMenuItemDb daoMenuItemDBd) {
         this.daoMenuItemDBd = daoMenuItemDBd;
     }
 

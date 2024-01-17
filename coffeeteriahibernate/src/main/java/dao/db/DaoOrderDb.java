@@ -2,17 +2,16 @@ package dao.db;
 
 import common.Configuration;
 import common.SQLqueries;
-import dao.ConstantsDAO;
-import dao.connection.DBConnection;
-import dao.connection.DBConnectionPool;
-import dao.spring.DAOorderItemSpring;
+import dao.ConstantsDao;
+import dao.connection.DbConnection;
+import dao.connection.DbConnectionPool;
+import dao.spring.DaoOrderItemSpring;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import lombok.extern.log4j.Log4j2;
 import model.Order;
 import model.OrderItem;
 import model.errors.ErrorCOrder;
-import services.SERVorderItem;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -21,15 +20,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
-public class DAOorderDB {
+public class DaoOrderDb {
 
     private final Configuration config;
-    private final DBConnection db;
-    private final DBConnectionPool pool;
-    private final DAOorderItemSpring daOorderItemSpring;
+    private final DbConnection db;
+    private final DbConnectionPool pool;
+    private final DaoOrderItemSpring daOorderItemSpring;
 
     @Inject
-    public DAOorderDB(Configuration config, DBConnection db, DBConnectionPool pool, DAOorderItemSpring daOorderItemSpring) {
+    public DaoOrderDb(Configuration config, DbConnection db, DbConnectionPool pool, DaoOrderItemSpring daOorderItemSpring) {
         this.config = config;
         this.db = db;
         this.pool = pool;
@@ -62,7 +61,7 @@ public class DAOorderDB {
             if (!orderList.isEmpty()) {
                 res = Either.right(orderList.get(0));
             } else {
-                res = Either.left(new ErrorCOrder(ConstantsDAO.ERROR_READING_DATABASE, 0));
+                res = Either.left(new ErrorCOrder(ConstantsDao.ERROR_READING_DATABASE, 0));
             }
             rs.close();
         } catch (SQLException e) {
@@ -130,7 +129,7 @@ public class DAOorderDB {
             pstmt2.setInt(1, id);
             int rowsAffected = pstmt2.executeUpdate();
             if (rowsAffected != 1) {
-                res = Either.left(new ErrorCOrder(ConstantsDAO.ERROR_DELETING_ORDER, 0));
+                res = Either.left(new ErrorCOrder(ConstantsDao.ERROR_DELETING_ORDER, 0));
             } else {
                 res = Either.right(rowsAffected);
             }
@@ -160,7 +159,7 @@ public class DAOorderDB {
 
                 if (rowsAffected != 1) {
                     myConnection.rollback();
-                    res = Either.left(new ErrorCOrder(ConstantsDAO.ERROR_ADDING_ORDER, 0));
+                    res = Either.left(new ErrorCOrder(ConstantsDao.ERROR_ADDING_ORDER, 0));
                 } else {
                     //Lo de los orderItems
                     for (OrderItem orderItem : order.getOrderItems()) {
@@ -193,14 +192,14 @@ public class DAOorderDB {
     private List<Order> readRS(ResultSet rs) throws SQLException {
         List<Order> orderList = new ArrayList<>();
         while (rs.next()) {
-            int id = rs.getInt(ConstantsDAO.ORDER_ID);
+            int id = rs.getInt(ConstantsDao.ORDER_ID);
             LocalDateTime dateTime = null;
-            Timestamp timestamp = rs.getTimestamp(ConstantsDAO.ORDER_DATE);
+            Timestamp timestamp = rs.getTimestamp(ConstantsDao.ORDER_DATE);
             if (timestamp != null) {
                 dateTime = timestamp.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
             }
-            int customerId = rs.getInt(ConstantsDAO.CUSTOMER_ID);
-            int tableId = rs.getInt(ConstantsDAO.TABLE_ID);
+            int customerId = rs.getInt(ConstantsDao.CUSTOMER_ID);
+            int tableId = rs.getInt(ConstantsDao.TABLE_ID);
             orderList.add(new Order(id, dateTime, customerId, tableId, daOorderItemSpring.get(id).get()));
         }
         return orderList;

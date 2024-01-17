@@ -1,25 +1,25 @@
 package dao.connection;
 
 import common.Configuration;
-import dao.ConstantsDAO;
+import dao.ConstantsDao;
 import jakarta.inject.Inject;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DBConnection {
+public class DbConnection {
 
     private Configuration config;
 
     @Inject
-    public DBConnection(Configuration config) {
+    public DbConnection(Configuration config) {
         this.config = config;
     }
 
     public Connection getConnection() throws SQLException {
         return DriverManager
-                .getConnection(config.getPropertySQL(ConstantsDAO.PATH_DB), config.getPropertySQL(ConstantsDAO.USER_DB), config.getPropertySQL(ConstantsDAO.PASS_DB));
+                .getConnection(config.getPropertySQL(ConstantsDao.PATH_DB), config.getPropertySQL(ConstantsDao.USER_DB), config.getPropertySQL(ConstantsDao.PASS_DB));
     }
 
 }

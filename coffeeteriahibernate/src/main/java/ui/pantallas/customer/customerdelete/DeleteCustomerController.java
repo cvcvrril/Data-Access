@@ -10,9 +10,9 @@ import javafx.scene.input.MouseEvent;
 import model.Customer;
 import model.Order;
 import model.errors.ErrorCCustomer;
-import services.SERVcustomer;
-import services.SERVorder;
-import services.SERVorderItem;
+import services.ServiceCustomer;
+import services.ServiceOrder;
+import services.ServiceOrderItem;
 import ui.pantallas.common.BasePantallaController;
 
 import java.time.LocalDate;
@@ -21,9 +21,9 @@ import java.util.Optional;
 
 public class DeleteCustomerController extends BasePantallaController {
 
-    private final SERVcustomer serVcustomer;
-    private final SERVorder serVorder;
-    private final SERVorderItem serVorderItem;
+    private final ServiceCustomer serviceCustomer;
+    private final ServiceOrder serviceOrder;
+    private final ServiceOrderItem serviceOrderItem;
 
     @FXML
     private Button delCustomer;
@@ -58,19 +58,19 @@ public class DeleteCustomerController extends BasePantallaController {
 
     @Inject
 
-    public DeleteCustomerController(SERVcustomer serVcustomer, SERVorder serVorder, SERVorderItem serVorderItem) {
-        this.serVcustomer = serVcustomer;
-        this.serVorder = serVorder;
-        this.serVorderItem = serVorderItem;
+    public DeleteCustomerController(ServiceCustomer serviceCustomer, ServiceOrder serviceOrder, ServiceOrderItem serviceOrderItem) {
+        this.serviceCustomer = serviceCustomer;
+        this.serviceOrder = serviceOrder;
+        this.serviceOrderItem = serviceOrderItem;
     }
 
     public void delCustomer() {
         boolean conf = false;
         Customer selCustomer = tableCustomers.getSelectionModel().getSelectedItem();
         if (selCustomer != null) {
-            List<Order> customerOrders = serVorder.getOrdersByCustomer(selCustomer.getIdC());
+            List<Order> customerOrders = serviceOrder.getOrdersByCustomer(selCustomer.getIdC());
             for (Order order:customerOrders) {
-                order.setOrderItems(serVorderItem.get(order.getIdOrd()).get());
+                order.setOrderItems(serviceOrderItem.get(order.getIdOrd()).get());
             }
             if (!customerOrders.isEmpty()) {
                 Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -79,12 +79,12 @@ public class DeleteCustomerController extends BasePantallaController {
                 if (result.isPresent() && result.get() == ButtonType.CANCEL) {
                     conf = false;
                 } else {
-                    serVorder.save(serVorder.getOrdersByCustomer(selCustomer.getIdC()));
+                    serviceOrder.save(serviceOrder.getOrdersByCustomer(selCustomer.getIdC()));
                     conf = true;
                 }
             }
 
-            Either<ErrorCCustomer, Integer> res = serVcustomer.delete(selCustomer.getIdC(), conf);
+            Either<ErrorCCustomer, Integer> res = serviceCustomer.delete(selCustomer.getIdC(), conf);
             if (res.isRight()) {
                 Alert a = new Alert(Alert.AlertType.CONFIRMATION);
                 a.setContentText(Constantes.USER_DELETED);
@@ -105,7 +105,7 @@ public class DeleteCustomerController extends BasePantallaController {
         idOrd.setCellValueFactory(new PropertyValueFactory<>(Constantes.ID_ORD));
         idTable.setCellValueFactory(new PropertyValueFactory<>(Constantes.ID_TABLE));
         dateOrder.setCellValueFactory(new PropertyValueFactory<>(Constantes.OR_DATE));
-        tableOrdersCus.getItems().addAll(serVorder.getOrdersByCustomer(tableCustomers.getSelectionModel().getSelectedItem().getIdC()));
+        tableOrdersCus.getItems().addAll(serviceOrder.getOrdersByCustomer(tableCustomers.getSelectionModel().getSelectedItem().getIdC()));
     }
 
     @Override
@@ -116,7 +116,7 @@ public class DeleteCustomerController extends BasePantallaController {
         email.setCellValueFactory(new PropertyValueFactory<>(Constantes.EMAIL));
         phoneNumber.setCellValueFactory(new PropertyValueFactory<>(Constantes.PHONE_NUMBER));
         date.setCellValueFactory(new PropertyValueFactory<>(Constantes.DATE));
-        tableCustomers.getItems().addAll(serVcustomer.getAll().getOrNull());
+        tableCustomers.getItems().addAll(serviceCustomer.getAll().getOrNull());
         tableCustomers.setOnMouseClicked(this::setTableOrdersCus);
 
     }

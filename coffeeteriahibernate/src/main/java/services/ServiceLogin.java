@@ -1,7 +1,7 @@
 package services;
 
-import dao.db.DAOcredentials;
-import dao.DAOlogin;
+import dao.db.DaoCredentials;
+import dao.DaoLogin;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import model.Credential;
@@ -10,13 +10,13 @@ import model.errors.ErrorCCredential;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SERVlogin {
+public class ServiceLogin {
 
-    private final DAOlogin daOlogin;
-    private final DAOcredentials daOcredentials;
+    private final DaoLogin daOlogin;
+    private final DaoCredentials daOcredentials;
 
     @Inject
-    public SERVlogin(DAOlogin daOlogin, DAOcredentials daOcredentials) {
+    public ServiceLogin(DaoLogin daOlogin, DaoCredentials daOcredentials) {
         this.daOlogin = daOlogin;
         this.daOcredentials = daOcredentials;
     }

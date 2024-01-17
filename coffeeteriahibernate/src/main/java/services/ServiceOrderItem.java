@@ -1,7 +1,7 @@
 package services;
 
-import dao.db.DAOorderItemDB;
-import dao.spring.DAOorderItemSpring;
+import dao.db.DaoOrderItemDb;
+import dao.spring.DaoOrderItemSpring;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import model.OrderItem;
@@ -9,12 +9,12 @@ import model.errors.ErrorCOrderItem;
 
 import java.util.List;
 
-public class SERVorderItem {
-    private final DAOorderItemDB daOorderItemDB;
-    private final DAOorderItemSpring daOorderItemSpring;
+public class ServiceOrderItem {
+    private final DaoOrderItemDb daOorderItemDB;
+    private final DaoOrderItemSpring daOorderItemSpring;
 
     @Inject
-    public SERVorderItem(DAOorderItemDB daOorderItemDB, DAOorderItemSpring daOorderItemSpring) {
+    public ServiceOrderItem(DaoOrderItemDb daOorderItemDB, DaoOrderItemSpring daOorderItemSpring) {
         this.daOorderItemDB = daOorderItemDB;
         this.daOorderItemSpring = daOorderItemSpring;
     }

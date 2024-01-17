@@ -1,10 +1,10 @@
 package services;
 
-import dao.db.DAOcustomerDB;
-import dao.db.DAOorderDB;
-import dao.imp.DAOorderXML;
-import dao.spring.DAOcustomerSpring;
-import dao.spring.DAOorderSpring;
+import dao.db.DaoCustomerDb;
+import dao.db.DaoOrderDb;
+import dao.imp.DaoOrderXML;
+import dao.spring.DaoCustomerSpring;
+import dao.spring.DaoOrderSpring;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import model.Customer;
@@ -18,16 +18,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SERVorder {
-    private final DAOcustomerDB daOcustomerDB;
-    private final DAOorderDB daOorderDB;
-    private final DAOorderSpring daOorderSpring;
-    private final DAOcustomerSpring daOcustomerSpring;
-    private final DAOorderXML daOorderXML;
+public class ServiceOrder {
+    private final DaoCustomerDb daOcustomerDB;
+    private final DaoOrderDb daOorderDB;
+    private final DaoOrderSpring daOorderSpring;
+    private final DaoCustomerSpring daOcustomerSpring;
+    private final DaoOrderXML daOorderXML;
 
 
     @Inject
-    public SERVorder(DAOcustomerDB daOcustomerDB, DAOorderDB daOorderDB, DAOorderSpring daOorderSpring, DAOcustomerSpring daOcustomerSpring, DAOorderXML daOorderXML) {
+    public ServiceOrder(DaoCustomerDb daOcustomerDB, DaoOrderDb daOorderDB, DaoOrderSpring daOorderSpring, DaoCustomerSpring daOcustomerSpring, DaoOrderXML daOorderXML) {
         this.daOcustomerDB = daOcustomerDB;
         this.daOorderDB = daOorderDB;
         this.daOorderSpring = daOorderSpring;

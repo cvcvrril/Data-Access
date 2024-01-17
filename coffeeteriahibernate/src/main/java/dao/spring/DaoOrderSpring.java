@@ -1,7 +1,7 @@
 package dao.spring;
 
 import common.SQLqueries;
-import dao.connection.DBConnectionPool;
+import dao.connection.DbConnectionPool;
 import dao.mappers.OrderMapper;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
@@ -13,12 +13,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.List;
 
 @Log4j2
-public class DAOorderSpring {
+public class DaoOrderSpring {
 
-    private final DBConnectionPool pool;
+    private final DbConnectionPool pool;
 
     @Inject
-    public DAOorderSpring(DBConnectionPool pool) {
+    public DaoOrderSpring(DbConnectionPool pool) {
         this.pool = pool;
     }
 

@@ -6,7 +6,7 @@ import common.Configuration;
 
 import javax.sql.DataSource;
 
-import dao.ConstantsDAO;
+import dao.ConstantsDao;
 import jakarta.annotation.PreDestroy;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -15,23 +15,23 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 @Singleton
-public class DBConnectionPool {
+public class DbConnectionPool {
 
     private final Configuration config;
     private final DataSource hikariDataSource;
 
     @Inject
-    public DBConnectionPool(Configuration config) {
+    public DbConnectionPool(Configuration config) {
         this.config = config;
         this.hikariDataSource = getHikariPool();
     }
 
     private DataSource getHikariPool() {
         HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setJdbcUrl(config.getPropertySQL(ConstantsDAO.PATH_DB));
-        hikariConfig.setUsername(config.getPropertySQL(ConstantsDAO.USER_DB));
-        hikariConfig.setPassword(config.getPropertySQL(ConstantsDAO.PASS_DB));
-        hikariConfig.setDriverClassName(config.getPropertySQL(ConstantsDAO.DRIVER));
+        hikariConfig.setJdbcUrl(config.getPropertySQL(ConstantsDao.PATH_DB));
+        hikariConfig.setUsername(config.getPropertySQL(ConstantsDao.USER_DB));
+        hikariConfig.setPassword(config.getPropertySQL(ConstantsDao.PASS_DB));
+        hikariConfig.setDriverClassName(config.getPropertySQL(ConstantsDao.DRIVER));
         hikariConfig.setMaximumPoolSize(4);
 
         hikariConfig.addDataSourceProperty("cachePrepStmts", true);

@@ -1,6 +1,6 @@
 package services;
 
-import dao.db.DAOcredentials;
+import dao.db.DaoCredentials;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import model.Credential;
@@ -8,12 +8,12 @@ import model.errors.ErrorCCredential;
 
 import java.util.List;
 
-public class SERVcredential {
+public class ServiceCredential {
 
-    private final DAOcredentials daOcredentials;
+    private final DaoCredentials daOcredentials;
 
     @Inject
-    public SERVcredential(DAOcredentials daOcredentials) {
+    public ServiceCredential(DaoCredentials daOcredentials) {
         this.daOcredentials = daOcredentials;
     }
 

@@ -8,7 +8,7 @@ import model.errors.ErrorCCustomer;
 
 import java.util.List;
 
-public interface DAOcustomer {
+public interface DaoCustomer {
 
     Either<ErrorCCustomer, List<Customer>> getAll();
 

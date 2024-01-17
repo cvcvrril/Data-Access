@@ -1,6 +1,6 @@
 package services;
 
-import dao.db.DAOtablesDB;
+import dao.db.DaoTablesDb;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import model.TableRestaurant;
@@ -8,12 +8,12 @@ import model.errors.ErrorCTables;
 
 import java.util.List;
 
-public class SERVtablesRestaurant {
+public class ServiceTablesRestaurant {
 
-    private final DAOtablesDB daOtablesDB;
+    private final DaoTablesDb daOtablesDB;
 
     @Inject
-    public SERVtablesRestaurant(DAOtablesDB daOtablesDB) {
+    public ServiceTablesRestaurant(DaoTablesDb daOtablesDB) {
         this.daOtablesDB = daOtablesDB;
     }
 
