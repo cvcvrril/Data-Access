@@ -15,10 +15,10 @@ import model.TableRestaurant;
 import model.errors.ErrorCMenuItem;
 import model.errors.ErrorCOrder;
 import model.errors.ErrorCTables;
-import services.SERVmenuItems;
-import services.SERVorder;
-import services.SERVorderItem;
-import services.SERVtablesRestaurant;
+import services.ServiceMenuItems;
+import services.ServiceOrder;
+import services.ServiceOrderItem;
+import services.ServiceTablesRestaurant;
 import ui.pantallas.common.BasePantallaController;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,10 +27,10 @@ import java.util.List;
 
 public class AddOrderController extends BasePantallaController {
 
-    private final SERVorder serVorder;
-    private final SERVtablesRestaurant serVtablesRestaurant;
-    private final SERVmenuItems serVmenuItems;
-    private final SERVorderItem serVorderItem;
+    private final ServiceOrder serviceOrder;
+    private final ServiceTablesRestaurant serviceTablesRestaurant;
+    private final ServiceMenuItems serviceMenuItems;
+    private final ServiceOrderItem serviceOrderItem;
     @FXML
     private TableView<OrderItem> mItemTable;
     @FXML
@@ -57,26 +57,26 @@ public class AddOrderController extends BasePantallaController {
     private Button removeItemButton;
 
     @Inject
-    public AddOrderController(SERVorder serVorder, SERVtablesRestaurant serVtablesRestaurant, SERVmenuItems serVmenuItems, SERVorderItem serVorderItem) {
-        this.serVorder = serVorder;
-        this.serVtablesRestaurant = serVtablesRestaurant;
-        this.serVmenuItems = serVmenuItems;
-        this.serVorderItem = serVorderItem;
+    public AddOrderController(ServiceOrder serviceOrder, ServiceTablesRestaurant serviceTablesRestaurant, ServiceMenuItems serviceMenuItems, ServiceOrderItem serviceOrderItem) {
+        this.serviceOrder = serviceOrder;
+        this.serviceTablesRestaurant = serviceTablesRestaurant;
+        this.serviceMenuItems = serviceMenuItems;
+        this.serviceOrderItem = serviceOrderItem;
     }
 
     public void principalCargado() {
-        List<Integer> customerIDs = serVorder.getCustomerIDs();
+        List<Integer> customerIDs = serviceOrder.getCustomerIDs();
         customerComboBox.getItems().addAll(customerIDs);
         if (getPrincipalController().getActualCredential().getId() > 0) {
             customerComboBox.setVisible(false);
         }else {
             customerComboBox.setVisible(true);
         }
-        List<MenuItem> menuItems = serVmenuItems.getAll().getOrElse(Collections.emptyList());
+        List<MenuItem> menuItems = serviceMenuItems.getAll().getOrElse(Collections.emptyList());
         for (MenuItem menuItem : menuItems ){
             menuItemsCBox.getItems().add(menuItem.getNameMItem());
         }
-        Either<ErrorCTables, List<TableRestaurant>> result = serVtablesRestaurant.getAll();
+        Either<ErrorCTables, List<TableRestaurant>> result = serviceTablesRestaurant.getAll();
         if (result.isRight()) {
             List<TableRestaurant> tables = result.get();
             for (TableRestaurant table : tables) {
@@ -111,7 +111,7 @@ public class AddOrderController extends BasePantallaController {
         List<OrderItem> orderItems = new ArrayList<>(mItemTable.getItems());
         Order newOrder = new Order(null,orderDate,customerId, tableId, orderItems);
 
-        Either<ErrorCOrder, Integer> saveResult = serVorder.add(newOrder);
+        Either<ErrorCOrder, Integer> saveResult = serviceOrder.add(newOrder);
         if (saveResult.isRight()) {
             Alert a = new Alert(Alert.AlertType.CONFIRMATION);
             a.setContentText(Constantes.THE_ORDER_HAS_BEEN_ADDED);
@@ -134,7 +134,7 @@ public class AddOrderController extends BasePantallaController {
         int quantity = Integer.parseInt(menuItemQuantity.getText());
 
         MenuItem selectedMenuItem = null;
-        for (MenuItem menuItem : serVmenuItems.getAll().getOrElse(Collections.emptyList())) {
+        for (MenuItem menuItem : serviceMenuItems.getAll().getOrElse(Collections.emptyList())) {
             if (menuItem.getNameMItem().equals(selectedItemName)) {
                 selectedMenuItem = menuItem;
                 break;
@@ -143,7 +143,7 @@ public class AddOrderController extends BasePantallaController {
 
         if (selectedMenuItem != null) {
             int lastOrderItemId = getLastOrderItemIdFromDatabase();
-            OrderItem newOrderItem = new OrderItem(lastOrderItemId, 0, selectedMenuItem.getIdMItem(), quantity, serVmenuItems.get(lastOrderItemId).getOrNull(), serVorder.getOrder(0).getOrNull());
+            OrderItem newOrderItem = new OrderItem(lastOrderItemId, 0, selectedMenuItem.getIdMItem(), quantity, serviceMenuItems.get(lastOrderItemId).getOrNull(), serviceOrder.getOrder(0).getOrNull());
 
             // Agregar el nuevo OrderItem a la tabla
             mItemTable.getItems().add(newOrderItem);
@@ -161,7 +161,7 @@ public class AddOrderController extends BasePantallaController {
     }
 
     public String getMenuItemNameById(int id) {
-        Either<ErrorCMenuItem, String> result = serVmenuItems.getMenuItemName(id);
+        Either<ErrorCMenuItem, String> result = serviceMenuItems.getMenuItemName(id);
         if(result.isRight()) {
             return result.get();
         } else {
@@ -170,7 +170,7 @@ public class AddOrderController extends BasePantallaController {
     }
 
     private int getLastOrderItemIdFromDatabase() {
-        List<OrderItem> orderItems = serVorderItem.getAll().getOrElse(Collections.emptyList());
+        List<OrderItem> orderItems = serviceOrderItem.getAll().getOrElse(Collections.emptyList());
 
         int lastOrderItemId = 0;
 

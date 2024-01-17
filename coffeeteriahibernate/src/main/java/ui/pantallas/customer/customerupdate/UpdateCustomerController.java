@@ -10,14 +10,13 @@ import javafx.scene.input.MouseEvent;
 import model.Credential;
 import model.Customer;
 import model.errors.ErrorCCustomer;
-import services.SERVcustomer;
+import services.ServiceCustomer;
 import ui.pantallas.common.BasePantallaController;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class UpdateCustomerController extends BasePantallaController {
-    private final SERVcustomer serVcustomer;
+    private final ServiceCustomer serviceCustomer;
 
 
     @FXML
@@ -51,8 +50,8 @@ public class UpdateCustomerController extends BasePantallaController {
     private Button updateCustomerButton;
 
     @Inject
-    public UpdateCustomerController(SERVcustomer serVcustomer) {
-        this.serVcustomer = serVcustomer;
+    public UpdateCustomerController(ServiceCustomer serviceCustomer) {
+        this.serviceCustomer = serviceCustomer;
     }
 
     public void updateCustomer() {
@@ -67,13 +66,13 @@ public class UpdateCustomerController extends BasePantallaController {
         Credential credential = new Credential(selCustomer.getIdC(), getPrincipalController().getUser(), getPrincipalController().getPassword());
         Customer updatedCustomer = new Customer(selCustomer.getIdC(), firstNameCus, secondNameCus, emailCus, phoneNumberCus, dateText, credential);
 
-        Either<ErrorCCustomer, Integer> res = serVcustomer.update(updatedCustomer);
+        Either<ErrorCCustomer, Integer> res = serviceCustomer.update(updatedCustomer);
         if (res.isRight()) {
             Alert a = new Alert(Alert.AlertType.CONFIRMATION);
             a.setContentText(Constantes.CUSTOMER_UPDATED);
             a.show();
             resetFields();
-            tableCustomers.getItems().setAll(serVcustomer.getAll().getOrNull());
+            tableCustomers.getItems().setAll(serviceCustomer.getAll().getOrNull());
         } else {
             ErrorCCustomer error = res.getLeft();
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
@@ -105,7 +104,7 @@ public class UpdateCustomerController extends BasePantallaController {
         email.setCellValueFactory(new PropertyValueFactory<>(Constantes.EMAIL));
         phoneNumber.setCellValueFactory(new PropertyValueFactory<>(Constantes.PHONE_NUMBER));
         date.setCellValueFactory(new PropertyValueFactory<>(Constantes.DATE));
-        tableCustomers.getItems().addAll(serVcustomer.getAll().getOrNull());
+        tableCustomers.getItems().addAll(serviceCustomer.getAll().getOrNull());
         tableCustomers.setOnMouseClicked(this::handleTable);
     }
 

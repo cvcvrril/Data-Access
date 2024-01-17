@@ -1,7 +1,7 @@
 package ui.pantallas.principal;
 
 
-import dao.connection.DBConnectionPool;
+import dao.connection.DbConnectionPool;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 import javafx.event.ActionEvent;
@@ -15,7 +15,7 @@ import javafx.stage.WindowEvent;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import model.Credential;
-import services.SERVlogin;
+import services.ServiceLogin;
 import ui.pantallas.common.BasePantallaController;
 import ui.pantallas.common.Pantallas;
 
@@ -66,15 +66,15 @@ public class PrincipalController{
     private final Alert alert;
 
     private Pane pantallaBienvenida;
-    private final DBConnectionPool dbConnectionPool;
-    private final SERVlogin serVlogin;
+    private final DbConnectionPool dbConnectionPool;
+    private final ServiceLogin serviceLogin;
 
 
     @Inject
-    public PrincipalController(Instance<Object> instance, DBConnectionPool dbConnectionPool, SERVlogin serVlogin) {
+    public PrincipalController(Instance<Object> instance, DbConnectionPool dbConnectionPool, ServiceLogin serviceLogin) {
         this.instance = instance;
         this.dbConnectionPool = dbConnectionPool;
-        this.serVlogin = serVlogin;
+        this.serviceLogin = serviceLogin;
         alert = new Alert(Alert.AlertType.NONE);
     }
 
@@ -126,7 +126,7 @@ public class PrincipalController{
     }
 
     public void onLogin(int id) {
-        this.actualCredential = serVlogin.get(id).getOrNull();
+        this.actualCredential = serviceLogin.get(id).getOrNull();
         this.user = actualCredential.getUserName();
         this.password = actualCredential.getPassword();
         menuPrincipal.setVisible(true);

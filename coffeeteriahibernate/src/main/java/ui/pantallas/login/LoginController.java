@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import model.Credential;
-import services.SERVlogin;
+import services.ServiceLogin;
 import ui.pantallas.common.BasePantallaController;
 import lombok.extern.log4j.Log4j2;
 
@@ -17,20 +17,20 @@ public class LoginController extends BasePantallaController {
     private TextField userText;
     @FXML
     private TextField passwdText;
-    private final SERVlogin serVlogin;
+    private final ServiceLogin serviceLogin;
 
     @Inject
-    public LoginController(SERVlogin serVlogin) {
-        this.serVlogin = serVlogin;
+    public LoginController(ServiceLogin serviceLogin) {
+        this.serviceLogin = serviceLogin;
     }
 
     @FXML
     private void Login() {
         String username = userText.getText();
 
-        Credential credential = serVlogin.getCredentialByUsername(username);
+        Credential credential = serviceLogin.getCredentialByUsername(username);
         if (credential != null) {
-            if (serVlogin.doLogin(credential)) {
+            if (serviceLogin.doLogin(credential)) {
                 getPrincipalController().onLogin(credential.getId());
             } else {
                 Alert a = new Alert(Alert.AlertType.ERROR);

@@ -10,13 +10,13 @@ import javafx.scene.control.TextField;
 import model.Credential;
 import model.Customer;
 import model.errors.ErrorCCustomer;
-import services.SERVcustomer;
+import services.ServiceCustomer;
 import ui.pantallas.common.BasePantallaController;
 
 import java.time.LocalDate;
 
 public class AddCustomerController extends BasePantallaController {
-    private final SERVcustomer serVcustomer;
+    private final ServiceCustomer serviceCustomer;
     @FXML
     private TextField firstNameField;
     @FXML
@@ -36,8 +36,8 @@ public class AddCustomerController extends BasePantallaController {
     private Button addCustomerButton;
 
     @Inject
-    public AddCustomerController(SERVcustomer serVcustomer) {
-        this.serVcustomer = serVcustomer;
+    public AddCustomerController(ServiceCustomer serviceCustomer) {
+        this.serviceCustomer = serviceCustomer;
     }
 
 
@@ -65,7 +65,7 @@ public class AddCustomerController extends BasePantallaController {
         newCustomer.setCredential(newCredential);
 
 
-        Either<ErrorCCustomer, Integer> res = serVcustomer.add(newCustomer, newCredential);
+        Either<ErrorCCustomer, Integer> res = serviceCustomer.add(newCustomer, newCredential);
         clearFields();
 
         if (res.isRight()) {

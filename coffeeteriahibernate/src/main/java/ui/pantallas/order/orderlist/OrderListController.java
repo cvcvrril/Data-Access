@@ -3,8 +3,6 @@ package ui.pantallas.order.orderlist;
 import common.Constantes;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,10 +14,10 @@ import model.Order;
 import model.OrderItem;
 import model.errors.ErrorCMenuItem;
 import model.errors.ErrorCOrderItem;
-import services.SERVcustomer;
-import services.SERVmenuItems;
-import services.SERVorder;
-import services.SERVorderItem;
+import services.ServiceCustomer;
+import services.ServiceMenuItems;
+import services.ServiceOrder;
+import services.ServiceOrderItem;
 import ui.pantallas.common.BasePantallaController;
 
 import java.time.LocalDate;
@@ -30,10 +28,10 @@ import java.util.stream.Collectors;
 @Log4j2
 public class OrderListController extends BasePantallaController {
 
-    private final SERVorder serVorder;
-    private final SERVcustomer serVcustomer;
-    private final SERVmenuItems serVmenuItems;
-    private final SERVorderItem serVorderItem;
+    private final ServiceOrder serviceOrder;
+    private final ServiceCustomer serviceCustomer;
+    private final ServiceMenuItems serviceMenuItems;
+    private final ServiceOrderItem serviceOrderItem;
 
 
     @FXML
@@ -70,11 +68,11 @@ public class OrderListController extends BasePantallaController {
     /*Constructores*/
 
     @Inject
-    public OrderListController(SERVorder serVorder, SERVcustomer serVcustomer, SERVmenuItems serVmenuItems, SERVorderItem serVorderItem) {
-        this.serVorder = serVorder;
-        this.serVcustomer = serVcustomer;
-        this.serVmenuItems = serVmenuItems;
-        this.serVorderItem = serVorderItem;
+    public OrderListController(ServiceOrder serviceOrder, ServiceCustomer serviceCustomer, ServiceMenuItems serviceMenuItems, ServiceOrderItem serviceOrderItem) {
+        this.serviceOrder = serviceOrder;
+        this.serviceCustomer = serviceCustomer;
+        this.serviceMenuItems = serviceMenuItems;
+        this.serviceOrderItem = serviceOrderItem;
     }
 
     /*Métodos*/
@@ -85,9 +83,9 @@ public class OrderListController extends BasePantallaController {
         id_table.setCellValueFactory(new PropertyValueFactory<>(Constantes.ID_TABLE));
         date_order.setCellValueFactory(new PropertyValueFactory<>(Constantes.OR_DATE));
         if (getPrincipalController().getActualCredential().getId() > 0) {
-            tableOrders.getItems().addAll(serVorder.getOrders(this.getPrincipalController().getActualCredential().getId()).getOrNull());
+            tableOrders.getItems().addAll(serviceOrder.getOrders(this.getPrincipalController().getActualCredential().getId()).getOrNull());
         } else {
-            tableOrders.getItems().addAll(serVorder.getAll());
+            tableOrders.getItems().addAll(serviceOrder.getAll());
         }
         filterComboBox.getItems().addAll("Date", "Customer", "None");
         fechaDatePicker.setVisible(false);
@@ -95,7 +93,7 @@ public class OrderListController extends BasePantallaController {
         tableOrders.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 int customerId = newSelection.getIdCo();
-                Customer customer = serVcustomer.get(customerId).getOrNull();
+                Customer customer = serviceCustomer.get(customerId).getOrNull();
                 if (customer != null) {
                     customerNameField.setText(customer.getFirstName());
                 }
@@ -119,17 +117,17 @@ public class OrderListController extends BasePantallaController {
         if (selectedItem != null) {
             if (selectedItem.equals("Date")) {
                 LocalDate selectedDate = fechaDatePicker.getValue();
-                List<Order> filteredOrders = serVorder.getAll().stream()
+                List<Order> filteredOrders = serviceOrder.getAll().stream()
                         .filter(order -> order.getOrDate().toLocalDate().isEqual(selectedDate))
                         .collect(Collectors.toList());
                 updateTable(filteredOrders);
             } else if (selectedItem.equals("Customer")) {
                 int selectedCustomerId = Integer.parseInt(customerField.getText());
-                List<Order> filteredOrders = serVorder.getOrdersByCustomer(selectedCustomerId);
+                List<Order> filteredOrders = serviceOrder.getOrdersByCustomer(selectedCustomerId);
                 updateTable(filteredOrders);
             } else if (selectedItem.equals("None")) {
                 tableOrders.getItems().clear();
-                tableOrders.getItems().addAll(serVorder.getAll());
+                tableOrders.getItems().addAll(serviceOrder.getAll());
                 clearFields();
             }
         }
@@ -170,7 +168,7 @@ public class OrderListController extends BasePantallaController {
     }
 
     private void loadOrderItems(int orderId) {
-        Either<ErrorCOrderItem, List<OrderItem>> orderItems = serVorderItem.get(orderId);
+        Either<ErrorCOrderItem, List<OrderItem>> orderItems = serviceOrderItem.get(orderId);
         if (orderItems.isRight()) {
             orderItemsTable.getItems().clear();
             orderItemsTable.getItems().addAll(orderItems.get());
@@ -179,7 +177,7 @@ public class OrderListController extends BasePantallaController {
                     .mapToDouble(orderItem -> {
                         int menuItemId = orderItem.getMenuItem();
                         // Obtener el precio del menú item
-                        Either<ErrorCMenuItem, Double> menuItemPrice = serVmenuItems.getMenuItemPrice(menuItemId);
+                        Either<ErrorCMenuItem, Double> menuItemPrice = serviceMenuItems.getMenuItemPrice(menuItemId);
                         if (menuItemPrice.isRight()) {
                             return Double.parseDouble(String.valueOf(menuItemPrice.get()));
                         } else {
@@ -201,7 +199,7 @@ public class OrderListController extends BasePantallaController {
     }
 
     private void loadOrderItemsByOrderId(int orderId) {
-        Either<ErrorCOrderItem, List<OrderItem>> orderItems = serVorderItem.get(orderId);
+        Either<ErrorCOrderItem, List<OrderItem>> orderItems = serviceOrderItem.get(orderId);
         if (orderItems.isRight()) {
             orderItemsTable.getItems().clear();
             orderItemsTable.getItems().addAll(orderItems.get());
@@ -213,7 +211,7 @@ public class OrderListController extends BasePantallaController {
     }
 
     public String getMenuItemNameById(int id) {
-        Either<ErrorCMenuItem, String> result = serVmenuItems.getMenuItemName(id);
+        Either<ErrorCMenuItem, String> result = serviceMenuItems.getMenuItemName(id);
         if (result.isRight()) {
             return result.get();
         } else {
