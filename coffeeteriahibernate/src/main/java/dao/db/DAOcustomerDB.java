@@ -25,14 +25,16 @@ public class DAOcustomerDB {
     private final Configuration config;
     private final DBConnection db;
     private final DBConnectionPool pool;
-    private final SERVcredential serv;
+    //private final SERVcredential serv;
+    private final DAOcredentials daOcredentials;
 
     @Inject
-    public DAOcustomerDB(Configuration config, DBConnection db, DBConnectionPool pool, SERVcredential serv) {
+    public DAOcustomerDB(Configuration config, DBConnection db, DBConnectionPool pool, SERVcredential serv, DAOcredentials daOcredentials) {
         this.config = config;
         this.db = db;
         this.pool = pool;
-        this.serv = serv;
+        //this.serv = serv;
+        this.daOcredentials = daOcredentials;
     }
 
     public Either<ErrorCCustomer, List<Customer>> getAll() {
@@ -216,7 +218,7 @@ public class DAOcustomerDB {
             if (dateFromDB != null) {
                 date = dateFromDB.toLocalDate();
             }
-            customerList.add(new Customer(id, firstName, lastName, email, phone, date, serv.get(id).get()));
+            customerList.add(new Customer(id, firstName, lastName, email, phone, date, daOcredentials.get(id).get()));
         }
         return customerList;
     }

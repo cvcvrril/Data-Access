@@ -19,10 +19,8 @@ public class MenuItem {
     private int idMItem;
     @Column(name = "name")
     private  String nameMItem;
-    @Id
     @Column(name = "description")
     private String descriptionMItem;
-    @Id
     @Column(name = "price")
     private double priceMItem;
 }

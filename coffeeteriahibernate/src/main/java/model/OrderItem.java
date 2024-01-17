@@ -23,5 +23,7 @@ public class OrderItem {
     private int quantity;       //quantity
     @OneToOne
     private MenuItem menuItemObject;
+    @ManyToOne
+    private Order order;
 
 }

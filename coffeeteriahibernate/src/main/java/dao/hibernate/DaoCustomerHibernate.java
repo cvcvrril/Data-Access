@@ -10,6 +10,7 @@ import jakarta.persistence.PersistenceException;
 import lombok.extern.log4j.Log4j2;
 import model.Credential;
 import model.Customer;
+import model.OrderItem;
 import model.errors.ErrorCCustomer;
 
 import java.util.List;
@@ -91,7 +92,8 @@ public class DaoCustomerHibernate {
         tx.begin();
         try {
             if (conf){
-
+                //TODO: SACAR PRIMERO LOS ORDER ITEMS DEL CUSTOMER (ORDER ITEMS SALE DE LO DEL ORDER)
+                //OrderItem orderItemDelete = em.createNamedQuery("", OrderItem.class);
 
 
             }

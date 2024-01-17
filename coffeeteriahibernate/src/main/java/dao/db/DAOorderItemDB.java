@@ -20,13 +20,17 @@ public class DAOorderItemDB {
 
     private final Configuration configuration;
     private final DBConnection db;
-    private final SERVmenuItems serVmenuItems;
+    //private final SERVmenuItems serVmenuItems;
+    private final DAOMenuItemDB daoMenuItemDB;
+    private final DAOorderDB daOorderDB;
 
     @Inject
-    public DAOorderItemDB(Configuration configuration, DBConnection db, SERVmenuItems serVmenuItems) {
+    public DAOorderItemDB(Configuration configuration, DBConnection db, SERVmenuItems serVmenuItems, DAOMenuItemDB daoMenuItemDB, DAOorderDB daOorderDB) {
         this.configuration = configuration;
         this.db = db;
-        this.serVmenuItems = serVmenuItems;
+        this.daoMenuItemDB = daoMenuItemDB;
+        //this.serVmenuItems = serVmenuItems;
+        this.daOorderDB = daOorderDB;
     }
 
     public Either<ErrorCOrderItem, List<OrderItem>> getAll() {
@@ -133,7 +137,7 @@ public class DAOorderItemDB {
             int orderId = rs.getInt(ConstantsDAO.ORDER_ID);
             int menuItemId = rs.getInt(ConstantsDAO.MENU_ITEM_ID);
             int quantity = rs.getInt(ConstantsDAO.QUANTITY);
-            orderItemList.add(new OrderItem(id, orderId, menuItemId, quantity, serVmenuItems.get(id).get()));
+            orderItemList.add(new OrderItem(id, orderId, menuItemId, quantity, daoMenuItemDB.get(id).getOrNull(), daOorderDB.get(orderId).getOrNull()));
         }
         return orderItemList;
     }
