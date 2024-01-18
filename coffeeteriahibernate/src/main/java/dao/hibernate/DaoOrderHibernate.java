@@ -79,8 +79,6 @@ public class DaoOrderHibernate {
     public Either<ErrorCOrder, Integer> delete(int id) {
         Either<ErrorCOrder, Integer> res;
         em = jpaUtil.getEntityManager();
-        ;
-
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try {
@@ -89,6 +87,8 @@ public class DaoOrderHibernate {
                 em.remove(em.merge(orderToDelete));
                 tx.commit();
                 res = Either.right(1);
+            } else {
+                res = Either.left(new ErrorCOrder("The order hasn't been found", 0));
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -97,7 +97,7 @@ public class DaoOrderHibernate {
         } finally {
             if (em != null) em.close();
         }
-        return null;
+        return res;
     }
 
 }
