@@ -102,4 +102,25 @@ public class DaoOrderHibernate {
         return res;
     }
 
+    public Either<ErrorCOrder, Integer> update(Order updatedOrder){
+        Either<ErrorCOrder, Integer> res;
+        int conf;
+        em = jpaUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        try {
+            em.merge(updatedOrder);
+            tx.commit();
+            conf = 1;
+            res = Either.right(conf);
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+            res = Either.left(new ErrorCOrder(e.getMessage(), 0));
+        }finally {
+            if (em != null) em.close();
+        }
+        return res;
+
+    }
+
 }
