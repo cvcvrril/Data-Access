@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "order_items")
+@ToString(exclude = {"order"})
 @NamedQueries({ @NamedQuery(name = "HQL_GET_ALL_ORDER_ITEMS",
         query = "from OrderItem ") })
 public class OrderItem {

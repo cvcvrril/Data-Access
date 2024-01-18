@@ -76,6 +76,8 @@ public class DaoOrderHibernate {
         return res;
     }
 
+    //TODO -> REVISAR ERROR QUE LANZA HIBERNATE SOBRE UN TOSTRING EN ORDER (EN ORDERITEM LO EXCLUYO, ASÍ QUE NI IDEA) [ARREGLAR]
+
     public Either<ErrorCOrder, Integer> delete(int id) {
         Either<ErrorCOrder, Integer> res;
         em = jpaUtil.getEntityManager();
