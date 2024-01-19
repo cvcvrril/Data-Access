@@ -11,7 +11,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @Entity
 @Table(name = "order_items")
-@ToString(exclude = {"order"})
 @NamedQueries({ @NamedQuery(name = "HQL_GET_ALL_ORDER_ITEMS",
         query = "from OrderItem ") })
 public class OrderItem {

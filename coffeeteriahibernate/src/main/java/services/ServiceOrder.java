@@ -63,9 +63,9 @@ public class ServiceOrder {
         return daoOrderHibernate.update(o);
     }
 
-    public Either<ErrorCOrder, Integer> delOrder(int i) {
+    public Either<ErrorCOrder, Integer> delOrder(Order order) {
        //return daOorderDB.delete(i);
-        return daoOrderHibernate.delete(i);
+        return daoOrderHibernate.delete(order);
     }
 
     public Either<ErrorCOrder, Integer> save(List<Order> orderList){

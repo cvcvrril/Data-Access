@@ -78,20 +78,16 @@ public class DaoOrderHibernate {
 
     //TODO -> REVISAR ERROR QUE LANZA HIBERNATE SOBRE UN TOSTRING EN ORDER (EN ORDERITEM LO EXCLUYO, ASÍ QUE NI IDEA) [ARREGLAR]
 
-    public Either<ErrorCOrder, Integer> delete(int id) {
+    public Either<ErrorCOrder, Integer> delete(Order order) {
         Either<ErrorCOrder, Integer> res;
         em = jpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try {
-            Order orderToDelete = em.find(Order.class, id);
-            if (orderToDelete != null) {
-                em.remove(em.merge(orderToDelete));
+            //Order orderToDelete = em.find(Order.class);
+                em.remove(em.merge(order));
                 tx.commit();
                 res = Either.right(1);
-            } else {
-                res = Either.left(new ErrorCOrder("The order hasn't been found", 0));
-            }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             if (tx.isActive()) tx.rollback();
