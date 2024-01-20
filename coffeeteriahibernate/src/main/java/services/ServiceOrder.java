@@ -51,8 +51,8 @@ public class ServiceOrder {
     }
 
     public Either<ErrorCOrder, List<Order>> getOrders(int i){
-        //return daOorderDB.getOrders(i);
-        return daoOrderHibernate.getListOrdersById(i);
+        return daOorderDB.getOrders(i);
+        //return daoOrderHibernate.getListOrdersById(i);
     }
 
     public Either<ErrorCOrder, Integer> add(Order order) {
