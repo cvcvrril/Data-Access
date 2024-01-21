@@ -19,9 +19,11 @@ public class OrderItem {
     @Column(name = "order_item_id")
     private int id;             //order_item_id
     private int orderId;        //order_id
+    @Column(name = "menu_item_id")
     private int menuItem;       //menu_item_id
     private int quantity;       //quantity
     @OneToOne
+    //@JoinColumn(name = "menu_item_id")
     private MenuItem menuItemObject;
     @ManyToOne
     @JoinColumn(name = "order_id")
