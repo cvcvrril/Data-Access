@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
         query = "from Credential ") })
 public class Credential {
 
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
     private int id;
