@@ -68,7 +68,6 @@ public class DaoCustomerHibernate {
         tx.begin();
         try {
             em.persist(credential);
-            newCustomer.setIdC(credential.getId());
             em.persist(newCustomer);
             tx.commit();
             res = Either.right(1);

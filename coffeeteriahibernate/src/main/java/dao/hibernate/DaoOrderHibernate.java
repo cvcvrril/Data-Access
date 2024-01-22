@@ -76,6 +76,8 @@ public class DaoOrderHibernate {
         return res;
     }
 
+    //TODO: Meter bucle para añadir los orderItems dentro de Order
+
     public Either<ErrorCOrder, Integer> add(Order newOrder){
         Either<ErrorCOrder, Integer> res;
         em = jpaUtil.getEntityManager();

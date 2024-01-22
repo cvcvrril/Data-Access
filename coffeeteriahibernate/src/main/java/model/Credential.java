@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
         query = "from Credential ") })
 public class Credential {
 
+
     @Id
     @Column(name = "id")
     private int id;

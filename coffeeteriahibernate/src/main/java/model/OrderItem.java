@@ -15,6 +15,7 @@ import lombok.ToString;
         query = "from OrderItem ") })
 public class OrderItem {
 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "order_item_id")
     private int id;             //order_item_id

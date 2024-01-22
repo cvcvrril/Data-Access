@@ -17,6 +17,7 @@ import java.util.List;
         query = "from Order ") })
 public class Order {
 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "order_id")
     private Integer idOrd;
@@ -26,7 +27,7 @@ public class Order {
     private int idCo;
     @Column(name = "table_id")
     private int idTable;
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "order")
+    @OneToMany(cascade = CascadeType.REMOVE,  mappedBy = "order")
     private List<OrderItem> orderItems;
 
 
