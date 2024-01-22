@@ -56,7 +56,8 @@ public class ServiceOrder {
     }
 
     public Either<ErrorCOrder, Integer> add(Order order) {
-        return daOorderDB.add(order);
+        //return daOorderDB.add(order);
+        return daoOrderHibernate.add(order);
     }
     public Either<ErrorCOrder, Integer> updateOrder(Order o) {
         //return daOorderDB.update(o);

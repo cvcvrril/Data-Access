@@ -76,6 +76,24 @@ public class DaoOrderHibernate {
         return res;
     }
 
+    public Either<ErrorCOrder, Integer> add(Order newOrder){
+        Either<ErrorCOrder, Integer> res;
+        em = jpaUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        try {
+            em.persist(newOrder);
+            tx.commit();
+            res = Either.right(1);
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+            res = Either.left(new ErrorCOrder(e.getMessage(), 0));
+        }finally {
+            if (em != null) em.close();
+        }
+        return res;
+    }
+
     //TODO -> REVISAR ERROR QUE LANZA HIBERNATE SOBRE UN TOSTRING EN ORDER (EN ORDERITEM LO EXCLUYO, ASÍ QUE NI IDEA) [ARREGLAR]
 
     public Either<ErrorCOrder, Integer> delete(Order order) {
@@ -119,20 +137,6 @@ public class DaoOrderHibernate {
 
     }
 
-    public Either<ErrorCOrder, Integer> add(Order newOrder){
-        Either<ErrorCOrder, Integer> res;
-        em = jpaUtil.getEntityManager();
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
-        try {
-            em.persist(newOrder);
-        }catch (Exception e){
-            log.error(e.getMessage(), e);
-            res = Either.left(new ErrorCOrder(e.getMessage(), 0));
-        }finally {
-            if (em != null) em.close();
-        }
-        return null;
-    }
+
 
 }
