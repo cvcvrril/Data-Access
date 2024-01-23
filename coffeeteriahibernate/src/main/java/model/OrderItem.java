@@ -15,7 +15,7 @@ import lombok.ToString;
 @ToString(exclude = {"order"})
 
 @NamedQueries({ @NamedQuery(name = "HQL_GET_ALL_ORDER_ITEMS",
-        query = "from OrderItem "), @NamedQuery(name = "DELETE_ORDERITEMS_CONF", query = HQLqueries.DELETE_ORDERITEMS_CONF) })
+        query = "from OrderItem "), @NamedQuery(name = "DELETE_ORDERITEMS_CONF", query = HQLqueries.DELETE_ORDERITEMS_CONF), @NamedQuery(name ="SELECT_ORDERITEMS_ID", query = "from OrderItem where id = :id") })
 
 public class OrderItem {
 

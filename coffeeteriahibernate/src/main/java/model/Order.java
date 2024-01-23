@@ -15,7 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "orders")
 @NamedQueries({ @NamedQuery(name = "HQL_GET_ALL_ORDERS",
-        query = "from Order "), @NamedQuery(name = "DELETE_ORDERS_CONF", query = HQLqueries.DELETE_ORDERS_CONF)  })
+        query = "from Order "), @NamedQuery(name = "DELETE_ORDERS_CONF", query = HQLqueries.DELETE_ORDERS_CONF), @NamedQuery(name = "SELECT_ORDERS_ID", query = HQLqueries.SELECT_ORDERS_ID)  })
 public class Order {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)

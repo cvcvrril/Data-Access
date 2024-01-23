@@ -59,14 +59,14 @@ public class DaoOrderHibernate {
         return res;
     }
 
-    //TODO: ARREGLAR ESTO -> Salta al Either.left en vez de continuar por el right (y no salta excepción)
-
     public Either<ErrorCOrder, List<Order>> getListOrdersById(int id) {
         Either<ErrorCOrder, List<Order>> res;
         List<Order> orderList;
         em = jpaUtil.getEntityManager();
         try {
-            orderList = Collections.singletonList(em.find(Order.class, id));
+            orderList = em.createNamedQuery("SELECT_ORDERS_ID")
+                    .setParameter("id", id)
+                    .getResultList();
             res = Either.right(orderList);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -76,8 +76,6 @@ public class DaoOrderHibernate {
         }
         return res;
     }
-
-    //TODO: Meter bucle para añadir los orderItems dentro de Order
 
     public Either<ErrorCOrder, Integer> add(Order newOrder) {
         Either<ErrorCOrder, Integer> res;
