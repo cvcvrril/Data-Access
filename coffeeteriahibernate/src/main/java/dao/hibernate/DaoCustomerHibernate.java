@@ -84,8 +84,6 @@ public class DaoCustomerHibernate {
         return res;
     }
 
-    //TODO: HACER LA COMPROBACION DE LOS ORDERS
-
     public Either<ErrorCCustomer, Integer> delete(int id, boolean conf) {
         Either<ErrorCCustomer, Integer> res;
         em = jpaUtil.getEntityManager();
@@ -93,14 +91,11 @@ public class DaoCustomerHibernate {
         tx.begin();
         try {
             if (conf) {
-                //TODO: PRIMERO ELIMINAR ORDERITEMS
                 em.createNamedQuery("DELETE_ORDERITEMS_CONF")
                         .setParameter("id", id).executeUpdate();
 
-                //TODO: LUEGO ELIMINAR ORDERS
                 em.createNamedQuery("DELETE_ORDERS_CONF")
                         .setParameter("id", id).executeUpdate();
-                //Y YA ESTARÍA
             }
             Customer customerToDelete = em.find(Customer.class, id);
             if (customerToDelete != null) {

@@ -110,7 +110,7 @@ public class DaoOrderItemDb {
             PreparedStatement pstmt = myConnection.prepareStatement(SQLqueries.INSERT_ORDER_ITEM_GEN, Statement.RETURN_GENERATED_KEYS);
             for (OrderItem orderItem: orderItemList){
                 pstmt.setInt(1, id);
-                //pstmt.setInt(2,orderItem.getMenuItem());
+                pstmt.setInt(2,orderItem.getMenuItemObject().getIdMItem());
                 pstmt.setInt(3,orderItem.getQuantity());
                 rowsAffected = pstmt.executeUpdate();
                 ResultSet rs = pstmt.getGeneratedKeys();

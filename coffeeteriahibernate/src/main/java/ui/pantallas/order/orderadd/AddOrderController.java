@@ -90,8 +90,8 @@ public class AddOrderController extends BasePantallaController {
         mItemIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         mItemNameCol.setCellValueFactory(cellData -> {
-            int menuItemId = cellData.getValue().getMenuItemObject().getIdMItem();
-            String menuItemName = getMenuItemNameById(menuItemId);
+            //int menuItemId = cellData.getValue().getMenuItemObject().getIdMItem();
+            String menuItemName = cellData.getValue().getMenuItemObject().getNameMItem() ;
             return new SimpleStringProperty(menuItemName);
         });
 
