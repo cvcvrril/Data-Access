@@ -103,9 +103,9 @@ public class OrderListController extends BasePantallaController {
         orderItemQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         orderItemID.setCellValueFactory(new PropertyValueFactory<>("id"));
         menuItemName.setCellValueFactory(cellData ->
-                new SimpleStringProperty(getMenuItemNameById(cellData.getValue().getMenuItem())));
+                new SimpleStringProperty(getMenuItemNameById(cellData.getValue().getMenuItemObject().getIdMItem())));
         priceCol.setCellValueFactory(cellData->{
-            int menuItemId = cellData.getValue().getMenuItem();
+            int menuItemId = cellData.getValue().getMenuItemObject().getIdMItem();
             String menuItemPrice = String.valueOf(menuItemId);
             return new SimpleStringProperty(menuItemPrice);
         });
@@ -175,7 +175,7 @@ public class OrderListController extends BasePantallaController {
 
             double totalAmount = orderItems.get().stream()
                     .mapToDouble(orderItem -> {
-                        int menuItemId = orderItem.getMenuItem();
+                        int menuItemId = orderItem.getMenuItemObject().getIdMItem();
                         // Obtener el precio del menú item
                         Either<ErrorCMenuItem, Double> menuItemPrice = serviceMenuItems.getMenuItemPrice(menuItemId);
                         if (menuItemPrice.isRight()) {

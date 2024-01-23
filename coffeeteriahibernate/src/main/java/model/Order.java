@@ -1,5 +1,6 @@
 package model;
 
+import common.HQLqueries;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "orders")
 @NamedQueries({ @NamedQuery(name = "HQL_GET_ALL_ORDERS",
-        query = "from Order ") })
+        query = "from Order "), @NamedQuery(name = "DELETE_ORDERS_CONF", query = HQLqueries.DELETE_ORDERS_CONF)  })
 public class Order {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)

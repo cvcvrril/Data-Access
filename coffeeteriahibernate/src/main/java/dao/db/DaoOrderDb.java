@@ -164,9 +164,9 @@ public class DaoOrderDb {
                     //Lo de los orderItems
                     for (OrderItem orderItem : order.getOrderItems()) {
                         try (PreparedStatement pstmtOrderItem = myConnection.prepareStatement(SQLqueries.INSERT_ORDER_ITEM)) {
-                            pstmtOrderItem.setInt(1, order.getOrderItems().get(0).getOrderId());
+                            //pstmtOrderItem.setInt(1, order.getOrderItems().get(0).getOrderId());
                             pstmtOrderItem.setInt(2, order.getIdOrd());
-                            pstmtOrderItem.setInt(3, orderItem.getMenuItem());
+                            //pstmtOrderItem.setInt(3, orderItem.getMenuItem());
                             pstmtOrderItem.setInt(4, orderItem.getQuantity());
                             pstmtOrderItem.executeUpdate();
                         }

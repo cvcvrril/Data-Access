@@ -1,5 +1,6 @@
 package dao.hibernate;
 
+import common.HQLqueries;
 import dao.connection.JPAUtil;
 
 import io.vavr.control.Either;
@@ -10,6 +11,7 @@ import jakarta.persistence.PersistenceException;
 import lombok.extern.log4j.Log4j2;
 import model.Credential;
 import model.Customer;
+import model.Order;
 import model.OrderItem;
 import model.errors.ErrorCCustomer;
 
@@ -90,13 +92,16 @@ public class DaoCustomerHibernate {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try {
-            if (conf){
-                //TODO: SACAR PRIMERO LOS ORDER ITEMS DEL CUSTOMER (ORDER ITEMS SALE DE LO DEL ORDER)
-                //OrderItem orderItemDelete = em.createNamedQuery("", OrderItem.class);
+            if (conf) {
+                //TODO: PRIMERO ELIMINAR ORDERITEMS
+                em.createNamedQuery("DELETE_ORDERITEMS_CONF")
+                        .setParameter("id", id).executeUpdate();
 
-
+                //TODO: LUEGO ELIMINAR ORDERS
+                em.createNamedQuery("DELETE_ORDERS_CONF")
+                        .setParameter("id", id).executeUpdate();
+                //Y YA ESTARÍA
             }
-
             Customer customerToDelete = em.find(Customer.class, id);
             if (customerToDelete != null) {
                 em.remove(em.merge(customerToDelete));

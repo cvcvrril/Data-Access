@@ -72,8 +72,8 @@ public class DaoOrderItemDb {
         Either<ErrorCOrderItem, Integer> res;
         try (Connection myConnection = db.getConnection()) {
             PreparedStatement pstmt = myConnection.prepareStatement(SQLqueries.UPDATE_ORDER_ITEMS);
-            pstmt.setInt(1, orderItem.getOrderId());
-            pstmt.setInt(2, orderItem.getMenuItem());
+            //pstmt.setInt(1, orderItem.getOrderId());
+            //pstmt.setInt(2, orderItem.getMenuItem());
             pstmt.setInt(3, orderItem.getQuantity());
             rowsAffected = pstmt.executeUpdate();
             res = Either.right(rowsAffected);
@@ -110,7 +110,7 @@ public class DaoOrderItemDb {
             PreparedStatement pstmt = myConnection.prepareStatement(SQLqueries.INSERT_ORDER_ITEM_GEN, Statement.RETURN_GENERATED_KEYS);
             for (OrderItem orderItem: orderItemList){
                 pstmt.setInt(1, id);
-                pstmt.setInt(2,orderItem.getMenuItem());
+                //pstmt.setInt(2,orderItem.getMenuItem());
                 pstmt.setInt(3,orderItem.getQuantity());
                 rowsAffected = pstmt.executeUpdate();
                 ResultSet rs = pstmt.getGeneratedKeys();
@@ -135,9 +135,9 @@ public class DaoOrderItemDb {
         while (rs.next()) {
             int id = rs.getInt(ConstantsDao.ORDER_ITEM_ID);
             int orderId = rs.getInt(ConstantsDao.ORDER_ID);
-            int menuItemId = rs.getInt(ConstantsDao.MENU_ITEM_ID);
+            //int menuItemId = rs.getInt(ConstantsDao.MENU_ITEM_ID);
             int quantity = rs.getInt(ConstantsDao.QUANTITY);
-            orderItemList.add(new OrderItem(id, orderId, menuItemId, quantity, daoMenuItemDB.get(id).getOrNull(), daOorderDB.get(orderId).getOrNull()));
+            orderItemList.add(new OrderItem(id, quantity, daoMenuItemDB.get(id).getOrNull(), daOorderDB.get(orderId).getOrNull()));
         }
         return orderItemList;
     }

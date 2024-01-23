@@ -105,14 +105,14 @@ public class UpdateOrderController extends BasePantallaController {
         //Columnas Item table
         quantityCell.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         nameItemCell.setCellValueFactory(cellData -> {
-            int menuItemId = cellData.getValue().getMenuItem();
+            int menuItemId = cellData.getValue().getMenuItemObject().getIdMItem();
             String menuItemName = getMenuItemNameById(menuItemId);
             return new SimpleStringProperty(menuItemName);
         });
         //Llenar los campos de OrderItem
         orderItemTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                orderItemTable.getSelectionModel().getSelectedItem().setMenuItemObject(serviceMenuItems.get(orderItemTable.getSelectionModel().getSelectedItem().getMenuItem()).getOrNull());
+                orderItemTable.getSelectionModel().getSelectedItem().setMenuItemObject(serviceMenuItems.get(orderItemTable.getSelectionModel().getSelectedItem().getMenuItemObject().getIdMItem()).getOrNull());
                 menuItemComboBox.setValue(orderItemTable.getSelectionModel().getSelectedItem().getMenuItemObject().getNameMItem());
                 quantityField.setText(String.valueOf(orderItemTable.getSelectionModel().getSelectedItem().getQuantity()));
             }
@@ -159,7 +159,7 @@ public class UpdateOrderController extends BasePantallaController {
             a.show();
             // Agregar el nuevo OrderItem a la tabla
             //orderItemTable.getItems().add(new OrderItem(lastOrderItemId, tableOrders.getSelectionModel().getSelectedItem().getIdOrd(), selectedMenuItem.getIdMItem(), quantity, serviceMenuItems.get(lastOrderItemId).getOrNull()));
-            orderItemTable.getItems().add(new OrderItem(lastOrderItemId, tableOrders.getSelectionModel().getSelectedItem().getIdOrd(), selectedMenuItem.getIdMItem(), quantity, serviceMenuItems.get(lastOrderItemId).getOrNull(), serviceOrder.getOrder(tableOrders.getSelectionModel().getSelectedItem().getIdOrd()).getOrNull()));
+            orderItemTable.getItems().add(new OrderItem(tableOrders.getSelectionModel().getSelectedItem().getIdOrd(), quantity, serviceMenuItems.get(lastOrderItemId).getOrNull(), serviceOrder.getOrder(tableOrders.getSelectionModel().getSelectedItem().getIdOrd()).getOrNull()));
             menuItemComboBox.getSelectionModel().clearSelection();
             quantityField.clear();
             lastOrderItemId = lastOrderItemId + 1;

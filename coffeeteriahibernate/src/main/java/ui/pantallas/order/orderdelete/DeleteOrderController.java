@@ -70,7 +70,7 @@ public class DeleteOrderController extends BasePantallaController {
         });
         quantityCell.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         nameItemCell.setCellValueFactory(cellData -> {
-            int menuItemId = cellData.getValue().getMenuItem();
+            int menuItemId = cellData.getValue().getMenuItemObject().getIdMItem();
             String menuItemName = getMenuItemNameById(menuItemId);
             return new SimpleStringProperty(menuItemName);
         });

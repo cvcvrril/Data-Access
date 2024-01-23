@@ -8,6 +8,7 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.PersistenceException;
 import lombok.extern.log4j.Log4j2;
 import model.Order;
+import model.OrderItem;
 import model.errors.ErrorCOrder;
 
 import java.util.Collections;
@@ -78,25 +79,27 @@ public class DaoOrderHibernate {
 
     //TODO: Meter bucle para añadir los orderItems dentro de Order
 
-    public Either<ErrorCOrder, Integer> add(Order newOrder){
+    public Either<ErrorCOrder, Integer> add(Order newOrder) {
         Either<ErrorCOrder, Integer> res;
         em = jpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try {
+            for (OrderItem orderItem: newOrder.getOrderItems()){
+                orderItem.setOrder(newOrder);
+                em.persist(orderItem);
+            }
             em.persist(newOrder);
             tx.commit();
             res = Either.right(1);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = Either.left(new ErrorCOrder(e.getMessage(), 0));
-        }finally {
+        } finally {
             if (em != null) em.close();
         }
         return res;
     }
-
-    //TODO -> REVISAR ERROR QUE LANZA HIBERNATE SOBRE UN TOSTRING EN ORDER (EN ORDERITEM LO EXCLUYO, ASÍ QUE NI IDEA) [ARREGLAR]
 
     public Either<ErrorCOrder, Integer> delete(Order order) {
         Either<ErrorCOrder, Integer> res;
@@ -104,10 +107,9 @@ public class DaoOrderHibernate {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try {
-            //Order orderToDelete = em.find(Order.class);
-                em.remove(em.merge(order));
-                tx.commit();
-                res = Either.right(1);
+            em.remove(em.merge(order));
+            tx.commit();
+            res = Either.right(1);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             if (tx.isActive()) tx.rollback();
@@ -118,7 +120,7 @@ public class DaoOrderHibernate {
         return res;
     }
 
-    public Either<ErrorCOrder, Integer> update(Order updatedOrder){
+    public Either<ErrorCOrder, Integer> update(Order updatedOrder) {
         Either<ErrorCOrder, Integer> res;
         int conf;
         em = jpaUtil.getEntityManager();
@@ -129,16 +131,15 @@ public class DaoOrderHibernate {
             tx.commit();
             conf = 1;
             res = Either.right(conf);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = Either.left(new ErrorCOrder(e.getMessage(), 0));
-        }finally {
+        } finally {
             if (em != null) em.close();
         }
         return res;
 
     }
-
 
 
 }

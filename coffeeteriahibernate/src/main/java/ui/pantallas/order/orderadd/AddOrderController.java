@@ -90,7 +90,7 @@ public class AddOrderController extends BasePantallaController {
         mItemIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         mItemNameCol.setCellValueFactory(cellData -> {
-            int menuItemId = cellData.getValue().getMenuItem();
+            int menuItemId = cellData.getValue().getMenuItemObject().getIdMItem();
             String menuItemName = getMenuItemNameById(menuItemId);
             return new SimpleStringProperty(menuItemName);
         });
@@ -143,7 +143,7 @@ public class AddOrderController extends BasePantallaController {
 
         if (selectedMenuItem != null) {
             int lastOrderItemId = getLastOrderItemIdFromDatabase();
-            OrderItem newOrderItem = new OrderItem(lastOrderItemId, 0, selectedMenuItem.getIdMItem(), quantity, serviceMenuItems.get(lastOrderItemId).getOrNull(), serviceOrder.getOrder(0).getOrNull());
+            OrderItem newOrderItem = new OrderItem (0, quantity, serviceMenuItems.get(lastOrderItemId).getOrNull(), serviceOrder.getOrder(0).getOrNull());
 
             // Agregar el nuevo OrderItem a la tabla
             mItemTable.getItems().add(newOrderItem);
