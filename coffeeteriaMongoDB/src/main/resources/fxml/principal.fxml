@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="root" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.pantallas.principal.PrincipalController">
+    <center>
+    </center>
+    <top>
+        <MenuBar fx:id="menuPrincipal">
+            <menus>
+                <Menu fx:id="menuOptions" mnemonicParsing="false" text="Options" onAction="#actMenuOptions">
+                    <items>
+                        <MenuItem fx:id="menuOptionsLogout" mnemonicParsing="false" onAction="#logout" text="Logout" />
+                        <MenuItem fx:id="menuOptionsExit" mnemonicParsing="false" onAction="#exit" text="Exit" />
+                    </items>
+                </Menu>
+                <Menu fx:id="menuCustomers" mnemonicParsing="false" text="Customers" onAction="#actMenuCustomers">
+                    <items>
+                        <MenuItem fx:id="menuCustomersList" mnemonicParsing="false" text="List" onAction="#actMenuCustomers"/>
+                        <MenuItem fx:id="menuCustomersAdd" mnemonicParsing="false" text="Add" onAction="#actMenuCustomers"/>
+                        <MenuItem fx:id="menuCustomersUpdate" mnemonicParsing="false" text="Update" onAction="#actMenuCustomers"/>
+                        <MenuItem fx:id="menuCustomersDelete" mnemonicParsing="false" text="Delete" onAction="#actMenuCustomers"/>
+                    </items>
+                </Menu>
+                <Menu fx:id="menuOrders" mnemonicParsing="false" text="Orders" onAction="#actMenuOrders">
+                    <items>
+                        <MenuItem fx:id="menuOrdersList" mnemonicParsing="false" text="List" onAction="#actMenuOrders"/>
+                        <MenuItem fx:id="menuOrdersAdd" mnemonicParsing="false" text="Add" onAction="#actMenuOrders"/>
+                        <MenuItem fx:id="menuOrdersUpdate" mnemonicParsing="false" text="Update" onAction="#actMenuOrders"/>
+                        <MenuItem fx:id="menuOrdersDelete" mnemonicParsing="false" text="Delete" onAction="#actMenuOrders"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+</BorderPane>

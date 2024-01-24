@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.pantallas.customer.customerupdate.UpdateCustomerController">
+   <children>
+      <Label layoutX="46.0" layoutY="33.0" text="Update Customer">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <Label layoutX="45.0" layoutY="89.0" text="First name" />
+      <TextField fx:id="firstNameField" layoutX="26.0" layoutY="106.0" promptText="e.g. Pepe" />
+      <TextField fx:id="secondNameField" layoutX="26.0" layoutY="161.0" promptText="e.g. Pepito" />
+      <TextField fx:id="phoneField" layoutX="26.0" layoutY="213.0" promptText="e.g. 123456789" />
+      <TextField fx:id="emailField" layoutX="26.0" layoutY="259.0" promptText="e.g. pepitoemail@email.com" />
+      <TableView fx:id="tableCustomers" layoutX="199.0" layoutY="80.0" prefHeight="200.0" prefWidth="366.0">
+        <columns>
+          <TableColumn fx:id="idC" prefWidth="79.0" text="Customer ID" />
+          <TableColumn fx:id="firstName" prefWidth="71.0" text="First Name" />
+          <TableColumn fx:id="secondName" prefWidth="84.0" text="Second Name" />
+            <TableColumn fx:id="email" prefWidth="75.0" text="Email" />
+            <TableColumn fx:id="phoneNumber" prefWidth="75.0" text="Phone number" />
+            <TableColumn fx:id="date" prefWidth="75.0" text="Date" />
+        </columns>
+      </TableView>
+      <Button fx:id="updateCustomerButton" layoutX="274.0" layoutY="316.0" mnemonicParsing="false" onAction="#updateCustomer" text="Update customer" />
+      <Button fx:id="resetCustomerButton" layoutX="415.0" layoutY="316.0" mnemonicParsing="false" onAction="#resetCustomer" text="Reset" />
+      <Label layoutX="41.0" layoutY="137.0" text="Second name" />
+      <Label layoutX="37.0" layoutY="192.0" text="Phone number" />
+      <Label layoutX="42.0" layoutY="241.0" text="Email" />
+
+      <Label layoutX="43.0" layoutY="295.0" text="Date" />
+      <DatePicker fx:id="dateFieldd" layoutX="13.0" layoutY="312.0" />
+   </children>
+</AnchorPane>
