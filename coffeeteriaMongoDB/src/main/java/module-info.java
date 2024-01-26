@@ -21,6 +21,7 @@ module coffeeteria {
     requires spring.jdbc;
     requires spring.tx;
     requires jakarta.cdi;
+    requires mongo.java.driver;
 
     /*Pantallas*/
 

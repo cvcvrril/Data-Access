@@ -85,15 +85,12 @@ public class PrincipalController{
     private Pane cargarPantalla(String ruta) {
         Pane panePantalla = null;
         try {
-
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setControllerFactory(controller -> instance.select(controller).get());
             panePantalla = fxmlLoader.load(getClass().getResourceAsStream(ruta));
             BasePantallaController pantallaController = fxmlLoader.getController();
             pantallaController.setPrincipalController(this);
             pantallaController.principalCargado();
-
-
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
