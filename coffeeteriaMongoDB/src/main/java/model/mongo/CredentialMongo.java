@@ -8,10 +8,9 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @ToString
-public class MenuItemMongo {
-
+public class CredentialMongo {
     private int _id;
-    private String name;
-    private double price;
+    private String username;
+    private String password;
 
 }
