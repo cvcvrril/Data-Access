@@ -28,8 +28,8 @@ public class DaoOrderItemHibernate {
         List<OrderItem> orderItemList;
         em = jpaUtil.getEntityManager();
         try {
-            orderItemList = em.
-                    createNamedQuery("HQL_GET_ALL_ORDER_ITEMS", OrderItem.class)
+            orderItemList = em
+                    .createNamedQuery("HQL_GET_ALL_ORDER_ITEMS", OrderItem.class)
                     .getResultList();
             res = Either.right(orderItemList);
         }catch (Exception e){

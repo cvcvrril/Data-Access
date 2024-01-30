@@ -1,6 +1,7 @@
 package services;
 
 import dao.db.DaoMenuItemDb;
+import dao.hibernate.DaoMenuItemHibernate;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import model.MenuItem;
@@ -12,22 +13,22 @@ import java.util.List;
 public class ServiceMenuItems {
 
     private final DaoMenuItemDb daoMenuItemDBd;
+    private final DaoMenuItemHibernate daoMenuItemHibernate;
 
     @Inject
-    public ServiceMenuItems(DaoMenuItemDb daoMenuItemDBd) {
+    public ServiceMenuItems(DaoMenuItemDb daoMenuItemDBd, DaoMenuItemHibernate daoMenuItemHibernate) {
         this.daoMenuItemDBd = daoMenuItemDBd;
+        this.daoMenuItemHibernate = daoMenuItemHibernate;
     }
 
     public Either<ErrorCMenuItem, List<MenuItem>> getAll(){
-        return daoMenuItemDBd.getAll();
+        //return daoMenuItemDBd.getAll();
+        return daoMenuItemHibernate.getAll();
     }
 
     public Either<ErrorCMenuItem, MenuItem> get(int id){
-        return daoMenuItemDBd.get(id);
-    }
-
-    public Either<ErrorCMenuItem, List<MenuItem>> getListMenuItems(int id){
-        return daoMenuItemDBd.getByMenuItemId(id);
+        //return daoMenuItemDBd.get(id);
+        return daoMenuItemHibernate.get(id);
     }
 
     public Either<ErrorCMenuItem, String> getMenuItemName(int id){
