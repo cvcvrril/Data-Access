@@ -12,6 +12,5 @@ public class MenuItemMongo {
 
     private int _id;
     private String name;
-    private double price;
 
 }

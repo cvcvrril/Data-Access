@@ -18,7 +18,7 @@ public class CustomerConverter {
 
     public Either<ErrorCObject, CustomerMongo> fromHibernateToMongoCustomer(Customer customer) {
         Either<ErrorCObject, CustomerMongo> res;
-        List<OrderMongo> orderMongoList;
+        List<OrderMongo> orderMongoList = new ArrayList<>();
         try {
             CustomerMongo customerMongoConverted = new CustomerMongo(
                     null,
@@ -27,7 +27,7 @@ public class CustomerConverter {
                     customer.getEmailCus(),
                     customer.getPhoneNumber(),
                     customer.getDateBirth(),
-                    new ArrayList<>()
+                    orderMongoList
             );
 
             res = Either.right(customerMongoConverted);

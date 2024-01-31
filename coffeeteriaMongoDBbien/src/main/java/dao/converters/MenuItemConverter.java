@@ -11,7 +11,7 @@ public class MenuItemConverter {
     public Either<ErrorCObject, MenuItem> fromMongoToHibernateMenuItem(MenuItemMongo menuItemMongo){
         Either<ErrorCObject, MenuItem> res;
         try {
-            MenuItem menuItemConverted = new MenuItem(menuItemMongo.get_id(), menuItemMongo.getName(), null,menuItemMongo.getPrice());
+            MenuItem menuItemConverted = new MenuItem(menuItemMongo.get_id(), menuItemMongo.getName(), null, 0);
             res = Either.right(menuItemConverted);
         }catch (Exception e){
          log.error(e.getMessage(), e);
@@ -23,7 +23,7 @@ public class MenuItemConverter {
     public Either<ErrorCObject, MenuItemMongo> fromHibernateToMongoMenuItem(MenuItem menuItem){
         Either<ErrorCObject, MenuItemMongo> res;
         try {
-            MenuItemMongo menuItemMongoConverted = new MenuItemMongo(menuItem.getIdMItem(), menuItem.getNameMItem(), menuItem.getPriceMItem());
+            MenuItemMongo menuItemMongoConverted = new MenuItemMongo(menuItem.getIdMItem(), menuItem.getNameMItem());
             res = Either.right(menuItemMongoConverted);
         }catch (Exception e){
             log.error(e.getMessage(), e);
