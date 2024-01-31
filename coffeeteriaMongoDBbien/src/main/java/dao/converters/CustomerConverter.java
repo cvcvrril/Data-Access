@@ -16,9 +16,9 @@ import java.util.List;
 @Log4j2
 public class CustomerConverter {
 
-    public Either<ErrorCObject, CustomerMongo> fromHibernateToMongoCustomer(Customer customer) {
+    public Either<ErrorCObject, CustomerMongo> fromHibernateToMongoCustomer(Customer customer, List<Order> orderList) {
         Either<ErrorCObject, CustomerMongo> res;
-        List<OrderMongo> orderMongoList = new ArrayList<>();
+        List<OrderMongo> orderMongoList = orderConverter(orderList).get();
         try {
             CustomerMongo customerMongoConverted = new CustomerMongo(
                     null,
@@ -38,11 +38,15 @@ public class CustomerConverter {
         return res;
     }
 
-    public Either<ErrorCObject, OrderMongo> orderConverter(Order order) {
-        Either<ErrorCObject, OrderMongo> res;
+    public Either<ErrorCObject, List<OrderMongo>> orderConverter(List<Order> orderList) {
+        Either<ErrorCObject,  List<OrderMongo>> res;
+        List<OrderMongo> orderMongoList = new ArrayList<>();
         try {
-            OrderMongo orderMongo = new OrderMongo(order.getOrDate(), order.getIdTable(),orderItemConverter(order.getOrderItems()).get());
-            res = Either.right(orderMongo);
+            for (Order order: orderList){
+                OrderMongo orderMongo = new OrderMongo(order.getOrDate(), order.getIdTable(),orderItemConverter(order.getOrderItems()).get());
+                orderMongoList.add(orderMongo);
+            }
+            res = Either.right(orderMongoList);
         }catch (Exception e){
             log.error(e.getMessage(), e);
             res = Either.left(new ErrorCObject(e.getMessage(), 0));
