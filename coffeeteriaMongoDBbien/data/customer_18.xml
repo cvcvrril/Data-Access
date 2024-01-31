@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<orders>
+    <order>
+        <id>9</id>
+        <order_item>
+            <menu_item>Margherita Pizza</menu_item>
+            <quantity>2</quantity>
+        </order_item>
+    </order>
+</orders>

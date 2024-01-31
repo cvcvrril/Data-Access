@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="447.0" prefWidth="592.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.pantallas.order.orderupdate.UpdateOrderController">
+   <children>
+      <Label layoutX="36.0" layoutY="28.0" text="Update Order">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <TextField fx:id="dateField" layoutX="28.0" layoutY="131.0" />
+      <ComboBox fx:id="tableComboBox" layoutX="27.0" layoutY="182.0" prefWidth="150.0" />
+      <ComboBox fx:id="customerComboBox" layoutX="27.0" layoutY="227.0" prefWidth="150.0" />
+      <TextField fx:id="quantityField" layoutX="476.0" layoutY="159.0" prefHeight="25.0" prefWidth="70.0" />
+       <TableView fx:id="orderItemTable" layoutX="229.0" layoutY="119.0" prefHeight="106.0" prefWidth="200.0">
+        <columns>
+          <TableColumn fx:id="nameItemCell" prefWidth="143.0" text="Name item" />
+          <TableColumn fx:id="quantityCell" prefWidth="56.0" text="Quantity" />
+        </columns>
+      </TableView>
+      <TableView fx:id="tableOrders" layoutX="221.0" layoutY="255.0" prefHeight="145.0" prefWidth="354.0">
+        <columns>
+          <TableColumn fx:id="id_ord" prefWidth="75.0" text="Order ID" />
+          <TableColumn fx:id="id_c" prefWidth="75.0" text="Customer ID" />
+            <TableColumn fx:id="id_table" prefWidth="74.0" text="Table ID" />
+            <TableColumn fx:id="date_order" prefWidth="114.0" text="Date" />
+        </columns>
+      </TableView>
+      <Button fx:id="addItemButton" layoutX="441.0" layoutY="201.0" mnemonicParsing="false" onAction="#addItem" text="Add" />
+      <Button fx:id="removeItemButton" layoutX="488.0" layoutY="201.0" mnemonicParsing="false" onAction="#removeItem" text="Remove" />
+
+      <ComboBox fx:id="menuItemComboBox" layoutX="441.0" layoutY="98.0" prefHeight="25.0" prefWidth="103.0" />
+      <Label layoutX="44.0" layoutY="116.0" text="Date" />
+      <Label layoutX="39.0" layoutY="158.0" text="Table" />
+      <Label layoutX="29.0" layoutY="210.0" text="Customer" />
+      <Label layoutX="492.0" layoutY="136.0" text="Quantity" />
+      <Label layoutX="486.0" layoutY="72.0" text="Menu item" />
+      <Label layoutX="229.0" layoutY="93.0" text="Order items" />
+      <Button fx:id="updateOrderButton" layoutX="34.0" layoutY="291.0" mnemonicParsing="false" onAction="#updateOrder" text="Update Order" />
+   </children>
+</AnchorPane>
