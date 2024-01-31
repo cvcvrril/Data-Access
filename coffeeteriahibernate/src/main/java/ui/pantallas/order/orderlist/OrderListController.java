@@ -10,9 +10,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.extern.log4j.Log4j2;
 import model.Customer;
+import model.MenuItem;
 import model.Order;
 import model.OrderItem;
 import model.errors.ErrorCMenuItem;
+import model.errors.ErrorCOrder;
 import model.errors.ErrorCOrderItem;
 import services.ServiceCustomer;
 import services.ServiceMenuItems;
@@ -104,7 +106,7 @@ public class OrderListController extends BasePantallaController {
         orderItemID.setCellValueFactory(new PropertyValueFactory<>("id"));
         menuItemName.setCellValueFactory(cellData ->
                 new SimpleStringProperty(getMenuItemNameById(cellData.getValue().getMenuItemObject().getIdMItem())));
-        priceCol.setCellValueFactory(cellData->{
+        priceCol.setCellValueFactory(cellData -> {
             int menuItemId = cellData.getValue().getMenuItemObject().getIdMItem();
             String menuItemPrice = String.valueOf(menuItemId);
             return new SimpleStringProperty(menuItemPrice);
@@ -167,6 +169,8 @@ public class OrderListController extends BasePantallaController {
         }
     }
 
+    //TODO: Arreglar totalAmount (la multiplicación no la hace bien)
+
     private void loadOrderItems(int orderId) {
         Either<ErrorCOrderItem, List<OrderItem>> orderItems = serviceOrderItem.get(orderId);
         if (orderItems.isRight()) {
@@ -177,16 +181,13 @@ public class OrderListController extends BasePantallaController {
                     .mapToDouble(orderItem -> {
                         int menuItemId = orderItem.getMenuItemObject().getIdMItem();
                         // Obtener el precio del menú item
-                        Either<ErrorCMenuItem, Double> menuItemPrice = serviceMenuItems.getMenuItemPrice(menuItemId);
-                        if (menuItemPrice.isRight()) {
-                            return Double.parseDouble(String.valueOf(menuItemPrice.get()));
-                        } else {
-                            // Puedes manejar el error de alguna manera, como imprimir un mensaje de error
-                            log.error("Error al obtener el precio del MenuItem: {}", menuItemId);
-                            return 0.0;
-                        }
-                    })
-                    .sum();
+                        Double menuItemPrice = Double.valueOf(priceCol.get);
+                        int menuItemQuantity = orderItems.get().size();
+
+                        return Double.parseDouble(String.valueOf(menuItemPrice * menuItemQuantity));
+
+                    }).sum();
+
 
             // Actualizar el totalAmountField
             totalAmountField.setText(String.valueOf(totalAmount));
@@ -196,6 +197,19 @@ public class OrderListController extends BasePantallaController {
             errorAlert.setContentText("Error al mostrar los order items (loadOrderItems)");
             errorAlert.show();
         }
+    }
+
+    //INFO: Lista de Order -> Lista de OrderItem -> MenuItem -> precio del MenuItem
+
+    private Either<ErrorCOrder, Double> setTotalAmountField(List<OrderItem> orderItemList) {
+        Either<ErrorCOrder, Double> res;
+        Double totalAmount;
+        try {
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = Either.left(new ErrorCOrder(e.getMessage(), 0));
+        }
+        return null;
     }
 
     private void loadOrderItemsByOrderId(int orderId) {

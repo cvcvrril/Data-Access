@@ -118,6 +118,11 @@ public class DaoCustomerHibernate {
         return res;
     }
 
+    public Either<ErrorCCustomer, Integer> deleteBien(int id){
+        Either<ErrorCCustomer, Integer> res;
+        return null;
+    }
+
     public Either<ErrorCCustomer, Integer> update(Customer updatedCustomer) {
         Either<ErrorCCustomer, Integer> res;
         int conf;

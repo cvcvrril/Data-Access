@@ -7,8 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-//TODO: Cambiar OneToOne MenuItem por ManyToOne
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,7 +27,7 @@ public class OrderItem {
     //@Column(name = "menu_item_id")
     //private int menuItem;       //menu_item_id
     private int quantity;       //quantity
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "menu_item_id")
     private MenuItem menuItemObject;
     @ManyToOne
