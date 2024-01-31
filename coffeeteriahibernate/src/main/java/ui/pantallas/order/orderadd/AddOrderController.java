@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+//TODO: Propongo arreglar esto
+
 public class AddOrderController extends BasePantallaController {
 
     private final ServiceOrder serviceOrder;
@@ -133,27 +135,28 @@ public class AddOrderController extends BasePantallaController {
         String selectedItemName = menuItemsCBox.getValue();
         int quantity = Integer.parseInt(menuItemQuantity.getText());
 
-        MenuItem selectedMenuItem = null;
+        MenuItem selectedMenuItem;
         for (MenuItem menuItem : serviceMenuItems.getAll().getOrElse(Collections.emptyList())) {
             if (menuItem.getNameMItem().equals(selectedItemName)) {
                 selectedMenuItem = menuItem;
+                if (selectedMenuItem != null) {
+                    int lastOrderItemId = getLastOrderItemIdFromDatabase();
+                    OrderItem newOrderItem = new OrderItem (0, quantity, selectedMenuItem, serviceOrder.getOrder(0).getOrNull());
+
+                    // Agregar el nuevo OrderItem a la tabla
+                    mItemTable.getItems().add(newOrderItem);
+                    menuItemsCBox.getSelectionModel().clearSelection();
+                    menuItemQuantity.clear();
+                } else {
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setContentText("Ítem de menú no encontrado");
+                    errorAlert.show();
+                }
                 break;
             }
         }
 
-        if (selectedMenuItem != null) {
-            int lastOrderItemId = getLastOrderItemIdFromDatabase();
-            OrderItem newOrderItem = new OrderItem (0, quantity, serviceMenuItems.get(lastOrderItemId).getOrNull(), serviceOrder.getOrder(0).getOrNull());
 
-            // Agregar el nuevo OrderItem a la tabla
-            mItemTable.getItems().add(newOrderItem);
-            menuItemsCBox.getSelectionModel().clearSelection();
-            menuItemQuantity.clear();
-        } else {
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setContentText("Ítem de menú no encontrado");
-            errorAlert.show();
-        }
     }
 
     public void removeItem() {

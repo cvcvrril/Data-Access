@@ -64,7 +64,7 @@ public class DaoOrderHibernate {
         List<Order> orderList;
         em = jpaUtil.getEntityManager();
         try {
-            orderList = em.createNamedQuery("SELECT_ORDERS_ID")
+            orderList = em.createNamedQuery("SELECT_ORDERS_ID", Order.class)
                     .setParameter("id", id)
                     .getResultList();
             res = Either.right(orderList);
@@ -83,11 +83,11 @@ public class DaoOrderHibernate {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try {
+            em.persist(newOrder);
             for (OrderItem orderItem: newOrder.getOrderItems()){
                 orderItem.setOrder(newOrder);
                 em.persist(orderItem);
             }
-            em.persist(newOrder);
             tx.commit();
             res = Either.right(1);
         } catch (Exception e) {

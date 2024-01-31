@@ -159,7 +159,7 @@ public class UpdateOrderController extends BasePantallaController {
             a.show();
             // Agregar el nuevo OrderItem a la tabla
             //orderItemTable.getItems().add(new OrderItem(lastOrderItemId, tableOrders.getSelectionModel().getSelectedItem().getIdOrd(), selectedMenuItem.getIdMItem(), quantity, serviceMenuItems.get(lastOrderItemId).getOrNull()));
-            orderItemTable.getItems().add(new OrderItem(tableOrders.getSelectionModel().getSelectedItem().getIdOrd(), quantity, serviceMenuItems.get(lastOrderItemId).getOrNull(), serviceOrder.getOrder(tableOrders.getSelectionModel().getSelectedItem().getIdOrd()).getOrNull()));
+            orderItemTable.getItems().add(new OrderItem(tableOrders.getSelectionModel().getSelectedItem().getIdOrd(), quantity, selectedMenuItem, serviceOrder.getOrder(tableOrders.getSelectionModel().getSelectedItem().getIdOrd()).getOrNull()));
             menuItemComboBox.getSelectionModel().clearSelection();
             quantityField.clear();
             lastOrderItemId = lastOrderItemId + 1;
