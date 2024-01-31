@@ -21,6 +21,7 @@ module coffeeteria {
     requires spring.jdbc;
     requires spring.tx;
     requires jakarta.cdi;
+    requires mongo.java.driver;
 
     /*Pantallas*/
 
@@ -59,6 +60,7 @@ module coffeeteria {
     opens ui.main;
     opens services;
     opens common;
+    opens model.mongo;
     opens ui.pantallas.login;
     opens ui.pantallas.principal;
     opens ui.pantallas.welcome;
