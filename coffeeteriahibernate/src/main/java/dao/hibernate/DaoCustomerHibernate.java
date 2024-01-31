@@ -84,6 +84,9 @@ public class DaoCustomerHibernate {
         return res;
     }
 
+    //TODO: quitar la confirmación; que se intente borrar, salte excepción y ya se borre
+    //TODO: quitar el find -> crear un customer con el id que se proporciona
+
     public Either<ErrorCCustomer, Integer> delete(int id, boolean conf) {
         Either<ErrorCCustomer, Integer> res;
         em = jpaUtil.getEntityManager();

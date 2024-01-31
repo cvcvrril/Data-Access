@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+//TODO: Cambiar OneToOne MenuItem por ManyToOne
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
