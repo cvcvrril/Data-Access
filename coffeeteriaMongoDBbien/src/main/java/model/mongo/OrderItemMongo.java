@@ -9,6 +9,6 @@ import lombok.*;
 @ToString
 public class OrderItemMongo {
 
-
+    private MenuItemMongo menu_item;
 
 }

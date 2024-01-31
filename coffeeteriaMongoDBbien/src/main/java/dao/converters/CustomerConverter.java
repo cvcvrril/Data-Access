@@ -11,6 +11,7 @@ import model.errors.ErrorCObject;
 public class CustomerConverter {
 
     public Either<ErrorCObject, Customer> fromHibernateToMongoCustomer(Customer customer){
+        Either<ErrorCObject, Customer> res;
         return null;
     }
 
