@@ -55,14 +55,19 @@ public class CustomerConverter {
     }
 
     public Either<ErrorCObject, List<OrderItemMongo>> orderItemConverter(List<OrderItem> orderItemList) {
-        Either<ErrorCObject, OrderItemMongo> res;
+        Either<ErrorCObject, List<OrderItemMongo>> res;
+        List<OrderItemMongo> orderItemMongoList = new ArrayList<>();
         try {
-            OrderItemMongo orderItemMongoConverted;
+            for (OrderItem orderItem: orderItemList){
+                OrderItemMongo orderItemMongo = new OrderItemMongo(orderItem.getMenuItemObject().getIdMItem(), orderItem.getQuantity());
+                orderItemMongoList.add(orderItemMongo);
+            }
+            res = Either.right(orderItemMongoList);
         }catch (Exception e){
             log.error(e.getMessage(), e);
             res = Either.left(new ErrorCObject(e.getMessage(), 0));
         }
-        return null;
+        return res;
     }
 
 }

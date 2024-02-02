@@ -9,6 +9,7 @@ import lombok.*;
 @ToString
 public class OrderItemMongo {
 
-    private MenuItemMongo menu_item;
+    private int menu_item_id;
+    private int quantity;
 
 }

@@ -20,6 +20,8 @@ public class MenuItemConverter {
         return res;
     }
 
+    //TODO: usar esto
+
     public Either<ErrorCObject, MenuItemMongo> fromHibernateToMongoMenuItem(MenuItem menuItem){
         Either<ErrorCObject, MenuItemMongo> res;
         try {
