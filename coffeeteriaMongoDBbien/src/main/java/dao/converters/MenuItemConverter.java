@@ -6,6 +6,9 @@ import model.MenuItem;
 import model.errors.ErrorCObject;
 import model.mongo.MenuItemMongo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Log4j2
 public class MenuItemConverter {
     public Either<ErrorCObject, MenuItem> fromMongoToHibernateMenuItem(MenuItemMongo menuItemMongo){
@@ -22,11 +25,15 @@ public class MenuItemConverter {
 
     //TODO: usar esto
 
-    public Either<ErrorCObject, MenuItemMongo> fromHibernateToMongoMenuItem(MenuItem menuItem){
-        Either<ErrorCObject, MenuItemMongo> res;
+    public Either<ErrorCObject, List<MenuItemMongo>> fromHibernateToMongoMenuItem(List<MenuItem> menuItemList){
+        Either<ErrorCObject, List<MenuItemMongo>> res;
+        List<MenuItemMongo> menuItemMongoList = new ArrayList<>();
         try {
-            MenuItemMongo menuItemMongoConverted = new MenuItemMongo(menuItem.getIdMItem(), menuItem.getNameMItem());
-            res = Either.right(menuItemMongoConverted);
+            for (MenuItem menuItem: menuItemList){
+                MenuItemMongo menuItemMongoConverted = new MenuItemMongo(menuItem.getIdMItem(), menuItem.getNameMItem());
+                menuItemMongoList.add(menuItemMongoConverted);
+            }
+            res = Either.right(menuItemMongoList);
         }catch (Exception e){
             log.error(e.getMessage(), e);
             res = Either.left(new ErrorCObject(e.getMessage(), 0));
