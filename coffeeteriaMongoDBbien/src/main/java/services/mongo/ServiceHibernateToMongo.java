@@ -6,11 +6,15 @@ import dao.hibernate.DaoCredentialHibernate;
 import dao.hibernate.DaoCustomerHibernate;
 import dao.hibernate.DaoMenuItemHibernate;
 import dao.hibernate.DaoOrderHibernate;
+import dao.mongo.DaoMongoCredential;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import lombok.extern.log4j.Log4j2;
 import model.*;
 import model.errors.ErrorCObject;
+import model.mongo.CredentialMongo;
+import org.bson.Document;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -27,18 +31,21 @@ public class ServiceHibernateToMongo {
     private final CredentialConverter credentialConverter;
     private final MenuItemConverter menuItemConverter;
 
+    private final DaoMongoCredential daoMongoCredential;
+
     @Inject
-    public ServiceHibernateToMongo(DaoOrderHibernate daoOrderHibernate, DaoCredentialHibernate daoCredentialHibernate, DaoCustomerHibernate daoCustomerHibernate, DaoMenuItemHibernate daoMenuItemHibernate, CredentialConverter credentialConverter, MenuItemConverter menuItemConverter) {
+    public ServiceHibernateToMongo(DaoOrderHibernate daoOrderHibernate, DaoCredentialHibernate daoCredentialHibernate, DaoCustomerHibernate daoCustomerHibernate, DaoMenuItemHibernate daoMenuItemHibernate, CredentialConverter credentialConverter, MenuItemConverter menuItemConverter, DaoMongoCredential daoMongoCredential) {
         this.daoOrderHibernate = daoOrderHibernate;
         this.daoCredentialHibernate = daoCredentialHibernate;
         this.daoCustomerHibernate = daoCustomerHibernate;
         this.daoMenuItemHibernate = daoMenuItemHibernate;
         this.credentialConverter = credentialConverter;
         this.menuItemConverter = menuItemConverter;
+        this.daoMongoCredential = daoMongoCredential;
     }
 
     public Either<ErrorCObject, Integer> transferAllHibernateToMongo() {
-        Either<ErrorCObject, Integer> res;
+        Either<ErrorCObject, Integer> res = null;
         try {
             if (transferCredentialToMongo().isLeft()) {
                 res = Either.left(new ErrorCObject("No se pudo convertir la lista de Credenciales a Mongo", 0));
@@ -50,7 +57,7 @@ public class ServiceHibernateToMongo {
             log.error(e.getMessage(), e);
             res = Either.left(new ErrorCObject(e.getMessage(), 0));
         }
-        return null;
+        return res;
     }
 
 
@@ -59,8 +66,13 @@ public class ServiceHibernateToMongo {
         List<Credential> credentialListToConvert;
         try {
             credentialListToConvert = daoCredentialHibernate.getAll().get();
-            if (credentialConverter.fromHibernateToMongoCredential(credentialListToConvert).isRight()) {
-                res  = Either.right(1);
+            List<CredentialMongo> credentialMongoList = credentialConverter.fromHibernateToMongoCredential(credentialListToConvert).get();
+            if (credentialMongoList != null) {
+                if (daoMongoCredential.save(credentialMongoList).isRight()){
+                    res  = Either.right(1);
+                } else {
+                    res = Either.left(new ErrorCObject("Hubo un problema al pasar los objetos al documento", 0));
+                }
             }else {
                 res = Either.left(new ErrorCObject("Hubo un problema al convertir los objetos", 0));
             }
