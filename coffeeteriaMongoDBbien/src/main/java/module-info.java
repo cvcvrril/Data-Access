@@ -45,6 +45,7 @@ module coffeeteria {
     exports dao.imp;
     exports common;
     exports services;
+    exports services.mongo;
     exports model;
     exports ui.main to javafx.graphics;
     exports dao;
@@ -53,6 +54,9 @@ module coffeeteria {
     exports dao.spring;
     exports dao.hibernate;
     exports dao.converters;
+    exports dao.mongo;
+    exports dao.connection;
+    exports model.xml;
 
     /*Abrir módulos*/
 
@@ -73,9 +77,6 @@ module coffeeteria {
     opens ui.pantallas.customer.customeradd to javafx.fxml;
     opens ui.pantallas.customer.customerdelete to javafx.fxml;
     opens ui.pantallas.order.orderadd to javafx.fxml;
-    //opens model to jakarta.xml.bind;
-    exports model.xml;
     opens model.xml to jakarta.xml.bind;
-    exports dao.connection;
     opens model to org.hibernate.orm.core;
 }
