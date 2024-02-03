@@ -19,8 +19,8 @@ public class DaoMongoCredential {
     public Either<ErrorCObject, Integer> save(List<CredentialMongo> credentialMongoList){
         Either<ErrorCObject, Integer> res;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
-            MongoDatabase db = mongo.getDatabase("luciasanmiguel_coffeecompany");
-            MongoCollection<Document> est = db.getCollection("suppliers");
+            MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
+            MongoCollection<Document> est = db.getCollection("customers");
             for (CredentialMongo credentialMongo: credentialMongoList){
                 String credentialMongoJson = new Gson().toJson(credentialMongo);
                 Document document = Document.parse(credentialMongoJson);
