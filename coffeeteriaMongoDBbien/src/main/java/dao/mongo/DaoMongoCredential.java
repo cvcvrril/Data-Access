@@ -25,7 +25,7 @@ public class DaoMongoCredential {
         Either<ErrorCObject, Integer> res;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
-            MongoCollection<Document> est = db.getCollection("customers");
+            MongoCollection<Document> est = db.getCollection("credentials");
             for (CredentialMongo credentialMongo: credentialMongoList){
                 String credentialMongoJson = new Gson().toJson(credentialMongo);
                 Document document = Document.parse(credentialMongoJson);
@@ -39,13 +39,31 @@ public class DaoMongoCredential {
         return res;
     }
 
-    public Either<ErrorCObject, Integer> delete(){
+    public Either<ErrorCObject, Integer> delete(CredentialMongo credentialMongo){
         Either<ErrorCObject, Integer> res;
+        try(MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
+            MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
+            MongoCollection<Document> est = db.getCollection("credentials");
+            String credentialMongoJson = new Gson().toJson(credentialMongo);
+            Document document = Document.parse(credentialMongoJson);
+            est.deleteOne(document);
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+            res = Either.left(new ErrorCObject(e.getMessage(), 0));
+        }
         return null;
     }
 
-    public Either<ErrorCObject, Integer> update(){
+    public Either<ErrorCObject, Integer> update(CredentialMongo credentialMongo){
         Either<ErrorCObject, Integer> res;
+        try(MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
+            MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
+            MongoCollection<Document> est = db.getCollection("credentials");
+
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+            res = Either.left(new ErrorCObject(e.getMessage(), 0));
+        }
         return null;
     }
 
