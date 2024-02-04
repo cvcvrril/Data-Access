@@ -16,6 +16,11 @@ import java.util.List;
 @Log4j2
 public class DaoMongoCredential {
 
+    public Either<ErrorCObject, Integer> read(){
+        Either<ErrorCObject, Integer> res;
+        return null;
+    }
+
     public Either<ErrorCObject, Integer> save(List<CredentialMongo> credentialMongoList){
         Either<ErrorCObject, Integer> res;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
@@ -32,6 +37,16 @@ public class DaoMongoCredential {
             res = Either.left(new ErrorCObject(e.getMessage(), 0));
         }
         return res;
+    }
+
+    public Either<ErrorCObject, Integer> delete(){
+        Either<ErrorCObject, Integer> res;
+        return null;
+    }
+
+    public Either<ErrorCObject, Integer> update(){
+        Either<ErrorCObject, Integer> res;
+        return null;
     }
 
 }
