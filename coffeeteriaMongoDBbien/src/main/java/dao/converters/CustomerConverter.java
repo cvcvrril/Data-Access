@@ -16,21 +16,24 @@ import java.util.List;
 @Log4j2
 public class CustomerConverter {
 
-    public Either<ErrorCObject, CustomerMongo> fromHibernateToMongoCustomer(Customer customer, List<Order> orderList) {
-        Either<ErrorCObject, CustomerMongo> res;
+    public Either<ErrorCObject, List<CustomerMongo>> fromHibernateToMongoCustomer(List<Customer> customerList, List<Order> orderList) {
+        Either<ErrorCObject,  List<CustomerMongo>> res;
         List<OrderMongo> orderMongoList = orderConverter(orderList).get();
+        List<CustomerMongo> customerMongoList = new ArrayList<>();
         try {
-            CustomerMongo customerMongoConverted = new CustomerMongo(
-                    null,
-                    customer.getFirstName(),
-                    customer.getSecondName(),
-                    customer.getEmailCus(),
-                    customer.getPhoneNumber(),
-                    customer.getDateBirth(),
-                    orderMongoList
-            );
-
-            res = Either.right(customerMongoConverted);
+            for (Customer customer: customerList){
+                CustomerMongo customerMongoConverted = new CustomerMongo(
+                        null,
+                        customer.getFirstName(),
+                        customer.getSecondName(),
+                        customer.getEmailCus(),
+                        customer.getPhoneNumber(),
+                        customer.getDateBirth(),
+                        orderMongoList
+                );
+                customerMongoList.add(customerMongoConverted);
+            }
+            res = Either.right(customerMongoList);
         }catch (Exception e){
             log.error(e.getMessage(), e);
             res = Either.left(new ErrorCObject(e.getMessage(), 0));

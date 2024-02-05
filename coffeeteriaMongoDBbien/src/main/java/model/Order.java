@@ -28,7 +28,7 @@ public class Order {
     private int idCo;
     @Column(name = "table_id")
     private int idTable;
-    @OneToMany(cascade = CascadeType.REMOVE,  mappedBy = "order")
+    @OneToMany(cascade = CascadeType.REMOVE,  mappedBy = "order", fetch = FetchType.EAGER)
     private List<OrderItem> orderItems;
 
 

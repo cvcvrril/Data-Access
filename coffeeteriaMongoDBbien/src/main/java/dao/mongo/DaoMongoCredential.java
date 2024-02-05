@@ -39,6 +39,8 @@ public class DaoMongoCredential {
         return res;
     }
 
+    //INFO: Esto no se usa, pero útil para tenerlo de referencia para customers
+
     public Either<ErrorCObject, Integer> delete(CredentialMongo credentialMongo){
         Either<ErrorCObject, Integer> res;
         try(MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
