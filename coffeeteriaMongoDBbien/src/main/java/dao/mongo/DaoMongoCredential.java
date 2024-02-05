@@ -39,6 +39,26 @@ public class DaoMongoCredential {
         return res;
     }
 
+    //TODO: encontrar la forma de meter esto en algún lado
+
+    public Either<ErrorCObject, Integer> deleteAll(List<CredentialMongo> credentialMongoList){
+        Either<ErrorCObject, Integer> res;
+        try(MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
+            MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
+            MongoCollection<Document> est = db.getCollection("credentials");
+            for (CredentialMongo credentialMongo: credentialMongoList){
+                String credentialMongoJson = new Gson().toJson(credentialMongo);
+                Document document = Document.parse(credentialMongoJson);
+                est.deleteOne(document);
+            }
+            res = Either.right(1);
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+            res = Either.left(new ErrorCObject(e.getMessage(), 0));
+        }
+        return res;
+    }
+
     //INFO: Esto no se usa, pero útil para tenerlo de referencia para customers
 
     public Either<ErrorCObject, Integer> delete(CredentialMongo credentialMongo){

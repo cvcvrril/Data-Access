@@ -6,7 +6,6 @@ import dao.converters.MenuItemConverter;
 import dao.hibernate.*;
 import dao.mongo.DaoMongoCredential;
 import dao.mongo.DaoMongoCustomer;
-import dao.mongo.DaoMongoMenuItem;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import lombok.extern.log4j.Log4j2;
@@ -23,7 +22,6 @@ public class ServiceHibernateToMongo {
     //TODO: Revisar cómo monto los métodos (tengo que mirar para dónde tiro los ErrorCObject)
 
     private final DaoOrderHibernate daoOrderHibernate;
-    private final DaoOrderItemHibernate daoOrderItemHibernate;
     private final DaoCredentialHibernate daoCredentialHibernate;
     private final DaoCustomerHibernate daoCustomerHibernate;
     private final DaoMenuItemHibernate daoMenuItemHibernate;
@@ -34,12 +32,10 @@ public class ServiceHibernateToMongo {
 
     private final DaoMongoCredential daoMongoCredential;
     private final DaoMongoCustomer daoMongoCustomer;
-    private final DaoMongoMenuItem daoMongoMenuItem;
 
     @Inject
-    public ServiceHibernateToMongo(DaoOrderHibernate daoOrderHibernate, DaoOrderItemHibernate daoOrderItemHibernate, DaoCredentialHibernate daoCredentialHibernate, DaoCustomerHibernate daoCustomerHibernate, DaoMenuItemHibernate daoMenuItemHibernate, CredentialConverter credentialConverter, MenuItemConverter menuItemConverter, CustomerConverter customerConverter, DaoMongoCredential daoMongoCredential, DaoMongoCustomer daoMongoCustomer, DaoMongoMenuItem daoMongoMenuItem) {
+    public ServiceHibernateToMongo(DaoOrderHibernate daoOrderHibernate, DaoCredentialHibernate daoCredentialHibernate, DaoCustomerHibernate daoCustomerHibernate, DaoMenuItemHibernate daoMenuItemHibernate, CredentialConverter credentialConverter, MenuItemConverter menuItemConverter, CustomerConverter customerConverter, DaoMongoCredential daoMongoCredential, DaoMongoCustomer daoMongoCustomer) {
         this.daoOrderHibernate = daoOrderHibernate;
-        this.daoOrderItemHibernate = daoOrderItemHibernate;
         this.daoCredentialHibernate = daoCredentialHibernate;
         this.daoCustomerHibernate = daoCustomerHibernate;
         this.daoMenuItemHibernate = daoMenuItemHibernate;
@@ -48,7 +44,6 @@ public class ServiceHibernateToMongo {
         this.customerConverter = customerConverter;
         this.daoMongoCredential = daoMongoCredential;
         this.daoMongoCustomer = daoMongoCustomer;
-        this.daoMongoMenuItem = daoMongoMenuItem;
     }
 
     public Either<ErrorCObject, Integer> transferAllHibernateToMongo() {
@@ -103,11 +98,9 @@ public class ServiceHibernateToMongo {
         Either<ErrorCObject, Integer> res;
         List<Customer> customerListToConvert;
         List<Order> orderListToConvert;
-        //List<OrderItem> orderItemListToConvert;
         try {
             customerListToConvert = daoCustomerHibernate.getAll().get();
             orderListToConvert = daoOrderHibernate.getAll().get();
-            //orderItemListToConvert = daoOrderItemHibernate.getAll().get();
             List<CustomerMongo> customerMongoList= customerConverter.fromHibernateToMongoCustomer(customerListToConvert, orderListToConvert).get();
             if (customerMongoList != null) {
                 if (daoMongoCustomer.save(customerMongoList).isRight()){
@@ -143,7 +136,4 @@ public class ServiceHibernateToMongo {
         }
         return res;
     }
-
-
-
 }
