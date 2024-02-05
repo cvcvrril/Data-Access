@@ -52,16 +52,22 @@ public class ServiceHibernateToMongo {
     }
 
     public Either<ErrorCObject, Integer> transferAllHibernateToMongo() {
-        Either<ErrorCObject, Integer> res = null;
+        Either<ErrorCObject, Integer> res;
         try {
-            if (transferCredentialToMongo().isLeft()) {
-                res = Either.left(new ErrorCObject("No se pudo convertir la lista de Credenciales a Mongo", 0));
-            }
             if (transferMenuItemToMongo().isLeft()) {
                 res = Either.left(new ErrorCObject("No se pudo convertir la lista de MenuItems a Mongo", 0));
-            }
-            if (transferCustomerToMongo().isLeft()) {
-                res = Either.left(new ErrorCObject("No se pudo convertir la lista de Customers a Mongo", 0));
+            }else {
+                if (transferCredentialToMongo().isLeft()) {
+                    res = Either.left(new ErrorCObject("No se pudo convertir la lista de Credenciales a Mongo", 0));
+                }
+                else {
+                    if (transferCustomerToMongo().isLeft()) {
+                        res = Either.left(new ErrorCObject("No se pudo convertir la lista de Customers a Mongo", 0));
+                    }
+                    else {
+                        res = Either.right(1);
+                    }
+                }
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);

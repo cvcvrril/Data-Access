@@ -54,7 +54,7 @@ public class LoginController extends BasePantallaController {
     @FXML
     private void exportData() {
         try {
-            if (serviceHibernateToMongo.transferCustomerToMongo().isRight()) {
+            if (serviceHibernateToMongo.transferAllHibernateToMongo().isRight()) {
                 getPrincipalController().sacarAlertConf("Se ha exportado de forma correcta la información a Mongo");
             } else {
                 getPrincipalController().sacarAlertError("Hubo un problema");

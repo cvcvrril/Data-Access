@@ -3,6 +3,7 @@ package services;
 import dao.db.DaoCustomerDb;
 import dao.hibernate.DaoCustomerHibernate;
 import dao.imp.DaoOrderXML;
+import dao.mongo.DaoMongoCustomer;
 import dao.spring.DaoCustomerSpring;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
@@ -19,14 +20,16 @@ public class ServiceCustomer {
     private final DaoOrderXML daOorderXML;
     private final ServiceOrder serviceOrder;
     private final DaoCustomerHibernate daoCustomerHibernate;
+    private final DaoMongoCustomer daoMongoCustomer;
 
     @Inject
-    public ServiceCustomer(DaoCustomerDb daOcustomerDB, DaoCustomerSpring daOcustomerSpring, DaoOrderXML daOorderXML, ServiceOrder serviceOrder, DaoCustomerHibernate daoCustomerHibernate) {
+    public ServiceCustomer(DaoCustomerDb daOcustomerDB, DaoCustomerSpring daOcustomerSpring, DaoOrderXML daOorderXML, ServiceOrder serviceOrder, DaoCustomerHibernate daoCustomerHibernate, DaoMongoCustomer daoMongoCustomer) {
         this.daOcustomerDB = daOcustomerDB;
         this.daOcustomerSpring = daOcustomerSpring;
         this.daOorderXML = daOorderXML;
         this.serviceOrder = serviceOrder;
         this.daoCustomerHibernate = daoCustomerHibernate;
+        this.daoMongoCustomer = daoMongoCustomer;
     }
 
     public Either<ErrorCCustomer, List<Customer>> getAll() {

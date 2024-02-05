@@ -44,6 +44,23 @@ public class DaoMongoCustomer {
         return res;
     }
 
-
+    public Either<ErrorCObject, Integer> delete(CustomerMongo customerMongo){
+        Either<ErrorCObject, Integer> res;
+        try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
+            MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
+            MongoCollection<Document> est = db.getCollection("customers");
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
+                    .create();
+            String customerMongoJson = gson.toJson(customerMongo);
+            Document document = Document.parse(customerMongoJson);
+            est.deleteOne(document);
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+            res = Either.left(new ErrorCObject(e.getMessage(), 0));
+        }
+        return null;
+    }
 
 }
