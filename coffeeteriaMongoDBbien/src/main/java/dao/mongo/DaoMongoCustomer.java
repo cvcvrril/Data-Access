@@ -180,7 +180,16 @@ public class DaoMongoCustomer {
         return res;
     }
 
-    public Either<ErrorCObject, Integer> addOrder() {
+    public Either<ErrorCObject, Integer> addOrder(OrderMongo orderMongo) {
+        Either<ErrorCObject, Integer> res;
+        try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
+            MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
+            MongoCollection<Document> est = db.getCollection("customers");
+
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+            res = Either.left(new ErrorCObject(e.getMessage(), 0));
+        }
         return null;
     }
 
