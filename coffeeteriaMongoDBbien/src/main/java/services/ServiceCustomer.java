@@ -1,64 +1,69 @@
 package services;
 
-import dao.db.DaoCustomerDb;
 import dao.hibernate.DaoCustomerHibernate;
-import dao.imp.DaoOrderXML;
 import dao.mongo.DaoMongoCustomer;
-import dao.spring.DaoCustomerSpring;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
-import model.Credential;
-import model.Customer;
-import model.errors.ErrorCCustomer;
+import model.errors.ErrorCObject;
+import model.mongo.CredentialMongo;
+import model.mongo.CustomerMongo;
+import model.mongo.OrderMongo;
 
 import java.util.List;
 
 public class ServiceCustomer {
 
-    private final DaoCustomerDb daOcustomerDB;
-    private final DaoCustomerSpring daOcustomerSpring;
-    private final DaoOrderXML daOorderXML;
-    private final ServiceOrder serviceOrder;
+
     private final DaoCustomerHibernate daoCustomerHibernate;
     private final DaoMongoCustomer daoMongoCustomer;
 
     @Inject
-    public ServiceCustomer(DaoCustomerDb daOcustomerDB, DaoCustomerSpring daOcustomerSpring, DaoOrderXML daOorderXML, ServiceOrder serviceOrder, DaoCustomerHibernate daoCustomerHibernate, DaoMongoCustomer daoMongoCustomer) {
-        this.daOcustomerDB = daOcustomerDB;
-        this.daOcustomerSpring = daOcustomerSpring;
-        this.daOorderXML = daOorderXML;
-        this.serviceOrder = serviceOrder;
+    public ServiceCustomer(DaoCustomerHibernate daoCustomerHibernate, DaoMongoCustomer daoMongoCustomer) {
         this.daoCustomerHibernate = daoCustomerHibernate;
         this.daoMongoCustomer = daoMongoCustomer;
     }
 
-    public Either<ErrorCCustomer, List<Customer>> getAll() {
-         //return daOcustomerSpring.getAll();
-        return daoCustomerHibernate.getAll();
+    public Either<ErrorCObject, List<CustomerMongo>> getAll() {
+        //return daoCustomerHibernate.getAll();
+        return daoMongoCustomer.getAllCustomers();
     }
 
-    public Either<ErrorCCustomer, Customer> get(int id) {
-        //return daOcustomerSpring.get(id);
-        return daoCustomerHibernate.get(id);
+    //TODO: Montar esto para orders
+
+    public Either<ErrorCObject, List<OrderMongo>> getAllOrders() {
+        return daoMongoCustomer.getAllOrders();
     }
 
-    public Either<ErrorCCustomer, Integer> delete(int i, boolean conf) {
-        Either<ErrorCCustomer, Customer> res = daoCustomerHibernate.get(i);
+    public Either<ErrorCObject, CustomerMongo> get(String first_name, String second_name) {
+        //return daoCustomerHibernate.get(id);
+        return daoMongoCustomer.getCustomer(first_name, second_name);
+    }
+
+    public Either<ErrorCObject, CustomerMongo> getByDate(OrderMongo orderMongo){
+        return daoMongoCustomer.getCustomersByDate(orderMongo);
+    }
+
+    public Either<ErrorCObject, Integer> deleteCustomer(String first_name, String second_name, boolean conf) {
+        Either<ErrorCObject, CustomerMongo> res = daoMongoCustomer.getCustomer(first_name, second_name);
         if (res.isRight()) {
-            //return daOcustomerSpring.delete(i, conf);
-            return daoCustomerHibernate.delete(i, conf);
+            return daoMongoCustomer.deleteCustomer(first_name,second_name);
+            //return daoCustomerHibernate.delete(i, conf);
         } else {
             return Either.left(res.getLeft());
         }
     }
 
-    public Either<ErrorCCustomer, Integer> update(Customer customer) {
-        //return daOcustomerSpring.update(customer);
-        return daoCustomerHibernate.update(customer);
+    public Either<ErrorCObject, Integer>deleteOrder(OrderMongo orderMongo){
+        return daoMongoCustomer.deleteOrder(orderMongo);
     }
 
-    public Either<ErrorCCustomer, Integer> add(Customer customer, Credential credential) {
-        //return daOcustomerSpring.add(customer, credential);
-        return daoCustomerHibernate.add(customer,credential);
+    public Either<ErrorCObject, Integer> update(CustomerMongo customer) {
+        //return daoCustomerHibernate.update(customer);
+        return daoMongoCustomer.updateCustomers(customer);
+    }
+
+    public Either<ErrorCObject, Integer> add(CustomerMongo customer, CredentialMongo credential) {
+        //return daoCustomerHibernate.add(customer,credential);
+        return daoMongoCustomer.addCustomers(customer, credential);
     }
 }

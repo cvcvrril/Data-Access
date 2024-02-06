@@ -181,7 +181,7 @@ public class OrderListController extends BasePantallaController {
                     .mapToDouble(orderItem -> {
                         int menuItemId = orderItem.getMenuItemObject().getIdMItem();
                         // Obtener el precio del menú item
-                        Double menuItemPrice = Double.valueOf(priceCol.get);
+                        Double menuItemPrice = Double.valueOf(priceCol.getText());
                         int menuItemQuantity = orderItems.get().size();
 
                         return Double.parseDouble(String.valueOf(menuItemPrice * menuItemQuantity));

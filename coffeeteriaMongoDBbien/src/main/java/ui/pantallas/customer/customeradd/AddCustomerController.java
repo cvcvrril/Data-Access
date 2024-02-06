@@ -10,6 +10,9 @@ import javafx.scene.control.TextField;
 import model.Credential;
 import model.Customer;
 import model.errors.ErrorCCustomer;
+import model.errors.ErrorCObject;
+import model.mongo.CredentialMongo;
+import model.mongo.CustomerMongo;
 import services.ServiceCustomer;
 import ui.pantallas.common.BasePantallaController;
 
@@ -60,12 +63,10 @@ public class AddCustomerController extends BasePantallaController {
             return;
         }
 
-        Customer newCustomer = new Customer(0,firstName, secondName, email,phoneNumber, date, null);
-        Credential newCredential = new Credential(newCustomer.getIdC(), username, password);
-        newCustomer.setCredential(newCredential);
+        CustomerMongo newCustomer = new CustomerMongo(null,firstName, secondName, email,phoneNumber, date, null);
+        CredentialMongo newCredential = new CredentialMongo(0, username, password);
 
-
-        Either<ErrorCCustomer, Integer> res = serviceCustomer.add(newCustomer, newCredential);
+        Either<ErrorCObject, Integer> res = serviceCustomer.add(newCustomer, newCredential);
         clearFields();
 
         if (res.isRight()) {

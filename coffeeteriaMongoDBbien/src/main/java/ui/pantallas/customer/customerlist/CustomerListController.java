@@ -1,12 +1,11 @@
 package ui.pantallas.customer.customerlist;
 
-import common.Constantes;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import model.Customer;
+import model.mongo.CustomerMongo;
 import services.ServiceCustomer;
 import ui.pantallas.common.BasePantallaController;
 
@@ -17,19 +16,19 @@ public class CustomerListController extends BasePantallaController {
     private final ServiceCustomer serviceCustomer;
 
     @FXML
-    private TableView<Customer> tableCustomers;
+    private TableView<CustomerMongo> tableCustomers;
     @FXML
-    private TableColumn<Customer, Integer> idC;
+    private TableColumn<CustomerMongo, Integer> idC;
     @FXML
-    private TableColumn<Customer, String> firstName;
+    private TableColumn<CustomerMongo, String> firstName;
     @FXML
-    private TableColumn<Customer, String> secondName;
+    private TableColumn<CustomerMongo, String> secondName;
     @FXML
-    private TableColumn<Customer,Integer> phoneNumber;
+    private TableColumn<CustomerMongo,Integer> phoneNumber;
     @FXML
-    private TableColumn<Customer,String> email;
+    private TableColumn<CustomerMongo,String> email;
     @FXML
-    private TableColumn<Customer, LocalDate> date;
+    private TableColumn<CustomerMongo, LocalDate> date;
 
 
     /*Constructores*/
@@ -44,12 +43,12 @@ public class CustomerListController extends BasePantallaController {
     @Override
     public void principalCargado() {
 
-        idC.setCellValueFactory(new PropertyValueFactory<>(Constantes.ID_C));
-        firstName.setCellValueFactory(new PropertyValueFactory<>(Constantes.FIRST_NAME));
-        secondName.setCellValueFactory(new PropertyValueFactory<>(Constantes.SECOND_NAME));
-        phoneNumber.setCellValueFactory(new PropertyValueFactory<>(Constantes.PHONE_NUMBER));
-        email.setCellValueFactory(new PropertyValueFactory<>(Constantes.EMAIL));
-        date.setCellValueFactory(new PropertyValueFactory<>(Constantes.DATE));
+        idC.setCellValueFactory(new PropertyValueFactory<>("_id"));
+        firstName.setCellValueFactory(new PropertyValueFactory<>("first_name"));
+        secondName.setCellValueFactory(new PropertyValueFactory<>("second_name"));
+        phoneNumber.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        email.setCellValueFactory(new PropertyValueFactory<>("email"));
+        date.setCellValueFactory(new PropertyValueFactory<>("date_of_birth"));
         tableCustomers.getItems().addAll(serviceCustomer.getAll().getOrNull());
 
     }

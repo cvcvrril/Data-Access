@@ -103,7 +103,7 @@ public class ServiceHibernateToMongo {
             orderListToConvert = daoOrderHibernate.getAll().get();
             List<CustomerMongo> customerMongoList= customerConverter.fromHibernateToMongoCustomer(customerListToConvert, orderListToConvert).get();
             if (customerMongoList != null) {
-                if (daoMongoCustomer.save(customerMongoList).isRight()){
+                if (daoMongoCustomer.saveAll(customerMongoList).isRight()){
                     res = Either.right(1);
                 } else {
                     res = Either.left(new ErrorCObject("Hubo un problema al pasar los objetos al documento", 0));

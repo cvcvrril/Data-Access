@@ -7,9 +7,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import model.Customer;
 import model.Order;
-import model.errors.ErrorCCustomer;
+import model.errors.ErrorCObject;
+import model.mongo.CustomerMongo;
 import services.ServiceCustomer;
 import services.ServiceOrder;
 import services.ServiceOrderItem;
@@ -40,24 +40,21 @@ public class DeleteCustomerController extends BasePantallaController {
     private TableColumn<Order, LocalDate> dateOrder;
 
     @FXML
-    private TableView<Customer> tableCustomers;
+    private TableView<CustomerMongo> tableCustomers;
     @FXML
-    private TableColumn<Customer, Integer> idC;
+    private TableColumn<CustomerMongo, Integer> idC;
     @FXML
-    private TableColumn<Customer, String> firstName;
+    private TableColumn<CustomerMongo, String> firstName;
     @FXML
-    private TableColumn<Customer, String> secondName;
+    private TableColumn<CustomerMongo, String> secondName;
     @FXML
-    private TableColumn<Customer,String> email;
+    private TableColumn<CustomerMongo,String> email;
     @FXML
-    private TableColumn<Customer,Integer> phoneNumber;
+    private TableColumn<CustomerMongo,Integer> phoneNumber;
     @FXML
-    private TableColumn<Customer,LocalDate> date;
-
-
+    private TableColumn<CustomerMongo,LocalDate> date;
 
     @Inject
-
     public DeleteCustomerController(ServiceCustomer serviceCustomer, ServiceOrder serviceOrder, ServiceOrderItem serviceOrderItem) {
         this.serviceCustomer = serviceCustomer;
         this.serviceOrder = serviceOrder;
@@ -66,9 +63,9 @@ public class DeleteCustomerController extends BasePantallaController {
 
     public void delCustomer() {
         boolean conf = false;
-        Customer selCustomer = tableCustomers.getSelectionModel().getSelectedItem();
+        CustomerMongo selCustomer = tableCustomers.getSelectionModel().getSelectedItem();
         if (selCustomer != null) {
-            List<Order> customerOrders = serviceOrder.getOrdersByCustomer(selCustomer.getIdC());
+            List<Order> customerOrders = serviceOrder.getOrdersByCustomer(0);
             for (Order order:customerOrders) {
                 order.setOrderItems(serviceOrderItem.get(order.getIdOrd()).get());
             }
@@ -79,18 +76,20 @@ public class DeleteCustomerController extends BasePantallaController {
                 if (result.isPresent() && result.get() == ButtonType.CANCEL) {
                     conf = false;
                 } else {
-                    serviceOrder.save(serviceOrder.getOrdersByCustomer(selCustomer.getIdC()));
+                    serviceOrder.save(serviceOrder.getOrdersByCustomer(0));
                     conf = true;
                 }
             }
+            String firstname = selCustomer.getFirst_name();
+            String secondname = selCustomer.getSecond_name();
 
-            Either<ErrorCCustomer, Integer> res = serviceCustomer.delete(selCustomer.getIdC(), conf);
+            Either<ErrorCObject, Integer> res = serviceCustomer.deleteCustomer(firstname, secondname, conf);
             if (res.isRight()) {
                 Alert a = new Alert(Alert.AlertType.CONFIRMATION);
                 a.setContentText(Constantes.USER_DELETED);
                 a.show();
             } else {
-                ErrorCCustomer error = res.getLeft();
+                ErrorCObject error = res.getLeft();
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                 errorAlert.setContentText("There was an error when deleting the customer");
                 errorAlert.show();
@@ -105,17 +104,17 @@ public class DeleteCustomerController extends BasePantallaController {
         idOrd.setCellValueFactory(new PropertyValueFactory<>(Constantes.ID_ORD));
         idTable.setCellValueFactory(new PropertyValueFactory<>(Constantes.ID_TABLE));
         dateOrder.setCellValueFactory(new PropertyValueFactory<>(Constantes.OR_DATE));
-        tableOrdersCus.getItems().addAll(serviceOrder.getOrdersByCustomer(tableCustomers.getSelectionModel().getSelectedItem().getIdC()));
+        tableOrdersCus.getItems().addAll(serviceOrder.getOrdersByCustomer(0));
     }
 
     @Override
     public void principalCargado() {
-        idC.setCellValueFactory(new PropertyValueFactory<>(Constantes.ID_C));
-        firstName.setCellValueFactory(new PropertyValueFactory<>(Constantes.FIRST_NAME));
-        secondName.setCellValueFactory(new PropertyValueFactory<>(Constantes.SECOND_NAME));
-        email.setCellValueFactory(new PropertyValueFactory<>(Constantes.EMAIL));
-        phoneNumber.setCellValueFactory(new PropertyValueFactory<>(Constantes.PHONE_NUMBER));
-        date.setCellValueFactory(new PropertyValueFactory<>(Constantes.DATE));
+        idC.setCellValueFactory(new PropertyValueFactory<>("_id"));
+        firstName.setCellValueFactory(new PropertyValueFactory<>("first_name"));
+        secondName.setCellValueFactory(new PropertyValueFactory<>("second_name"));
+        phoneNumber.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        email.setCellValueFactory(new PropertyValueFactory<>("email"));
+        date.setCellValueFactory(new PropertyValueFactory<>("date_of_birth"));
         tableCustomers.getItems().addAll(serviceCustomer.getAll().getOrNull());
         tableCustomers.setOnMouseClicked(this::setTableOrdersCus);
 

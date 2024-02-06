@@ -10,10 +10,14 @@ import javafx.scene.input.MouseEvent;
 import model.Credential;
 import model.Customer;
 import model.errors.ErrorCCustomer;
+import model.errors.ErrorCObject;
+import model.mongo.CredentialMongo;
+import model.mongo.CustomerMongo;
 import services.ServiceCustomer;
 import ui.pantallas.common.BasePantallaController;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class UpdateCustomerController extends BasePantallaController {
     private final ServiceCustomer serviceCustomer;
@@ -31,19 +35,19 @@ public class UpdateCustomerController extends BasePantallaController {
     private DatePicker dateFieldd;
 
     @FXML
-    private TableView<Customer> tableCustomers;
+    private TableView<CustomerMongo> tableCustomers;
     @FXML
-    private TableColumn<Customer, Integer> idC;
+    private TableColumn<CustomerMongo, Integer> idC;
     @FXML
-    private TableColumn<Customer, String> firstName;
+    private TableColumn<CustomerMongo, String> firstName;
     @FXML
-    private TableColumn<Customer, String> secondName;
+    private TableColumn<CustomerMongo, String> secondName;
     @FXML
-    private TableColumn<Customer, String> email;
+    private TableColumn<CustomerMongo, String> email;
     @FXML
-    private TableColumn<Customer, Integer> phoneNumber;
+    private TableColumn<CustomerMongo, Integer> phoneNumber;
     @FXML
-    private TableColumn<Customer, LocalDate> date;
+    private TableColumn<CustomerMongo, LocalDate> date;
     @FXML
     private Button resetCustomerButton;
     @FXML
@@ -56,17 +60,17 @@ public class UpdateCustomerController extends BasePantallaController {
 
     public void updateCustomer() {
 
-        Customer selCustomer = tableCustomers.getSelectionModel().getSelectedItem();
+        CustomerMongo selCustomer = tableCustomers.getSelectionModel().getSelectedItem();
         String firstNameCus = firstNameField.getText();
         String secondNameCus = secondNameField.getText();
         String emailCus = emailField.getText();
         int phoneNumberCus = Integer.parseInt(phoneField.getText());
         LocalDate dateText = dateFieldd.getValue();
 
-        Credential credential = new Credential(selCustomer.getIdC(), getPrincipalController().getUser(), getPrincipalController().getPassword());
-        Customer updatedCustomer = new Customer(selCustomer.getIdC(), firstNameCus, secondNameCus, emailCus, phoneNumberCus, dateText, credential);
+        CredentialMongo credential = new CredentialMongo(0, getPrincipalController().getUser(), getPrincipalController().getPassword());
+        CustomerMongo updatedCustomer = new CustomerMongo(null, firstNameCus, secondNameCus, emailCus, phoneNumberCus, dateText, new ArrayList<>());
 
-        Either<ErrorCCustomer, Integer> res = serviceCustomer.update(updatedCustomer);
+        Either<ErrorCObject, Integer> res = serviceCustomer.update(updatedCustomer);
         if (res.isRight()) {
             Alert a = new Alert(Alert.AlertType.CONFIRMATION);
             a.setContentText(Constantes.CUSTOMER_UPDATED);
@@ -74,7 +78,7 @@ public class UpdateCustomerController extends BasePantallaController {
             resetFields();
             tableCustomers.getItems().setAll(serviceCustomer.getAll().getOrNull());
         } else {
-            ErrorCCustomer error = res.getLeft();
+            ErrorCObject error = res.getLeft();
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setContentText("Error al actualizar el cliente");
             errorAlert.show();
@@ -98,25 +102,25 @@ public class UpdateCustomerController extends BasePantallaController {
     @Override
     public void principalCargado() {
 
-        idC.setCellValueFactory(new PropertyValueFactory<>(Constantes.ID_C));
-        firstName.setCellValueFactory(new PropertyValueFactory<>(Constantes.FIRST_NAME));
-        secondName.setCellValueFactory(new PropertyValueFactory<>(Constantes.SECOND_NAME));
-        email.setCellValueFactory(new PropertyValueFactory<>(Constantes.EMAIL));
-        phoneNumber.setCellValueFactory(new PropertyValueFactory<>(Constantes.PHONE_NUMBER));
-        date.setCellValueFactory(new PropertyValueFactory<>(Constantes.DATE));
+        idC.setCellValueFactory(new PropertyValueFactory<>("_id"));
+        firstName.setCellValueFactory(new PropertyValueFactory<>("first_name"));
+        secondName.setCellValueFactory(new PropertyValueFactory<>("second_name"));
+        phoneNumber.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        email.setCellValueFactory(new PropertyValueFactory<>("email"));
+        date.setCellValueFactory(new PropertyValueFactory<>("date_of_birth"));
         tableCustomers.getItems().addAll(serviceCustomer.getAll().getOrNull());
         tableCustomers.setOnMouseClicked(this::handleTable);
     }
 
     private void handleTable(MouseEvent event){
         if (event.getClickCount() == 1){
-            Customer selCustomer = tableCustomers.getSelectionModel().getSelectedItem();
+            CustomerMongo selCustomer = tableCustomers.getSelectionModel().getSelectedItem();
             if (selCustomer != null) {
-                firstNameField.setText(String.valueOf(selCustomer.getFirstName()));
-                secondNameField.setText(String.valueOf(selCustomer.getSecondName()));
-                emailField.setText(String.valueOf(selCustomer.getEmailCus()));
-                phoneField.setText(String.valueOf(selCustomer.getPhoneNumber()));
-                dateFieldd.setValue(selCustomer.getDateBirth());
+                firstNameField.setText(String.valueOf(selCustomer.getFirst_name()));
+                secondNameField.setText(String.valueOf(selCustomer.getSecond_name()));
+                emailField.setText(String.valueOf(selCustomer.getEmail()));
+                phoneField.setText(String.valueOf(selCustomer.getPhone()));
+                dateFieldd.setValue(selCustomer.getDate_of_birth());
             }
         }
     }

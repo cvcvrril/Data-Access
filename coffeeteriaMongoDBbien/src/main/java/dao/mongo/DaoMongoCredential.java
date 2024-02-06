@@ -69,11 +69,12 @@ public class DaoMongoCredential {
             String credentialMongoJson = new Gson().toJson(credentialMongo);
             Document document = Document.parse(credentialMongoJson);
             est.deleteOne(document);
+            res = Either.right(1);
         }catch (Exception e){
             log.error(e.getMessage(), e);
             res = Either.left(new ErrorCObject(e.getMessage(), 0));
         }
-        return null;
+        return res;
     }
 
     public Either<ErrorCObject, Integer> update(CredentialMongo credentialMongo){

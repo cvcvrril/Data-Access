@@ -11,17 +11,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import model.Order;
 import model.OrderItem;
 import model.errors.ErrorCMenuItem;
-import model.errors.ErrorCOrder;
+import model.errors.ErrorCObject;
+import model.mongo.OrderItemMongo;
+import model.mongo.OrderMongo;
+import services.ServiceCustomer;
 import services.ServiceMenuItems;
 import services.ServiceOrder;
 import services.ServiceOrderItem;
 import ui.pantallas.common.BasePantallaController;
 ;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 
 public class DeleteOrderController extends BasePantallaController {
@@ -29,40 +30,36 @@ public class DeleteOrderController extends BasePantallaController {
     private final ServiceOrder serviceOrder;
     private final ServiceOrderItem serviceOrderItem;
     private final ServiceMenuItems serviceMenuItems;
-    @FXML
-    private TableView<OrderItem> orderItemsTable;
-    @FXML
-    private TableColumn<OrderItem, String> nameItemCell;
-    @FXML
-    private TableColumn<Order, Integer> quantityCell;
+    private final ServiceCustomer serviceCustomer;
 
     @FXML
-    private TableView<Order> tableOrders;
+    private TableView<OrderItemMongo> orderItemsTable;
     @FXML
-    private TableColumn<Order, Integer> idOrd;
+    private TableColumn<OrderItemMongo, String> nameItemCell;
+
     @FXML
-    private TableColumn<Order, Integer> idC;
+    private TableColumn<OrderMongo, Integer> quantityCell;
     @FXML
-    private TableColumn<Order, Integer> idTable;
+    private TableView<OrderMongo> tableOrders;
     @FXML
-    private TableColumn<Order, LocalDate> dateOrder;
+    private TableColumn<OrderMongo, Integer> idTable;
+    @FXML
+    private TableColumn<OrderMongo, LocalDate> dateOrder;
     @FXML
     private Button delOrderButton;
 
     @Inject
-    public DeleteOrderController(ServiceOrder serviceOrder, ServiceOrderItem serviceOrderItem, ServiceMenuItems serviceMenuItems) {
+    public DeleteOrderController(ServiceOrder serviceOrder, ServiceOrderItem serviceOrderItem, ServiceMenuItems serviceMenuItems, ServiceCustomer serviceCustomer) {
         this.serviceOrder = serviceOrder;
         this.serviceOrderItem = serviceOrderItem;
         this.serviceMenuItems = serviceMenuItems;
+        this.serviceCustomer = serviceCustomer;
     }
 
     public void principalCargado() {
-
-        idOrd.setCellValueFactory(new PropertyValueFactory<>(Constantes.ID_ORD));
-        idC.setCellValueFactory(new PropertyValueFactory<>(Constantes.ID_CO));
-        idTable.setCellValueFactory(new PropertyValueFactory<>(Constantes.ID_TABLE));
-        dateOrder.setCellValueFactory(new PropertyValueFactory<>(Constantes.OR_DATE));
-        tableOrders.getItems().addAll(serviceOrder.getAll());
+        idTable.setCellValueFactory(new PropertyValueFactory<>("table_id"));
+        dateOrder.setCellValueFactory(new PropertyValueFactory<>("order_date"));
+        tableOrders.getItems().addAll(serviceCustomer.getAllOrders().get());
         tableOrders.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 updateOrderItemsTable(newValue);
@@ -70,16 +67,16 @@ public class DeleteOrderController extends BasePantallaController {
         });
         quantityCell.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         nameItemCell.setCellValueFactory(cellData -> {
-            int menuItemId = cellData.getValue().getMenuItemObject().getIdMItem();
+            int menuItemId = cellData.getValue().getMenu_item_id();
             String menuItemName = getMenuItemNameById(menuItemId);
             return new SimpleStringProperty(menuItemName);
         });
     }
 
     public void delOrder(ActionEvent actionEvent) {
-        Order selectedOrder = tableOrders.getSelectionModel().getSelectedItem();
+        OrderMongo selectedOrder = tableOrders.getSelectionModel().getSelectedItem();
         if (selectedOrder != null) {
-            Either<ErrorCOrder, Integer> deleteResult = serviceOrder.delOrder(selectedOrder);
+            Either<ErrorCObject, Integer> deleteResult = serviceCustomer.deleteOrder(selectedOrder);
             if (deleteResult.isRight()) {
                 Alert a = new Alert(Alert.AlertType.CONFIRMATION);
                 a.setContentText(Constantes.ORDER_DELETED);
@@ -98,8 +95,8 @@ public class DeleteOrderController extends BasePantallaController {
         }
     }
 
-    public void updateOrderItemsTable(Order order) {
-        List<OrderItem> orderItems = serviceOrderItem.get(order.getIdOrd()).getOrElse(Collections.emptyList());
+    public void updateOrderItemsTable(OrderMongo order) {
+        List<OrderItemMongo> orderItems = order.getOrder_items();
         orderItemsTable.getItems().setAll(orderItems);
     }
 

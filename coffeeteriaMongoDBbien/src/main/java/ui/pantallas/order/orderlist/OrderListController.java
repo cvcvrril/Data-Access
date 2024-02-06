@@ -14,6 +14,9 @@ import model.Order;
 import model.OrderItem;
 import model.errors.ErrorCMenuItem;
 import model.errors.ErrorCOrderItem;
+import model.mongo.CustomerMongo;
+import model.mongo.OrderItemMongo;
+import model.mongo.OrderMongo;
 import services.ServiceCustomer;
 import services.ServiceMenuItems;
 import services.ServiceOrder;
@@ -21,6 +24,7 @@ import services.ServiceOrderItem;
 import ui.pantallas.common.BasePantallaController;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -35,15 +39,11 @@ public class OrderListController extends BasePantallaController {
 
 
     @FXML
-    private TableView<Order> tableOrders;
+    private TableView<OrderMongo> tableOrders;
     @FXML
-    private TableColumn<Order, Integer> id_ord;
+    private TableColumn<OrderMongo, Integer> id_table;
     @FXML
-    private TableColumn<Order, Integer> id_c;
-    @FXML
-    private TableColumn<Order, Integer> id_table;
-    @FXML
-    private TableColumn<Order, LocalDate> date_order;
+    private TableColumn<OrderMongo, LocalDate> date_order;
     @FXML
     private ComboBox<String> filterComboBox;
     @FXML
@@ -53,17 +53,11 @@ public class OrderListController extends BasePantallaController {
     @FXML
     private TextField customerNameField;
     @FXML
-    private TextField totalAmountField;
+    private TableView<OrderItemMongo> orderItemsTable;
     @FXML
-    private TableView<OrderItem> orderItemsTable;
+    private TableColumn<OrderItemMongo, String> menuItemName;
     @FXML
-    private TableColumn<OrderItem, String> menuItemName;
-    @FXML
-    private TableColumn<OrderItem, Integer> orderItemQuantity;
-    @FXML
-    private TableColumn<OrderItem, Integer> orderItemID;
-    @FXML
-    private TableColumn<OrderItem, String> priceCol;
+    private TableColumn<OrderItemMongo, Integer> orderItemQuantity;
 
     /*Constructores*/
 
@@ -78,37 +72,29 @@ public class OrderListController extends BasePantallaController {
     /*Métodos*/
     @Override
     public void principalCargado() {
-        id_ord.setCellValueFactory(new PropertyValueFactory<>(Constantes.ID_ORD));
-        id_c.setCellValueFactory(new PropertyValueFactory<>(Constantes.ID_CO));
-        id_table.setCellValueFactory(new PropertyValueFactory<>(Constantes.ID_TABLE));
-        date_order.setCellValueFactory(new PropertyValueFactory<>(Constantes.OR_DATE));
-        if (getPrincipalController().getActualCredential().getId() > 0) {
-            tableOrders.getItems().addAll(serviceOrder.getOrders(this.getPrincipalController().getActualCredential().getId()).getOrNull());
+        id_table.setCellValueFactory(new PropertyValueFactory<>("table_id"));
+        date_order.setCellValueFactory(new PropertyValueFactory<>("order_date"));
+        if (getPrincipalController().getActualCredential().getUserName().equals("root")) {
+            tableOrders.getItems().addAll(serviceCustomer.getAllOrders().get());
         } else {
-            tableOrders.getItems().addAll(serviceOrder.getAll());
+            tableOrders.getItems().addAll(serviceCustomer.getAllOrders().get());
         }
         filterComboBox.getItems().addAll("Date", "Customer", "None");
         fechaDatePicker.setVisible(false);
         customerField.setVisible(false);
         tableOrders.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                int customerId = newSelection.getIdCo();
-                Customer customer = serviceCustomer.get(customerId).getOrNull();
+                CustomerMongo customer = null;
+                //CustomerMongo customer = serviceCustomer.getByDate(newSelection).getOrNull();
                 if (customer != null) {
-                    customerNameField.setText(customer.getFirstName());
+                    customerNameField.setText(customer.getFirst_name());
                 }
-                loadOrderItems(newSelection.getIdOrd());
+                loadOrderItems(newSelection.getOrder_items());
             }
         });
         orderItemQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        orderItemID.setCellValueFactory(new PropertyValueFactory<>("id"));
         menuItemName.setCellValueFactory(cellData ->
-                new SimpleStringProperty(getMenuItemNameById(cellData.getValue().getMenuItemObject().getIdMItem())));
-        priceCol.setCellValueFactory(cellData->{
-            int menuItemId = cellData.getValue().getMenuItemObject().getIdMItem();
-            String menuItemPrice = String.valueOf(menuItemId);
-            return new SimpleStringProperty(menuItemPrice);
-        });
+                new SimpleStringProperty(getMenuItemNameById(cellData.getValue().getMenu_item_id())));
     }
 
     @FXML
@@ -117,23 +103,23 @@ public class OrderListController extends BasePantallaController {
         if (selectedItem != null) {
             if (selectedItem.equals("Date")) {
                 LocalDate selectedDate = fechaDatePicker.getValue();
-                List<Order> filteredOrders = serviceOrder.getAll().stream()
-                        .filter(order -> order.getOrDate().toLocalDate().isEqual(selectedDate))
+                List<OrderMongo> filteredOrders = serviceCustomer.getAllOrders().get().stream()
+                        .filter(order -> order.getOrder_date().toLocalDate().isEqual(selectedDate))
                         .collect(Collectors.toList());
                 updateTable(filteredOrders);
             } else if (selectedItem.equals("Customer")) {
-                int selectedCustomerId = Integer.parseInt(customerField.getText());
-                List<Order> filteredOrders = serviceOrder.getOrdersByCustomer(selectedCustomerId);
+                String selectedCustomer = customerField.getText();
+                List<OrderMongo> filteredOrders = serviceCustomer.getAllOrders().get();
                 updateTable(filteredOrders);
             } else if (selectedItem.equals("None")) {
                 tableOrders.getItems().clear();
-                tableOrders.getItems().addAll(serviceOrder.getAll());
+                tableOrders.getItems().addAll(serviceCustomer.getAllOrders().get());
                 clearFields();
             }
         }
     }
 
-    private void updateTable(List<Order> orders) {
+    private void updateTable(List<OrderMongo> orders) {
         tableOrders.getItems().clear();
         tableOrders.getItems().addAll(orders);
     }
@@ -158,39 +144,20 @@ public class OrderListController extends BasePantallaController {
 
     public void setTableOrders() {
         try {
-            Order selectedOrder = tableOrders.getSelectionModel().getSelectedItem();
+            OrderMongo selectedOrder = tableOrders.getSelectionModel().getSelectedItem();
             if (selectedOrder != null) {
-                loadOrderItemsByOrderId(selectedOrder.getIdOrd());
+                //loadOrderItemsByOrderId(selectedOrder.getOrder_items());
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
     }
 
-    private void loadOrderItems(int orderId) {
-        Either<ErrorCOrderItem, List<OrderItem>> orderItems = serviceOrderItem.get(orderId);
-        if (orderItems.isRight()) {
+    private void loadOrderItems(List<OrderItemMongo> orderItemMongos) {
+        //Either<ErrorCOrderItem, List<OrderItem>> orderItems = serviceOrderItem.get(orderId);
+        if (orderItemMongos != null) {
             orderItemsTable.getItems().clear();
-            orderItemsTable.getItems().addAll(orderItems.get());
-
-            double totalAmount = orderItems.get().stream()
-                    .mapToDouble(orderItem -> {
-                        int menuItemId = orderItem.getMenuItemObject().getIdMItem();
-                        // Obtener el precio del menú item
-                        Either<ErrorCMenuItem, Double> menuItemPrice = serviceMenuItems.getMenuItemPrice(menuItemId);
-                        if (menuItemPrice.isRight()) {
-                            return Double.parseDouble(String.valueOf(menuItemPrice.get()));
-                        } else {
-                            // Puedes manejar el error de alguna manera, como imprimir un mensaje de error
-                            log.error("Error al obtener el precio del MenuItem: {}", menuItemId);
-                            return 0.0;
-                        }
-                    })
-                    .sum();
-
-            // Actualizar el totalAmountField
-            totalAmountField.setText(String.valueOf(totalAmount));
-
+            orderItemsTable.getItems().addAll(orderItemMongos);
         } else {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setContentText("Error al mostrar los order items (loadOrderItems)");
@@ -202,7 +169,7 @@ public class OrderListController extends BasePantallaController {
         Either<ErrorCOrderItem, List<OrderItem>> orderItems = serviceOrderItem.get(orderId);
         if (orderItems.isRight()) {
             orderItemsTable.getItems().clear();
-            orderItemsTable.getItems().addAll(orderItems.get());
+            //orderItemsTable.getItems().addAll(orderItems.get());
         } else {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setContentText("Error al mostrar los Order Items(loadOrderItemsByOrderId)");

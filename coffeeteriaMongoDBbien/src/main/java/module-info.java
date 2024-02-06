@@ -57,6 +57,7 @@ module coffeeteria {
     exports dao.mongo;
     exports dao.connection;
     exports model.xml;
+    exports pruebas;
 
     /*Abrir módulos*/
 
