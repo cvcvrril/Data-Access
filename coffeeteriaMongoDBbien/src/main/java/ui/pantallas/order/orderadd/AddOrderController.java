@@ -13,12 +13,12 @@ import model.Order;
 import model.OrderItem;
 import model.TableRestaurant;
 import model.errors.ErrorCMenuItem;
+import model.errors.ErrorCObject;
 import model.errors.ErrorCOrder;
 import model.errors.ErrorCTables;
-import services.ServiceMenuItems;
-import services.ServiceOrder;
-import services.ServiceOrderItem;
-import services.ServiceTablesRestaurant;
+import model.mongo.OrderItemMongo;
+import model.mongo.OrderMongo;
+import services.*;
 import ui.pantallas.common.BasePantallaController;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,14 +33,16 @@ public class AddOrderController extends BasePantallaController {
     private final ServiceTablesRestaurant serviceTablesRestaurant;
     private final ServiceMenuItems serviceMenuItems;
     private final ServiceOrderItem serviceOrderItem;
+    private final ServiceCustomer serviceCustomer;
+
     @FXML
-    private TableView<OrderItem> mItemTable;
+    private TableView<OrderItemMongo> mItemTable;
     @FXML
-    private TableColumn<OrderItem, Integer> mItemIDCol;
+    private TableColumn<OrderItemMongo, Integer> mItemIDCol;
     @FXML
-    private TableColumn<OrderItem, String> mItemNameCol;
+    private TableColumn<OrderItemMongo, String> mItemNameCol;
     @FXML
-    private TableColumn<OrderItem, Integer> quantityCol;
+    private TableColumn<OrderItemMongo, Integer> quantityCol;
 
     @FXML
     private ComboBox<Integer> customerComboBox;
@@ -59,11 +61,12 @@ public class AddOrderController extends BasePantallaController {
     private Button removeItemButton;
 
     @Inject
-    public AddOrderController(ServiceOrder serviceOrder, ServiceTablesRestaurant serviceTablesRestaurant, ServiceMenuItems serviceMenuItems, ServiceOrderItem serviceOrderItem) {
+    public AddOrderController(ServiceOrder serviceOrder, ServiceTablesRestaurant serviceTablesRestaurant, ServiceMenuItems serviceMenuItems, ServiceOrderItem serviceOrderItem, ServiceCustomer serviceCustomer) {
         this.serviceOrder = serviceOrder;
         this.serviceTablesRestaurant = serviceTablesRestaurant;
         this.serviceMenuItems = serviceMenuItems;
         this.serviceOrderItem = serviceOrderItem;
+        this.serviceCustomer = serviceCustomer;
     }
 
     public void principalCargado() {
@@ -89,12 +92,11 @@ public class AddOrderController extends BasePantallaController {
             errorAlert.setContentText("Error al obtener la lista de mesas");
             errorAlert.show();
         }
-        mItemIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        mItemIDCol.setCellValueFactory(new PropertyValueFactory<>("_id"));
         quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         mItemNameCol.setCellValueFactory(cellData -> {
-            //int menuItemId = cellData.getValue().getMenuItemObject().getIdMItem();
-            String menuItemName = cellData.getValue().getMenuItemObject().getNameMItem() ;
-            return new SimpleStringProperty(menuItemName);
+            int menuItemId = cellData.getValue().getMenu_item_id();
+            return new SimpleStringProperty(getMenuItemNameById(menuItemId));
         });
 
     }
@@ -110,10 +112,10 @@ public class AddOrderController extends BasePantallaController {
         int tableId = tableComboBox.getValue();
         LocalDateTime orderDate = LocalDateTime.now();
 
-        List<OrderItem> orderItems = new ArrayList<>(mItemTable.getItems());
-        Order newOrder = new Order(null,orderDate,customerId, tableId, orderItems);
+        List<OrderItemMongo> orderItems = new ArrayList<>(mItemTable.getItems());
+        OrderMongo newOrder = new OrderMongo(orderDate, tableId, orderItems);
 
-        Either<ErrorCOrder, Integer> saveResult = serviceOrder.add(newOrder);
+        Either<ErrorCObject, Integer> saveResult = serviceCustomer.addOrder(newOrder);
         if (saveResult.isRight()) {
             Alert a = new Alert(Alert.AlertType.CONFIRMATION);
             a.setContentText(Constantes.THE_ORDER_HAS_BEEN_ADDED);
@@ -140,10 +142,7 @@ public class AddOrderController extends BasePantallaController {
             if (menuItem.getNameMItem().equals(selectedItemName)) {
                 selectedMenuItem = menuItem;
                 if (selectedMenuItem != null) {
-                    int lastOrderItemId = getLastOrderItemIdFromDatabase();
-                    OrderItem newOrderItem = new OrderItem (0, quantity, selectedMenuItem, serviceOrder.getOrder(0).getOrNull());
-
-                    // Agregar el nuevo OrderItem a la tabla
+                    OrderItemMongo newOrderItem = new OrderItemMongo (0, quantity);
                     mItemTable.getItems().add(newOrderItem);
                     menuItemsCBox.getSelectionModel().clearSelection();
                     menuItemQuantity.clear();

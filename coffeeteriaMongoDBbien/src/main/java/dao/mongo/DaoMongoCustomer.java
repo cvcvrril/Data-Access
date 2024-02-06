@@ -126,11 +126,25 @@ public class DaoMongoCustomer {
         return res;
     }
 
-    public Either<ErrorCObject, OrderMongo> getOrder() {
+    public Either<ErrorCObject, OrderMongo> getOrders() {
+        Either<ErrorCObject, Integer> res;
+        try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
+            MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
+            MongoCollection<Document> est = db.getCollection("customers");
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
+                    .create();
+            List<Document> filtro = est.find()
+                    .projection(fields(excludeId(), include("orders")))
+                    .into(new ArrayList<>());
+
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+            res = Either.left(new ErrorCObject(e.getMessage(), 0));
+        }
         return null;
     }
-
-    //TODO: arreglar lo de los segundos (FORMATO ES )
 
     public Either<ErrorCObject, CustomerMongo> getCustomersByDate(OrderMongo orderMongo) {
         Either<ErrorCObject, CustomerMongo> res;
@@ -185,12 +199,22 @@ public class DaoMongoCustomer {
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
             MongoCollection<Document> est = db.getCollection("customers");
-
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
+                    .create();
+            List<Document> filtro = est.find()
+                    .projection(fields(excludeId(), include("orders")))
+                    .into(new ArrayList<>());
+            String orderMongoJson = gson.toJson(orderMongo);
+            Document document = Document.parse(orderMongoJson);
+            est.insertOne(document);
+            res = Either.right(1);
         }catch (Exception e){
             log.error(e.getMessage(), e);
             res = Either.left(new ErrorCObject(e.getMessage(), 0));
         }
-        return null;
+        return res;
     }
 
     public Either<ErrorCObject, Integer> updateCustomers(CustomerMongo customerMongo) {
@@ -220,6 +244,19 @@ public class DaoMongoCustomer {
             res = Either.left(new ErrorCObject(e.getMessage(), 0));
         }
         return res;
+    }
+
+    public Either<ErrorCObject, Integer> updateOrder(CustomerMongo customerMongo) {
+        Either<ErrorCObject, Integer> res;
+        try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
+            MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
+            MongoCollection<Document> est = db.getCollection("customers");
+
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+            res = Either.left(new ErrorCObject(e.getMessage(), 0));
+        }
+        return null;
     }
 
     public Either<ErrorCObject, Integer> deleteCustomer(String first_name, String second_name) {
