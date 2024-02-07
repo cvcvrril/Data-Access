@@ -64,7 +64,7 @@ public class AddCustomerController extends BasePantallaController {
         }
 
         CustomerMongo newCustomer = new CustomerMongo(null,firstName, secondName, email,phoneNumber, date, null);
-        CredentialMongo newCredential = new CredentialMongo(0, username, password);
+        CredentialMongo newCredential = new CredentialMongo(null, username, password);
 
         Either<ErrorCObject, Integer> res = serviceCustomer.add(newCustomer, newCredential);
         clearFields();

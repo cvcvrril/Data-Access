@@ -67,7 +67,7 @@ public class UpdateCustomerController extends BasePantallaController {
         int phoneNumberCus = Integer.parseInt(phoneField.getText());
         LocalDate dateText = dateFieldd.getValue();
 
-        CredentialMongo credential = new CredentialMongo(0, getPrincipalController().getUser(), getPrincipalController().getPassword());
+        CredentialMongo credential = new CredentialMongo(null, getPrincipalController().getUser(), getPrincipalController().getPassword());
         CustomerMongo updatedCustomer = new CustomerMongo(null, firstNameCus, secondNameCus, emailCus, phoneNumberCus, dateText, new ArrayList<>());
 
         Either<ErrorCObject, Integer> res = serviceCustomer.update(updatedCustomer);

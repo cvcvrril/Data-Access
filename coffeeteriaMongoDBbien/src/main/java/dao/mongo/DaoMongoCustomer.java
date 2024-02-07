@@ -18,6 +18,7 @@ import model.mongo.CustomerMongo;
 import model.mongo.OrderMongo;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,17 +31,21 @@ import static com.mongodb.client.model.Projections.*;
 @Log4j2
 public class DaoMongoCustomer {
 
+    private Gson gson;
+
+    public DaoMongoCustomer() {
+        this.gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
+                .create();
+    }
+
     public Either<ErrorCObject, Integer> saveAll(List<CustomerMongo> customerMongoList) {
         Either<ErrorCObject, Integer> res;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
             MongoCollection<Document> est = db.getCollection("customers");
             for (CustomerMongo customerMongo : customerMongoList) {
-                Gson gson = new GsonBuilder()
-                        .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-                        .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
-                        .create();
-
                 String customerMongoJson = gson.toJson(customerMongo);
                 Document document = Document.parse(customerMongoJson);
                 est.insertOne(document);
@@ -180,9 +185,14 @@ public class DaoMongoCustomer {
                     .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
                     .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
                     .create();
+
             String credentialMongoJson = gson.toJson(credentialMongo);
             Document documentCredential = Document.parse(credentialMongoJson);
             estCredentials.insertOne(documentCredential);
+
+            ObjectId idCred = documentCredential.getObjectId(credentialMongo);
+            customerMongo.set_id(idCred);
+
             String customerMongoJson = gson.toJson(customerMongo);
             Document documentCustomer = Document.parse(customerMongoJson);
             estCustomers.insertOne(documentCustomer);
@@ -271,22 +281,35 @@ public class DaoMongoCustomer {
         return res;
     }
 
-    public Either<ErrorCObject, Integer> deleteCustomer(String first_name, String second_name) {
+    public Either<ErrorCObject, Integer> deleteCustomer(CustomerMongo customerMongo) {
         Either<ErrorCObject, Integer> res;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
-            MongoCollection<Document> est = db.getCollection("customers");
-            Document filtro = new Document("first_name", first_name).append("second_name", second_name);
-            Document document = est.find(filtro).first();
-            Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
-                    .create();
-            CustomerMongo customerMongo = gson.fromJson(document.toJson(), CustomerMongo.class);
-            if (customerMongo != null) {
-                est.deleteOne(document);
-                res = Either.right(1);
-            } else {
+            MongoCollection<Document> estCustomers = db.getCollection("customers");
+            MongoCollection<Document> estCredentials = db.getCollection("credentials");
+            Document filtroCustomers = new Document("first_name", customerMongo.getFirst_name()).append("second_name", customerMongo.getSecond_name());
+            Document filtroCredentials = new Document("_id", customerMongo.get_id());
+            Document documentCustomers = estCustomers.find(filtroCustomers).first();
+            if (documentCustomers != null){
+                CredentialMongo credentialMongoDelete = gson.fromJson(documentCustomers.toJson(), CredentialMongo.class);
+                Document documentCredentials = estCustomers.find(filtroCredentials).first();
+                if (documentCredentials != null){
+                    CustomerMongo customerMongoDelete = gson.fromJson(documentCustomers.toJson(), CustomerMongo.class);
+                    if (credentialMongoDelete != null){
+                        estCredentials.deleteOne(documentCredentials);
+                        if (customerMongoDelete != null) {
+                            estCustomers.deleteOne(documentCustomers);
+                            res = Either.right(1);
+                        } else {
+                            res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
+                        }
+                    }else {
+                        res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
+                    }
+                }else {
+                    res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
+                }
+            }else{
                 res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
             }
         } catch (Exception e) {

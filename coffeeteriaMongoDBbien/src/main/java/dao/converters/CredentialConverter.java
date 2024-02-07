@@ -12,24 +12,12 @@ import java.util.List;
 @Log4j2
 public class CredentialConverter {
 
-    public Either<ErrorCObject, Credential> fromMongoToHibernateCredential(CredentialMongo credentialMongo){
-        Either<ErrorCObject, Credential> res;
-        try {
-            Credential credentialConverted = new Credential(credentialMongo.get_id(), credentialMongo.getUsername(), credentialMongo.getPassword());
-            res = Either.right(credentialConverted);
-        }catch (Exception e){
-            log.error(e.getMessage(), e);
-            res = Either.left(new ErrorCObject(e.getMessage(), 0));
-        }
-        return res;
-    }
-
     public Either<ErrorCObject, List<CredentialMongo>> fromHibernateToMongoCredential(List<Credential> credentialList){
         Either<ErrorCObject, List<CredentialMongo>> res;
         List<CredentialMongo> credentialMongoList = new ArrayList<>();
         try {
             for (Credential credential: credentialList){
-                CredentialMongo credentialMongo = new CredentialMongo(credential.getId(), credential.getUserName(), credential.getPassword());
+                CredentialMongo credentialMongo = new CredentialMongo(null, credential.getUserName(), credential.getPassword());
                 credentialMongoList.add(credentialMongo);
             }
             res = Either.right(credentialMongoList);

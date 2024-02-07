@@ -43,10 +43,10 @@ public class ServiceCustomer {
         return daoMongoCustomer.getCustomersByDate(orderMongo);
     }
 
-    public Either<ErrorCObject, Integer> deleteCustomer(String first_name, String second_name, boolean conf) {
-        Either<ErrorCObject, CustomerMongo> res = daoMongoCustomer.getCustomer(first_name, second_name);
+    public Either<ErrorCObject, Integer> deleteCustomer(CustomerMongo customerMongo, boolean conf) {
+        Either<ErrorCObject, CustomerMongo> res = daoMongoCustomer.getCustomer(customerMongo.getFirst_name(), customerMongo.getSecond_name());
         if (res.isRight()) {
-            return daoMongoCustomer.deleteCustomer(first_name,second_name);
+            return daoMongoCustomer.deleteCustomer(customerMongo);
             //return daoCustomerHibernate.delete(i, conf);
         } else {
             return Either.left(res.getLeft());

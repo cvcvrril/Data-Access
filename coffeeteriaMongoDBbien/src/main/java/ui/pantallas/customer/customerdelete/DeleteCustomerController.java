@@ -80,10 +80,7 @@ public class DeleteCustomerController extends BasePantallaController {
                     conf = true;
                 }
             }
-            String firstname = selCustomer.getFirst_name();
-            String secondname = selCustomer.getSecond_name();
-
-            Either<ErrorCObject, Integer> res = serviceCustomer.deleteCustomer(firstname, secondname, conf);
+            Either<ErrorCObject, Integer> res = serviceCustomer.deleteCustomer(selCustomer, conf);
             if (res.isRight()) {
                 Alert a = new Alert(Alert.AlertType.CONFIRMATION);
                 a.setContentText(Constantes.USER_DELETED);
