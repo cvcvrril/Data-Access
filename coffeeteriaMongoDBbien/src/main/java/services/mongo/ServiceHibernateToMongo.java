@@ -6,6 +6,7 @@ import dao.converters.MenuItemConverter;
 import dao.hibernate.*;
 import dao.mongo.DaoMongoCredential;
 import dao.mongo.DaoMongoCustomer;
+import dao.mongo.DaoMongoMenuItem;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import lombok.extern.log4j.Log4j2;
@@ -13,6 +14,7 @@ import model.*;
 import model.errors.ErrorCObject;
 import model.mongo.CredentialMongo;
 import model.mongo.CustomerMongo;
+import model.mongo.MenuItemMongo;
 
 import java.util.List;
 
@@ -32,9 +34,10 @@ public class ServiceHibernateToMongo {
 
     private final DaoMongoCredential daoMongoCredential;
     private final DaoMongoCustomer daoMongoCustomer;
+    private final DaoMongoMenuItem daoMongoMenuItem;
 
     @Inject
-    public ServiceHibernateToMongo(DaoOrderHibernate daoOrderHibernate, DaoCredentialHibernate daoCredentialHibernate, DaoCustomerHibernate daoCustomerHibernate, DaoMenuItemHibernate daoMenuItemHibernate, CredentialConverter credentialConverter, MenuItemConverter menuItemConverter, CustomerConverter customerConverter, DaoMongoCredential daoMongoCredential, DaoMongoCustomer daoMongoCustomer) {
+    public ServiceHibernateToMongo(DaoOrderHibernate daoOrderHibernate, DaoCredentialHibernate daoCredentialHibernate, DaoCustomerHibernate daoCustomerHibernate, DaoMenuItemHibernate daoMenuItemHibernate, CredentialConverter credentialConverter, MenuItemConverter menuItemConverter, CustomerConverter customerConverter, DaoMongoCredential daoMongoCredential, DaoMongoCustomer daoMongoCustomer, DaoMongoMenuItem daoMongoMenuItem) {
         this.daoOrderHibernate = daoOrderHibernate;
         this.daoCredentialHibernate = daoCredentialHibernate;
         this.daoCustomerHibernate = daoCustomerHibernate;
@@ -44,6 +47,7 @@ public class ServiceHibernateToMongo {
         this.customerConverter = customerConverter;
         this.daoMongoCredential = daoMongoCredential;
         this.daoMongoCustomer = daoMongoCustomer;
+        this.daoMongoMenuItem = daoMongoMenuItem;
     }
 
     public Either<ErrorCObject, Integer> transferAllHibernateToMongo() {
@@ -125,9 +129,14 @@ public class ServiceHibernateToMongo {
         List<MenuItem> menuItemListToConvert;
         try {
             menuItemListToConvert = daoMenuItemHibernate.getAll().get();
-            if (menuItemConverter.fromHibernateToMongoMenuItem(menuItemListToConvert).isRight()) {
-                res = Either.right(1);
-            } else {
+            List<MenuItemMongo> menuItemMongoList = menuItemConverter.fromHibernateToMongoMenuItem(menuItemListToConvert).get();
+            if (menuItemMongoList != null){
+                if (daoMongoMenuItem.save(menuItemMongoList).isRight()){
+                    res = Either.right(1);
+                } else {
+                    res = Either.left(new ErrorCObject("Hubo un problema al pasar los objetos al documento", 0));
+                }
+            }else {
                 res = Either.left(new ErrorCObject("Hubo un problema al convertir los objetos", 0));
             }
         } catch (Exception e) {
