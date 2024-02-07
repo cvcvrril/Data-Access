@@ -246,17 +246,29 @@ public class DaoMongoCustomer {
         return res;
     }
 
-    public Either<ErrorCObject, Integer> updateOrder(CustomerMongo customerMongo) {
+    public Either<ErrorCObject, Integer> updateOrder(OrderMongo orderMongo) {
         Either<ErrorCObject, Integer> res;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
             MongoCollection<Document> est = db.getCollection("customers");
-
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
+                    .create();
+            Bson updates = Updates.combine(
+                    Updates.set("order_date", orderMongo.getOrder_date()),
+                    Updates.set("table_id", orderMongo.getTable_id()),
+                    Updates.set("order_items", orderMongo.getOrder_items())
+            );
+            String customerMongoJson = gson.toJson(orderMongo);
+            Document document = Document.parse(customerMongoJson);
+            est.findOneAndUpdate(document, updates);
+            res = Either.right(1);
         }catch (Exception e){
             log.error(e.getMessage(), e);
             res = Either.left(new ErrorCObject(e.getMessage(), 0));
         }
-        return null;
+        return res;
     }
 
     public Either<ErrorCObject, Integer> deleteCustomer(String first_name, String second_name) {

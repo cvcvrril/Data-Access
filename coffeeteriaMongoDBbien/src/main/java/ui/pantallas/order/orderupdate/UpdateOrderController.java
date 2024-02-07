@@ -15,10 +15,9 @@ import model.OrderItem;
 import model.TableRestaurant;
 import model.errors.ErrorCMenuItem;
 import model.errors.ErrorCTables;
-import services.ServiceMenuItems;
-import services.ServiceOrder;
-import services.ServiceOrderItem;
-import services.ServiceTablesRestaurant;
+import model.mongo.OrderItemMongo;
+import model.mongo.OrderMongo;
+import services.*;
 import ui.pantallas.common.BasePantallaController;
 
 
@@ -33,23 +32,14 @@ public class UpdateOrderController extends BasePantallaController {
     private final ServiceOrderItem serviceOrderItem;
     private final ServiceMenuItems serviceMenuItems;
     private final ServiceTablesRestaurant serviceTablesRestaurant;
+    private final ServiceCustomer serviceCustomer;
 
     @FXML
-    private TableView<Order> tableOrders;
+    private TableView<OrderMongo> tableOrders;
     @FXML
-    private TableColumn<Order, Integer> id_ord;
+    private TableColumn<OrderMongo, Integer> id_table;
     @FXML
-    private TableColumn<Order, Integer> id_c;
-    @FXML
-    private TableColumn<Order, Integer> id_table;
-    @FXML
-    private TableColumn<Order, LocalDate> date_order;
-    @FXML
-    private Button addItemButton;
-    @FXML
-    private Button removeItemButton;
-    @FXML
-    private Button updateOrderButton;
+    private TableColumn<OrderMongo, LocalDate> date_order;
     @FXML
     private TextField dateField;
     @FXML
@@ -62,58 +52,58 @@ public class UpdateOrderController extends BasePantallaController {
     private ComboBox<String> menuItemComboBox;
 
     @FXML
-    private TableView<OrderItem> orderItemTable;
+    private TableView<OrderItemMongo> orderItemTable;
     @FXML
-    private TableColumn<OrderItem, String> nameItemCell;
+    private TableColumn<OrderItemMongo, String> nameItemCell;
     @FXML
-    private TableColumn<OrderItem, Integer> quantityCell;
+    private TableColumn<OrderItemMongo, Integer> quantityCell;
     private int lastOrderItemId;
 
     @Inject
-    public UpdateOrderController(ServiceOrder serviceOrder, ServiceOrderItem serviceOrderItem, ServiceMenuItems serviceMenuItems, ServiceTablesRestaurant serviceTablesRestaurant) {
+    public UpdateOrderController(ServiceOrder serviceOrder, ServiceOrderItem serviceOrderItem, ServiceMenuItems serviceMenuItems, ServiceTablesRestaurant serviceTablesRestaurant, ServiceCustomer serviceCustomer) {
         this.serviceOrder = serviceOrder;
         this.serviceOrderItem = serviceOrderItem;
         this.serviceMenuItems = serviceMenuItems;
         this.serviceTablesRestaurant = serviceTablesRestaurant;
+        this.serviceCustomer = serviceCustomer;
     }
 
     @Override
     public void principalCargado() {
         lastOrderItemId = serviceOrderItem.getAll().get().size() + 1;
         //Order Table Columns
-        id_ord.setCellValueFactory(new PropertyValueFactory<>(Constantes.ID_ORD));
-        id_c.setCellValueFactory(new PropertyValueFactory<>(Constantes.ID_CO));
-        id_table.setCellValueFactory(new PropertyValueFactory<>(Constantes.ID_TABLE));
-        date_order.setCellValueFactory(new PropertyValueFactory<>(Constantes.OR_DATE));
+        id_table.setCellValueFactory(new PropertyValueFactory<>("table_id"));
+        date_order.setCellValueFactory(new PropertyValueFactory<>("order_date"));
         //Llenar OrderTable
         if (getPrincipalController().getActualCredential().getId() > 0) {
-            tableOrders.getItems().addAll(serviceOrder.getOrders(this.getPrincipalController().getActualCredential().getId()).getOrNull());
+            tableOrders.getItems().addAll(serviceCustomer.getAllOrders().get());
         } else {
-            tableOrders.getItems().addAll(serviceOrder.getAll());
+            tableOrders.getItems().addAll(serviceCustomer.getAllOrders().get());
         }
         tableOrders.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 orderItemTable.getItems().clear();
-                Order selOrder = tableOrders.getSelectionModel().getSelectedItem();
+                OrderMongo selOrder = tableOrders.getSelectionModel().getSelectedItem();
                 if (selOrder != null) {
-                    dateField.setText(String.valueOf(selOrder.getOrDate()));
+                    dateField.setText(String.valueOf(selOrder.getOrder_date()));
                 }
-                orderItemTable.getItems().addAll(serviceOrderItem.get(tableOrders.getSelectionModel().getSelectedItem().getIdOrd()).getOrNull());
-
+                //orderItemTable.getItems().addAll(serviceOrderItem.get(tableOrders.getSelectionModel().getSelectedItem().getIdOrd()).getOrNull());
+                assert selOrder != null;
+                orderItemTable.getItems().addAll(selOrder.getOrder_items());
             }
         });
         //Columnas Item table
         quantityCell.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         nameItemCell.setCellValueFactory(cellData -> {
-            int menuItemId = cellData.getValue().getMenuItemObject().getIdMItem();
+            int menuItemId = cellData.getValue().getMenu_item_id();
             String menuItemName = getMenuItemNameById(menuItemId);
             return new SimpleStringProperty(menuItemName);
         });
         //Llenar los campos de OrderItem
         orderItemTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                orderItemTable.getSelectionModel().getSelectedItem().setMenuItemObject(serviceMenuItems.get(orderItemTable.getSelectionModel().getSelectedItem().getMenuItemObject().getIdMItem()).getOrNull());
-                menuItemComboBox.setValue(orderItemTable.getSelectionModel().getSelectedItem().getMenuItemObject().getNameMItem());
+                orderItemTable.getSelectionModel().getSelectedItem().getMenu_item_id();
+                menuItemComboBox.setValue(String.valueOf(orderItemTable.getSelectionModel().getSelectedItem().getMenu_item_id()));
                 quantityField.setText(String.valueOf(orderItemTable.getSelectionModel().getSelectedItem().getQuantity()));
             }
         });
@@ -159,7 +149,7 @@ public class UpdateOrderController extends BasePantallaController {
             a.show();
             // Agregar el nuevo OrderItem a la tabla
             //orderItemTable.getItems().add(new OrderItem(lastOrderItemId, tableOrders.getSelectionModel().getSelectedItem().getIdOrd(), selectedMenuItem.getIdMItem(), quantity, serviceMenuItems.get(lastOrderItemId).getOrNull()));
-            orderItemTable.getItems().add(new OrderItem(tableOrders.getSelectionModel().getSelectedItem().getIdOrd(), quantity, selectedMenuItem, serviceOrder.getOrder(tableOrders.getSelectionModel().getSelectedItem().getIdOrd()).getOrNull()));
+            orderItemTable.getItems().add(new OrderItemMongo(selectedMenuItem.getIdMItem(), quantity));
             menuItemComboBox.getSelectionModel().clearSelection();
             quantityField.clear();
             lastOrderItemId = lastOrderItemId + 1;
@@ -188,22 +178,16 @@ public class UpdateOrderController extends BasePantallaController {
         } else {
             customerId = customerComboBox.getValue();
         }
-        Order selectedOrder = tableOrders.getSelectionModel().getSelectedItem();
+        OrderMongo selectedOrder = tableOrders.getSelectionModel().getSelectedItem();
         if (selectedOrder != null) {
-            selectedOrder.setIdCo(customerId);
-            selectedOrder.setIdTable(Integer.parseInt(String.valueOf(tableComboBox.getValue())));
-            serviceOrder.updateOrder(selectedOrder);
-            if (serviceOrderItem.get(selectedOrder.getIdOrd()) != null) {
-                serviceOrderItem.delete(selectedOrder.getIdOrd());
-            }
-            List<OrderItem> orderItems =new ArrayList<>(orderItemTable.getItems());
-            serviceOrderItem.add(orderItems, selectedOrder.getIdOrd());
+            selectedOrder.setTable_id(Integer.parseInt(String.valueOf(tableComboBox.getValue())));
+            serviceCustomer.updateOrder(selectedOrder);
             Alert a = new Alert(Alert.AlertType.CONFIRMATION);
             a.setContentText(Constantes.ORDER_UPDATED);
             a.show();
         }
         orderItemTable.getItems().clear();
-        orderItemTable.getItems().addAll(serviceOrderItem.getAll().getOrNull());
+        orderItemTable.getItems().addAll(selectedOrder.getOrder_items());
     }
 
     public String getMenuItemNameById(int id) {

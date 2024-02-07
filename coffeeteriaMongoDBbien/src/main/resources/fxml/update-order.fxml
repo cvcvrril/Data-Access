@@ -21,12 +21,10 @@
           <TableColumn fx:id="quantityCell" prefWidth="56.0" text="Quantity" />
         </columns>
       </TableView>
-      <TableView fx:id="tableOrders" layoutX="221.0" layoutY="255.0" prefHeight="145.0" prefWidth="354.0">
+      <TableView fx:id="tableOrders" layoutX="221.0" layoutY="255.0" prefHeight="145.0" prefWidth="249.0">
         <columns>
-          <TableColumn fx:id="id_ord" prefWidth="75.0" text="Order ID" />
-          <TableColumn fx:id="id_c" prefWidth="75.0" text="Customer ID" />
-            <TableColumn fx:id="id_table" prefWidth="74.0" text="Table ID" />
-            <TableColumn fx:id="date_order" prefWidth="114.0" text="Date" />
+            <TableColumn fx:id="id_table" prefWidth="84.0" text="Table ID" />
+            <TableColumn fx:id="date_order" prefWidth="155.0" text="Date" />
         </columns>
       </TableView>
       <Button fx:id="addItemButton" layoutX="441.0" layoutY="201.0" mnemonicParsing="false" onAction="#addItem" text="Add" />

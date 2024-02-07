@@ -62,6 +62,10 @@ public class ServiceCustomer {
         return daoMongoCustomer.updateCustomers(customer);
     }
 
+    public Either<ErrorCObject, Integer> updateOrder(OrderMongo orderMongo){
+        return daoMongoCustomer.updateOrder(orderMongo);
+    }
+
     public Either<ErrorCObject, Integer> add(CustomerMongo customer, CredentialMongo credential) {
         //return daoCustomerHibernate.add(customer,credential);
         return daoMongoCustomer.addCustomers(customer, credential);
