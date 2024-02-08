@@ -29,8 +29,6 @@ public class ServiceCustomer {
         return daoMongoCustomer.getAllCustomers();
     }
 
-    //TODO: Montar esto para orders
-
     public Either<ErrorCObject, List<OrderMongo>> getAllOrders() {
         return daoMongoCustomer.getAllOrders();
     }

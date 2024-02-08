@@ -10,6 +10,7 @@ import javafx.scene.input.MouseEvent;
 import model.Order;
 import model.errors.ErrorCObject;
 import model.mongo.CustomerMongo;
+import model.mongo.OrderMongo;
 import services.ServiceCustomer;
 import services.ServiceOrder;
 import services.ServiceOrderItem;
@@ -29,15 +30,11 @@ public class DeleteCustomerController extends BasePantallaController {
     private Button delCustomer;
 
     @FXML
-    private  TableView<Order> tableOrdersCus;
+    private  TableView<OrderMongo> tableOrdersCus;
     @FXML
-    private TableColumn<Order, Integer> idOrd;
+    private TableColumn<OrderMongo,Integer> idTable;
     @FXML
-    private TableColumn<Order,Integer> idC2;
-    @FXML
-    private TableColumn<Order,Integer> idTable;
-    @FXML
-    private TableColumn<Order, LocalDate> dateOrder;
+    private TableColumn<OrderMongo, LocalDate> dateOrder;
 
     @FXML
     private TableView<CustomerMongo> tableCustomers;
@@ -96,12 +93,11 @@ public class DeleteCustomerController extends BasePantallaController {
     }
 
     public void setTableOrdersCus(MouseEvent event){
+        CustomerMongo customerMongo = tableCustomers.getSelectionModel().getSelectedItem();
         tableOrdersCus.getItems().clear();
-        idC2.setCellValueFactory(new PropertyValueFactory<>(Constantes.ID_CO));
-        idOrd.setCellValueFactory(new PropertyValueFactory<>(Constantes.ID_ORD));
-        idTable.setCellValueFactory(new PropertyValueFactory<>(Constantes.ID_TABLE));
-        dateOrder.setCellValueFactory(new PropertyValueFactory<>(Constantes.OR_DATE));
-        tableOrdersCus.getItems().addAll(serviceOrder.getOrdersByCustomer(0));
+        idTable.setCellValueFactory(new PropertyValueFactory<>("table_id"));
+        dateOrder.setCellValueFactory(new PropertyValueFactory<>("order_date"));
+        tableOrdersCus.getItems().addAll(customerMongo.getOrders());
     }
 
     @Override
