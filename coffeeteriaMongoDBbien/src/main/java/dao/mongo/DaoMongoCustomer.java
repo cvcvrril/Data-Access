@@ -251,7 +251,7 @@ public class DaoMongoCustomer {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
             MongoCollection<Document> estCustomers = db.getCollection("customers");
             MongoCollection<Document> estCredentials = db.getCollection("credentials");
-            Document filtroCustomers = new Document("first_name", customerMongo.getFirst_name()).append("second_name", customerMongo.getSecond_name());
+            Document filtroCustomers = new Document("_id", customerMongo.get_id());
             Document filtroCredentials = new Document("_id", customerMongo.get_id());
             Document documentCustomers = estCustomers.find(filtroCustomers).first();
             Document documentCredentials = estCustomers.find(filtroCredentials).first();
