@@ -67,10 +67,6 @@ public class DaoMongoCustomer {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
             MongoCollection<Document> est = db.getCollection("customers");
             List<Document> documents = est.find().into(new ArrayList<>());
-            Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
-                    .create();
             for (Document document : documents) {
                 customerMongoList.add(gson.fromJson(document.toJson(), CustomerMongo.class));
             }
@@ -88,10 +84,6 @@ public class DaoMongoCustomer {
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
             MongoCollection<Document> est = db.getCollection("customers");
-            Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
-                    .create();
             List<Document> filtro = est.find()
                     .projection(fields(excludeId(), include("orders")))
                     .into(new ArrayList<>());
@@ -116,10 +108,6 @@ public class DaoMongoCustomer {
             MongoCollection<Document> est = db.getCollection("customers");
             Document filtro = new Document("first_name", first_name).append("second_name", second_name);
             Document document = est.find(filtro).first();
-            Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
-                    .create();
             CustomerMongo customerMongo = gson.fromJson(document.toJson(), CustomerMongo.class);
             if (customerMongo != null) {
                 res = Either.right(customerMongo);
@@ -138,10 +126,6 @@ public class DaoMongoCustomer {
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
             MongoCollection<Document> est = db.getCollection("customers");
-            Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
-                    .create();
             List<Document> filtro = est.find()
                     .projection(fields(excludeId(), include("orders")))
                     .into(new ArrayList<>());
@@ -160,10 +144,6 @@ public class DaoMongoCustomer {
             MongoCollection<Document> est = db.getCollection("customers");
             Document filtro = new Document("order_date", orderMongo.getOrder_date());
             Document document = est.find(filtro).first();
-            Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
-                    .create();
             CustomerMongo customerMongo = gson.fromJson(document.toJson(), CustomerMongo.class);
             if (customerMongo != null) {
                 res = Either.right(customerMongo);
@@ -206,10 +186,6 @@ public class DaoMongoCustomer {
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
             MongoCollection<Document> est = db.getCollection("customers");
-            Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
-                    .create();
             List<Document> filtro = est.find()
                     .projection(fields(excludeId(), include("orders")))
                     .into(new ArrayList<>());
@@ -229,11 +205,6 @@ public class DaoMongoCustomer {
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
             MongoCollection<Document> est = db.getCollection("customers");
-            Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
-                    .create();
-
             Bson updates = Updates.combine(
                     Updates.set("first_name", customerMongo.getFirst_name()),
                     Updates.set("second_name", customerMongo.getSecond_name()),
@@ -258,10 +229,6 @@ public class DaoMongoCustomer {
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
             MongoCollection<Document> est = db.getCollection("customers");
-            Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
-                    .create();
             Bson updates = Updates.combine(
                     Updates.set("order_date", orderMongo.getOrder_date()),
                     Updates.set("table_id", orderMongo.getTable_id()),
@@ -287,9 +254,9 @@ public class DaoMongoCustomer {
             Document filtroCustomers = new Document("first_name", customerMongo.getFirst_name()).append("second_name", customerMongo.getSecond_name());
             Document filtroCredentials = new Document("_id", customerMongo.get_id());
             Document documentCustomers = estCustomers.find(filtroCustomers).first();
+            Document documentCredentials = estCustomers.find(filtroCredentials).first();
             if (documentCustomers != null){
                 CredentialMongo credentialMongoDelete = gson.fromJson(documentCustomers.toJson(), CredentialMongo.class);
-                Document documentCredentials = estCustomers.find(filtroCredentials).first();
                 if (documentCredentials != null){
                     CustomerMongo customerMongoDelete = gson.fromJson(documentCustomers.toJson(), CustomerMongo.class);
                     if (credentialMongoDelete != null){
@@ -323,10 +290,6 @@ public class DaoMongoCustomer {
             MongoCollection<Document> est = db.getCollection("customers");
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String formDate = orderMongo.getOrder_date().format(dateTimeFormatter);
-            Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
-                    .create();
             Bson bsonfilter = Filters.elemMatch("orders", Filters.regex("order_date", formDate));
             Document order = est.find()
                     .projection(fields(excludeId(), include("orders")))
