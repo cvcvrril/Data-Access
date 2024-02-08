@@ -27,6 +27,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Projections.*;
 
 @Log4j2
@@ -205,18 +206,10 @@ public class DaoMongoCustomer {
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
             MongoCollection<Document> est = db.getCollection("customers");
-            Bson updates = Updates.combine(
-                    Updates.set("first_name", customerMongo.getFirst_name()),
-                    Updates.set("second_name", customerMongo.getSecond_name()),
-                    Updates.set("email", customerMongo.getEmail()),
-                    Updates.set("phone", customerMongo.getPhone()),
-                    Updates.set("date_of_birth", customerMongo.getDate_of_birth()),
-                    Updates.set("orders", customerMongo.getOrders())
-            );
             String customerMongoJson = gson.toJson(customerMongo);
             Document document = Document.parse(customerMongoJson);
-            est.findOneAndUpdate(document, updates);
-            res = Either.right(1);
+            int resint = (int) est.replaceOne(eq("_id", customerMongo.get_id()), document).getModifiedCount();
+            res = Either.right(resint);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = Either.left(new ErrorCObject(e.getMessage(), 0));
