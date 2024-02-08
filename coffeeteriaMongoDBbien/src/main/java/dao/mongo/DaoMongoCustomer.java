@@ -10,6 +10,7 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import common.LocalDateTimeTypeAdapter;
 import common.LocalDateTypeAdapter;
+import common.ObjectIdTypeAdapter;
 import io.vavr.control.Either;
 import lombok.extern.log4j.Log4j2;
 import model.errors.ErrorCObject;
@@ -37,6 +38,7 @@ public class DaoMongoCustomer {
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
+                .registerTypeAdapter(ObjectId.class, new ObjectIdTypeAdapter())
                 .create();
     }
 
@@ -181,16 +183,11 @@ public class DaoMongoCustomer {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
             MongoCollection<Document> estCustomers = db.getCollection("customers");
             MongoCollection<Document> estCredentials = db.getCollection("credentials");
-            Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
-                    .create();
-
             String credentialMongoJson = gson.toJson(credentialMongo);
             Document documentCredential = Document.parse(credentialMongoJson);
             estCredentials.insertOne(documentCredential);
 
-            ObjectId idCred = documentCredential.getObjectId(credentialMongo);
+            ObjectId idCred = credentialMongo.get_id();
             customerMongo.set_id(idCred);
 
             String customerMongoJson = gson.toJson(customerMongo);

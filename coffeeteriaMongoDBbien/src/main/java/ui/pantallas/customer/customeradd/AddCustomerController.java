@@ -17,6 +17,7 @@ import services.ServiceCustomer;
 import ui.pantallas.common.BasePantallaController;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class AddCustomerController extends BasePantallaController {
     private final ServiceCustomer serviceCustomer;
@@ -63,7 +64,7 @@ public class AddCustomerController extends BasePantallaController {
             return;
         }
 
-        CustomerMongo newCustomer = new CustomerMongo(null,firstName, secondName, email,phoneNumber, date, null);
+        CustomerMongo newCustomer = new CustomerMongo(null,firstName, secondName, email,phoneNumber, date, new ArrayList<>());
         CredentialMongo newCredential = new CredentialMongo(null, username, password);
 
         Either<ErrorCObject, Integer> res = serviceCustomer.add(newCustomer, newCredential);

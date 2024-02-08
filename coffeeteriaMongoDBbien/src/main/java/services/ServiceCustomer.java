@@ -8,6 +8,7 @@ import model.errors.ErrorCObject;
 import model.mongo.CredentialMongo;
 import model.mongo.CustomerMongo;
 import model.mongo.OrderMongo;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 
@@ -67,7 +68,8 @@ public class ServiceCustomer {
     }
 
     public Either<ErrorCObject, Integer> add(CustomerMongo customer, CredentialMongo credential) {
-        //return daoCustomerHibernate.add(customer,credential);
+        ObjectId objectId = new ObjectId();
+        credential.set_id(objectId);
         return daoMongoCustomer.addCustomers(customer, credential);
     }
 
