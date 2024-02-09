@@ -15,6 +15,7 @@ import model.OrderItem;
 import model.TableRestaurant;
 import model.errors.ErrorCMenuItem;
 import model.errors.ErrorCTables;
+import model.mongo.MenuItemMongo;
 import model.mongo.OrderItemMongo;
 import model.mongo.OrderMongo;
 import services.*;
@@ -109,8 +110,8 @@ public class UpdateOrderController extends BasePantallaController {
         });
         //ComboBox
         ObservableList<String> observableList = FXCollections.observableArrayList();
-        for (MenuItem menuItem : serviceMenuItems.getAll().getOrNull()) {
-            observableList.add(menuItem.getNameMItem());
+        for (MenuItemMongo menuItem : serviceMenuItems.getAll().getOrNull()) {
+            observableList.add(menuItem.getName());
         }
         menuItemComboBox.getItems().addAll(observableList);
         Either<ErrorCTables, List<TableRestaurant>> result = serviceTablesRestaurant.getAll();
@@ -136,9 +137,9 @@ public class UpdateOrderController extends BasePantallaController {
     public void addItem() {
         String selectedItemName = menuItemComboBox.getSelectionModel().getSelectedItem();
         int quantity = Integer.parseInt(quantityField.getText());
-        MenuItem selectedMenuItem = serviceMenuItems.getMenuItemByName(selectedItemName).getOrNull();
-        for (MenuItem menuItem : serviceMenuItems.getAll().getOrElse(Collections.emptyList())) {
-            if (menuItem.getNameMItem().equals(selectedItemName)) {
+        MenuItemMongo selectedMenuItem = serviceMenuItems.getMenuItemByName(selectedItemName).getOrNull();
+        for (MenuItemMongo menuItem : serviceMenuItems.getAll().getOrElse(Collections.emptyList())) {
+            if (menuItem.getName().equals(selectedItemName)) {
                 selectedMenuItem = menuItem;
             }
         }
@@ -147,7 +148,7 @@ public class UpdateOrderController extends BasePantallaController {
             Alert a = new Alert(Alert.AlertType.CONFIRMATION);
             a.setContentText(Constantes.THE_MENU_ITEM_HAS_BEEN_ADDED);
             a.show();
-            orderItemTable.getItems().add(new OrderItemMongo(selectedMenuItem.getIdMItem(), quantity));
+            orderItemTable.getItems().add(new OrderItemMongo(selectedMenuItem.get_id(), quantity));
             menuItemComboBox.getSelectionModel().clearSelection();
             quantityField.clear();
             lastOrderItemId = lastOrderItemId + 1;

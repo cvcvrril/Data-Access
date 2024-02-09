@@ -2,10 +2,13 @@ package services;
 
 import dao.db.DaoMenuItemDb;
 import dao.hibernate.DaoMenuItemHibernate;
+import dao.mongo.DaoMongoMenuItem;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import model.MenuItem;
 import model.errors.ErrorCMenuItem;
+import model.errors.ErrorCObject;
+import model.mongo.MenuItemMongo;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,16 +17,18 @@ public class ServiceMenuItems {
 
     private final DaoMenuItemDb daoMenuItemDBd;
     private final DaoMenuItemHibernate daoMenuItemHibernate;
+    private final DaoMongoMenuItem daoMongoMenuItem;
 
     @Inject
-    public ServiceMenuItems(DaoMenuItemDb daoMenuItemDBd, DaoMenuItemHibernate daoMenuItemHibernate) {
+    public ServiceMenuItems(DaoMenuItemDb daoMenuItemDBd, DaoMenuItemHibernate daoMenuItemHibernate, DaoMongoMenuItem daoMongoMenuItem) {
         this.daoMenuItemDBd = daoMenuItemDBd;
         this.daoMenuItemHibernate = daoMenuItemHibernate;
+        this.daoMongoMenuItem = daoMongoMenuItem;
     }
 
-    public Either<ErrorCMenuItem, List<MenuItem>> getAll(){
-        //return daoMenuItemDBd.getAll();
-        return daoMenuItemHibernate.getAll();
+    public Either<ErrorCObject, List<MenuItemMongo>> getAll(){
+        //return daoMenuItemHibernate.getAll();
+        return daoMongoMenuItem.getAll();
     }
 
     public Either<ErrorCMenuItem, MenuItem> get(int id){
@@ -54,16 +59,16 @@ public class ServiceMenuItems {
         return res;
     }
 
-    public Either<ErrorCMenuItem, MenuItem> getMenuItemByName(String name) {
-        List<MenuItem> menuItems = getAll().getOrElse(Collections.emptyList());
+    public Either<ErrorCObject, MenuItemMongo> getMenuItemByName(String name) {
+        List<MenuItemMongo> menuItemMongoList = getAll().getOrElse(Collections.emptyList());
 
-        for (MenuItem menuItem : menuItems) {
-            if (menuItem.getNameMItem().equals(name)) {
-                return Either.right(menuItem);
+        for (MenuItemMongo menuItemMongo : menuItemMongoList) {
+            if (menuItemMongo.getName().equals(name)) {
+                return Either.right(menuItemMongo);
             }
         }
 
-        return Either.left(new ErrorCMenuItem("MenuItem not found", 0));
+        return Either.left(new ErrorCObject("MenuItem not found", 0));
     }
 
 }

@@ -17,6 +17,7 @@ import model.errors.ErrorCObject;
 import model.errors.ErrorCOrder;
 import model.errors.ErrorCTables;
 import model.mongo.CustomerMongo;
+import model.mongo.MenuItemMongo;
 import model.mongo.OrderItemMongo;
 import model.mongo.OrderMongo;
 import org.bson.types.ObjectId;
@@ -70,9 +71,9 @@ public class AddOrderController extends BasePantallaController {
     }
 
     public void principalCargado() {
-        List<MenuItem> menuItems = serviceMenuItems.getAll().getOrElse(Collections.emptyList());
-        for (MenuItem menuItem : menuItems ){
-            menuItemsCBox.getItems().add(menuItem.getNameMItem());
+        List<MenuItemMongo> menuItems = serviceMenuItems.getAll().getOrElse(Collections.emptyList());
+        for (MenuItemMongo menuItem : menuItems ){
+            menuItemsCBox.getItems().add(menuItem.getName());
         }
         Either<ErrorCTables, List<TableRestaurant>> result = serviceTablesRestaurant.getAll();
         if (result.isRight()) {
@@ -122,9 +123,9 @@ public class AddOrderController extends BasePantallaController {
         String selectedItemName = menuItemsCBox.getValue();
         int quantity = Integer.parseInt(menuItemQuantity.getText());
 
-        MenuItem selectedMenuItem;
-        for (MenuItem menuItem : serviceMenuItems.getAll().getOrElse(Collections.emptyList())) {
-            if (menuItem.getNameMItem().equals(selectedItemName)) {
+        MenuItemMongo selectedMenuItem;
+        for (MenuItemMongo menuItem : serviceMenuItems.getAll().getOrElse(Collections.emptyList())) {
+            if (menuItem.getName().equals(selectedItemName)) {
                 selectedMenuItem = menuItem;
                 if (selectedMenuItem != null) {
                     OrderItemMongo newOrderItem = new OrderItemMongo (0, quantity);

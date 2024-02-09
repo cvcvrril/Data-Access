@@ -133,7 +133,7 @@ public class DaoMongoCustomer {
                     .projection(fields(excludeId(), include("orders")))
                     .into(new ArrayList<>());
 
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = Either.left(new ErrorCObject(e.getMessage(), 0));
         }
@@ -185,7 +185,7 @@ public class DaoMongoCustomer {
     }
 
     public Either<ErrorCObject, Integer> addOrder(OrderMongo orderMongo) {
-        Either<ErrorCObject, Integer> res;
+        Either<ErrorCObject, Integer> res = null;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
             MongoCollection<Document> est = db.getCollection("customers");
@@ -195,19 +195,18 @@ public class DaoMongoCustomer {
             Document customerDocument = est.find(bsonFilter).first();
             if (customerDocument != null) {
                 List<Document> ordersDocument = (List<Document>) customerDocument.get("orders");
-                if (ordersDocument != null){
-                    List<Document> newOrdersDocument = ordersDocument.stream()
-                            .filter(orderDocument -> orderDocument.getString("order_date").equals(formDate))
-                            .toList();
-                    Bson bsonUpdate = Updates.set("orders", newOrdersDocument);
-                    //int result = est.insertOne(bsonUpdate);
-                    if (0 > 0){
-                        res = Either.right(1);
-                    } else {
-                        res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
-                    }
-                }else {
-                    res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
+                for (Document document : ordersDocument) {
+                    document.put("table_id", orderMongo.getTable_id());
+                    document.put("order_date", formDate);
+                    List<Document> orderItemsDocuments = orderMongo.getOrder_items().stream()
+                            .map(orderItemMongo -> new Document("quantity", orderItemMongo.getQuantity())
+                                    .append("menu_item_id", orderItemMongo.getMenu_item_id())).toList();
+                    document.put("order_items", orderItemsDocuments);
+                    Bson filter = Filters.eq("_id", customerDocument.getObjectId("_id"));
+                    Bson op = Updates.set("orders", ordersDocument);
+                    est.updateOne(filter, op);
+                    res = Either.right(1);
+
                 }
             } else {
                 res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
@@ -242,25 +241,25 @@ public class DaoMongoCustomer {
             MongoCollection<Document> est = db.getCollection("customers");
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String formDate = orderMongo.getOrder_date().format(dateTimeFormatter);
-            Bson bsonFilter = Filters.elemMatch("orders", Filters.regex("order_date",formDate));
+            Bson bsonFilter = Filters.elemMatch("orders", Filters.regex("order_date", formDate));
             Document customerDocument = est.find(bsonFilter).first();
             if (customerDocument != null) {
                 List<Document> ordersDocument = (List<Document>) customerDocument.get("orders");
-                for (Document document : ordersDocument){
-                   if (document.get("order_date").equals(formDate)){
-                       document.put("table_id", orderMongo.getTable_id());
-                       document.put("order_date", formDate);
-                       List<Document> orderItemsDocuments = orderMongo.getOrder_items().stream()
-                               .map(orderItemMongo -> new Document("quantity", orderItemMongo.getQuantity())
-                                       .append("menu_item_id", orderItemMongo.getMenu_item_id())).toList();
-                       document.put("order_items", orderItemsDocuments);
-                       Bson filter = Filters.eq("_id", customerDocument.getObjectId("_id"));
-                       Bson op = Updates.set("orders", ordersDocument);
-                       est.updateOne(filter, op);
-                       res = Either.right(1);
-                   }else {
-                       res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
-                   }
+                for (Document document : ordersDocument) {
+                    if (document.get("order_date").equals(formDate)) {
+                        document.put("table_id", orderMongo.getTable_id());
+                        document.put("order_date", formDate);
+                        List<Document> orderItemsDocuments = orderMongo.getOrder_items().stream()
+                                .map(orderItemMongo -> new Document("quantity", orderItemMongo.getQuantity())
+                                        .append("menu_item_id", orderItemMongo.getMenu_item_id())).toList();
+                        document.put("order_items", orderItemsDocuments);
+                        Bson filter = Filters.eq("_id", customerDocument.getObjectId("_id"));
+                        Bson op = Updates.set("orders", ordersDocument);
+                        est.updateOne(filter, op);
+                        res = Either.right(1);
+                    } else {
+                        res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
+                    }
                 }
             } else {
                 res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
@@ -282,11 +281,11 @@ public class DaoMongoCustomer {
             Document filtroCredentials = new Document("_id", customerMongo.get_id());
             Document documentCustomers = estCustomers.find(filtroCustomers).first();
             Document documentCredentials = estCustomers.find(filtroCredentials).first();
-            if (documentCustomers != null){
+            if (documentCustomers != null) {
                 CredentialMongo credentialMongoDelete = gson.fromJson(documentCustomers.toJson(), CredentialMongo.class);
-                if (documentCredentials != null){
+                if (documentCredentials != null) {
                     CustomerMongo customerMongoDelete = gson.fromJson(documentCustomers.toJson(), CustomerMongo.class);
-                    if (credentialMongoDelete != null){
+                    if (credentialMongoDelete != null) {
                         estCredentials.deleteOne(documentCredentials);
                         if (customerMongoDelete != null) {
                             estCustomers.deleteOne(documentCustomers);
@@ -294,13 +293,13 @@ public class DaoMongoCustomer {
                         } else {
                             res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
                         }
-                    }else {
+                    } else {
                         res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
                     }
-                }else {
+                } else {
                     res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
                 }
-            }else{
+            } else {
                 res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
             }
         } catch (Exception e) {
@@ -321,18 +320,18 @@ public class DaoMongoCustomer {
             Document customerDocument = est.find(bsonFilter).first();
             if (customerDocument != null) {
                 List<Document> ordersDocument = (List<Document>) customerDocument.get("orders");
-                if (ordersDocument != null){
+                if (ordersDocument != null) {
                     List<Document> newOrdersDocument = ordersDocument.stream()
                             .filter(orderDocument -> !orderDocument.getString("order_date").equals(formDate))
                             .toList();
                     Bson bsonUpdate = Updates.set("orders", newOrdersDocument);
                     UpdateResult result = est.updateOne(bsonFilter, bsonUpdate);
-                    if (result.getModifiedCount() > 0){
+                    if (result.getModifiedCount() > 0) {
                         res = Either.right(1);
                     } else {
                         res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
                     }
-                }else {
+                } else {
                     res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
                 }
             } else {
