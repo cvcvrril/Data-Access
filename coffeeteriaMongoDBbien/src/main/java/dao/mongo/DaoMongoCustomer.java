@@ -49,11 +49,11 @@ public class DaoMongoCustomer {
         Either<ErrorCObject, Integer> res;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
-            MongoCollection<Document> est = db.getCollection("customers");
+            MongoCollection<Document> estCustomers = db.getCollection("customers");
             for (CustomerMongo customerMongo : customerMongoList) {
                 String customerMongoJson = gson.toJson(customerMongo);
                 Document document = Document.parse(customerMongoJson);
-                est.insertOne(document);
+                estCustomers.insertOne(document);
             }
             res = Either.right(1);
         } catch (Exception e) {
