@@ -13,19 +13,14 @@ import org.bson.types.ObjectId;
 import java.util.List;
 
 public class ServiceCustomer {
-
-
-    private final DaoCustomerHibernate daoCustomerHibernate;
     private final DaoMongoCustomer daoMongoCustomer;
 
     @Inject
-    public ServiceCustomer(DaoCustomerHibernate daoCustomerHibernate, DaoMongoCustomer daoMongoCustomer) {
-        this.daoCustomerHibernate = daoCustomerHibernate;
+    public ServiceCustomer(DaoMongoCustomer daoMongoCustomer) {
         this.daoMongoCustomer = daoMongoCustomer;
     }
 
     public Either<ErrorCObject, List<CustomerMongo>> getAll() {
-        //return daoCustomerHibernate.getAll();
         return daoMongoCustomer.getAllCustomers();
     }
 
@@ -34,19 +29,13 @@ public class ServiceCustomer {
     }
 
     public Either<ErrorCObject, CustomerMongo> get(String first_name, String second_name) {
-        //return daoCustomerHibernate.get(id);
         return daoMongoCustomer.getCustomer(first_name, second_name);
-    }
-
-    public Either<ErrorCObject, CustomerMongo> getByDate(OrderMongo orderMongo){
-        return daoMongoCustomer.getCustomersByDate(orderMongo);
     }
 
     public Either<ErrorCObject, Integer> deleteCustomer(CustomerMongo customerMongo, boolean conf) {
         Either<ErrorCObject, CustomerMongo> res = daoMongoCustomer.getCustomer(customerMongo.getFirst_name(), customerMongo.getSecond_name());
         if (res.isRight()) {
             return daoMongoCustomer.deleteCustomer(customerMongo, conf);
-            //return daoCustomerHibernate.delete(i, conf);
         } else {
             return Either.left(res.getLeft());
         }

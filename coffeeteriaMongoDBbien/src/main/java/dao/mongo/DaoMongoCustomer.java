@@ -17,6 +17,7 @@ import lombok.extern.log4j.Log4j2;
 import model.errors.ErrorCObject;
 import model.mongo.CredentialMongo;
 import model.mongo.CustomerMongo;
+import model.mongo.OrderItemMongo;
 import model.mongo.OrderMongo;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -188,15 +189,30 @@ public class DaoMongoCustomer {
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
             MongoCollection<Document> est = db.getCollection("customers");
-            List<Document> filtro = est.find()
-                    .projection(fields(excludeId(), include("orders")))
-                    .into(new ArrayList<>());
-            String orderMongoJson = gson.toJson(orderMongo);
-            Document document = Document.parse(orderMongoJson);
-            est.insertOne(document);
-            //int resint = (int) est.replaceOne(eq("_id",customerMongo), document).getModifiedCount();
-            res = Either.right(1);
-        }catch (Exception e){
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formDate = orderMongo.getOrder_date().format(dateTimeFormatter);
+            Bson bsonFilter = Filters.elemMatch("orders", Filters.regex("order_date", formDate));
+            Document customerDocument = est.find(bsonFilter).first();
+            if (customerDocument != null) {
+                List<Document> ordersDocument = (List<Document>) customerDocument.get("orders");
+                if (ordersDocument != null){
+                    List<Document> newOrdersDocument = ordersDocument.stream()
+                            .filter(orderDocument -> orderDocument.getString("order_date").equals(formDate))
+                            .toList();
+                    Bson bsonUpdate = Updates.set("orders", newOrdersDocument);
+                    //int result = est.insertOne(bsonUpdate);
+                    if (0 > 0){
+                        res = Either.right(1);
+                    } else {
+                        res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
+                    }
+                }else {
+                    res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
+                }
+            } else {
+                res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
+            }
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = Either.left(new ErrorCObject(e.getMessage(), 0));
         }
@@ -224,16 +240,17 @@ public class DaoMongoCustomer {
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
             MongoCollection<Document> est = db.getCollection("customers");
-            Bson updates = Updates.combine(
-                    Updates.set("order_date", orderMongo.getOrder_date()),
-                    Updates.set("table_id", orderMongo.getTable_id()),
-                    Updates.set("order_items", orderMongo.getOrder_items())
-            );
-            String customerMongoJson = gson.toJson(orderMongo);
-            Document document = Document.parse(customerMongoJson);
-            est.findOneAndUpdate(document, updates);
-            res = Either.right(1);
-        }catch (Exception e){
+            Bson bsonFilter = Filters.elemMatch("orders", Filters.regex("order_date", gson.toJson(orderMongo.getOrder_date())));
+            Document customerDocument = est.find(bsonFilter).first();
+            if (customerDocument != null) {
+                List<Document> ordersDocument = (List<Document>) customerDocument.get("orders");
+                for (Document document : ordersDocument){
+                    String credentialMongoJson = gson.toJson(document);
+                }
+            } else {
+                res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
+            }
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = Either.left(new ErrorCObject(e.getMessage(), 0));
         }
@@ -250,10 +267,6 @@ public class DaoMongoCustomer {
             Document filtroCredentials = new Document("_id", customerMongo.get_id());
             Document documentCustomers = estCustomers.find(filtroCustomers).first();
             Document documentCredentials = estCustomers.find(filtroCredentials).first();
-            if (conf){
-
-            }
-
             if (documentCustomers != null){
                 CredentialMongo credentialMongoDelete = gson.fromJson(documentCustomers.toJson(), CredentialMongo.class);
                 if (documentCredentials != null){

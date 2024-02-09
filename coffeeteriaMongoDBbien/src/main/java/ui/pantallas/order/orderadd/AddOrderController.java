@@ -98,8 +98,6 @@ public class AddOrderController extends BasePantallaController {
     public void addOrder(ActionEvent actionEvent) {
         int tableId = tableComboBox.getValue();
         LocalDateTime orderDate = LocalDateTime.now();
-
-        //CustomerMongo c = getPrincipalController().getActualCredential();
         List<OrderItemMongo> orderItems = new ArrayList<>(mItemTable.getItems());
         OrderMongo newOrder = new OrderMongo(orderDate, tableId, orderItems);
 
