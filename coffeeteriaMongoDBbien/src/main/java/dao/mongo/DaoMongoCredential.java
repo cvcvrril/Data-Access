@@ -17,11 +17,6 @@ import java.util.List;
 @Log4j2
 public class DaoMongoCredential {
 
-    public Either<ErrorCObject, Integer> read(){
-        Either<ErrorCObject, Integer> res;
-        return null;
-    }
-
     public Either<ErrorCObject, Integer> save(List<CredentialMongo> credentialMongoList){
         Either<ErrorCObject, Integer> res;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {

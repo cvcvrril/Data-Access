@@ -84,7 +84,7 @@ public class AddOrderController extends BasePantallaController {
             errorAlert.setContentText("Error al obtener la lista de mesas");
             errorAlert.show();
         }
-        mItemIDCol.setCellValueFactory(new PropertyValueFactory<>("_id"));
+        mItemIDCol.setCellValueFactory(new PropertyValueFactory<>("menu_item_id"));
         quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         mItemNameCol.setCellValueFactory(cellData -> {
             int menuItemId = cellData.getValue().getMenu_item_id();
@@ -154,19 +154,5 @@ public class AddOrderController extends BasePantallaController {
         } else {
             return null;
         }
-    }
-
-    private int getLastOrderItemIdFromDatabase() {
-        List<OrderItem> orderItems = serviceOrderItem.getAll().getOrElse(Collections.emptyList());
-
-        int lastOrderItemId = 0;
-
-        for (OrderItem orderItem : orderItems) {
-            if (orderItem.getId() > lastOrderItemId) {
-                lastOrderItemId = orderItem.getId();
-            }
-        }
-
-        return lastOrderItemId;
     }
 }
