@@ -4,6 +4,7 @@ import common.Configuration;
 import dao.DaoLogin;
 import jakarta.inject.Inject;
 import model.Credential;
+import model.mongo.CredentialMongo;
 
 public class DaoLoginImp implements DaoLogin {
 
@@ -15,8 +16,8 @@ public class DaoLoginImp implements DaoLogin {
     }
 
     @Override
-    public boolean doLogin(Credential credential) {
-        return credential.getUserName().equals("root") && credential.getPassword().equals("2dam");
+    public boolean doLogin(CredentialMongo credential) {
+        return credential.getUsername().equals("root") && credential.getPassword().equals("2dam");
     }
 
 }

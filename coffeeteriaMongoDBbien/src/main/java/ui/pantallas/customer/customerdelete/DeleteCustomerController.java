@@ -83,10 +83,7 @@ public class DeleteCustomerController extends BasePantallaController {
                 a.setContentText(Constantes.USER_DELETED);
                 a.show();
             } else {
-                ErrorCObject error = res.getLeft();
-                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                errorAlert.setContentText("There was an error when deleting the customer");
-                errorAlert.show();
+                getPrincipalController().sacarAlertError("There was an error when deleting the customer");
             }
             tableCustomers.getItems().remove(selCustomer);
         }

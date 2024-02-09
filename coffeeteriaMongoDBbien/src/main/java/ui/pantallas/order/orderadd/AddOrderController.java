@@ -18,6 +18,7 @@ import model.errors.ErrorCOrder;
 import model.errors.ErrorCTables;
 import model.mongo.OrderItemMongo;
 import model.mongo.OrderMongo;
+import org.bson.types.ObjectId;
 import services.*;
 import ui.pantallas.common.BasePantallaController;
 import java.time.LocalDateTime;
@@ -45,8 +46,6 @@ public class AddOrderController extends BasePantallaController {
     private TableColumn<OrderItemMongo, Integer> quantityCol;
 
     @FXML
-    private ComboBox<Integer> customerComboBox;
-    @FXML
     private ComboBox<Integer> tableComboBox;
     @FXML
     private ComboBox<String> menuItemsCBox;
@@ -70,13 +69,6 @@ public class AddOrderController extends BasePantallaController {
     }
 
     public void principalCargado() {
-        List<Integer> customerIDs = serviceOrder.getCustomerIDs();
-        customerComboBox.getItems().addAll(customerIDs);
-        if (getPrincipalController().getActualCredential().getId() > 0) {
-            customerComboBox.setVisible(false);
-        }else {
-            customerComboBox.setVisible(true);
-        }
         List<MenuItem> menuItems = serviceMenuItems.getAll().getOrElse(Collections.emptyList());
         for (MenuItem menuItem : menuItems ){
             menuItemsCBox.getItems().add(menuItem.getNameMItem());
@@ -103,12 +95,6 @@ public class AddOrderController extends BasePantallaController {
 
     @FXML
     public void addOrder(ActionEvent actionEvent) {
-        int customerId;
-        if (getPrincipalController().getActualCredential().getId() > 0) {
-            customerId = getPrincipalController().getActualCredential().getId();
-        } else {
-            customerId = customerComboBox.getValue();
-        }
         int tableId = tableComboBox.getValue();
         LocalDateTime orderDate = LocalDateTime.now();
 
@@ -129,7 +115,6 @@ public class AddOrderController extends BasePantallaController {
     }
 
     private void clearFields() {
-        customerComboBox.getSelectionModel().clearSelection();
         tableComboBox.getSelectionModel().clearSelection();
     }
 

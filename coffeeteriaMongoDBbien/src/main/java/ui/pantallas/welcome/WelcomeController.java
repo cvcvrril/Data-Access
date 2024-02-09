@@ -15,6 +15,6 @@ public class WelcomeController extends BasePantallaController {
 
     @Override
     public void principalCargado() {
-        welcomeText.setText("Welcome " + this.getPrincipalController().getActualCredential().getUserName() + "!");
+        welcomeText.setText("Welcome " + this.getPrincipalController().getActualCredential().getUsername() + "!");
     }
 }

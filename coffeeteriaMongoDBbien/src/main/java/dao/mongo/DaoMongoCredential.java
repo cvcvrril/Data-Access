@@ -11,6 +11,7 @@ import model.errors.ErrorCObject;
 import model.mongo.CredentialMongo;
 import org.bson.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
@@ -32,6 +33,41 @@ public class DaoMongoCredential {
                 est.insertOne(document);
             }
             res = Either.right(1);
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+            res = Either.left(new ErrorCObject(e.getMessage(), 0));
+        }
+        return res;
+    }
+
+    public Either<ErrorCObject, List<CredentialMongo>> getAll(){
+        Either<ErrorCObject, List<CredentialMongo>> res;
+        List<CredentialMongo> credentialMongoList = new ArrayList<>();
+        try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
+            MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
+            MongoCollection<Document> est = db.getCollection("credentials");
+            List<Document> documents = est.find().into(new ArrayList<>());
+            for (Document document : documents){
+                credentialMongoList.add(new Gson().fromJson(document.toJson(), CredentialMongo.class));
+            }
+            res = Either.right(credentialMongoList);
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+            res = Either.left(new ErrorCObject(e.getMessage(), 0));
+        }
+        return res;
+    }
+
+    public Either<ErrorCObject, CredentialMongo> get(String username){
+        Either<ErrorCObject, CredentialMongo> res;
+        CredentialMongo credentialMongo;
+        try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
+            MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
+            MongoCollection<Document> est = db.getCollection("credentials");
+            Document filtro = new Document("username", username);
+            Document document = est.find(filtro).first();
+            credentialMongo = new Gson().fromJson(document.toJson(), CredentialMongo.class);
+            res = Either.right(credentialMongo);
         }catch (Exception e){
             log.error(e.getMessage(), e);
             res = Either.left(new ErrorCObject(e.getMessage(), 0));

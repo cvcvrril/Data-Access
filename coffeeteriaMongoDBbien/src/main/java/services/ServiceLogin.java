@@ -2,10 +2,13 @@ package services;
 
 import dao.db.DaoCredentials;
 import dao.DaoLogin;
+import dao.mongo.DaoMongoCredential;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import model.Credential;
 import model.errors.ErrorCCredential;
+import model.errors.ErrorCObject;
+import model.mongo.CredentialMongo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,17 +17,19 @@ public class ServiceLogin {
 
     private final DaoLogin daOlogin;
     private final DaoCredentials daOcredentials;
+    private final DaoMongoCredential daoMongoCredential;
 
     @Inject
-    public ServiceLogin(DaoLogin daOlogin, DaoCredentials daOcredentials) {
+    public ServiceLogin(DaoLogin daOlogin, DaoCredentials daOcredentials, DaoMongoCredential daoMongoCredential) {
         this.daOlogin = daOlogin;
         this.daOcredentials = daOcredentials;
+        this.daoMongoCredential = daoMongoCredential;
     }
 
-    public boolean doLogin(Credential credential){
-        Credential storedCredential = getCredentialByUsername(credential.getUserName());
+    public boolean doLogin(CredentialMongo credential){
+        CredentialMongo storedCredential = get(credential.getUsername()).get();
         if (storedCredential != null && (storedCredential.getPassword().equals(credential.getPassword()))) {
-                if (storedCredential.getId() < 0) {
+                if (storedCredential.getUsername().equals("root")) {
                     daOlogin.doLogin(credential);
                     return true;
                 } else {
@@ -45,12 +50,12 @@ public class ServiceLogin {
         return null;
     }
 
-    public Either<ErrorCCredential, List<Credential>> getAll(){
-        return daOcredentials.getAll();
+    public Either<ErrorCObject, List<CredentialMongo>> getAll(){
+        return daoMongoCredential.getAll();
     }
 
-    public Either<ErrorCCredential, Credential> get(int id){
-        return daOcredentials.get(id);
+    public Either<ErrorCObject, CredentialMongo> get(String username){
+        return daoMongoCredential.get(username);
     }
 
 }

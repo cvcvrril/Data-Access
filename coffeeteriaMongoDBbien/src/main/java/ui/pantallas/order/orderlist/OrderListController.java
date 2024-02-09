@@ -74,7 +74,7 @@ public class OrderListController extends BasePantallaController {
     public void principalCargado() {
         id_table.setCellValueFactory(new PropertyValueFactory<>("table_id"));
         date_order.setCellValueFactory(new PropertyValueFactory<>("order_date"));
-        if (getPrincipalController().getActualCredential().getUserName().equals("root")) {
+        if (getPrincipalController().getActualCredential().getUsername().equals("root")) {
             tableOrders.getItems().addAll(serviceCustomer.getAllOrders().get());
         } else {
             tableOrders.getItems().addAll(serviceCustomer.getAllOrders().get());

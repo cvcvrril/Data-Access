@@ -75,7 +75,7 @@ public class UpdateOrderController extends BasePantallaController {
         id_table.setCellValueFactory(new PropertyValueFactory<>("table_id"));
         date_order.setCellValueFactory(new PropertyValueFactory<>("order_date"));
         //Llenar OrderTable
-        if (getPrincipalController().getActualCredential().getId() > 0) {
+        if (!getPrincipalController().getActualCredential().getUsername().equals("root")) {
             tableOrders.getItems().addAll(serviceCustomer.getAllOrders().get());
         } else {
             tableOrders.getItems().addAll(serviceCustomer.getAllOrders().get());
@@ -126,7 +126,7 @@ public class UpdateOrderController extends BasePantallaController {
         }
         List<Integer> customerIDs = serviceOrder.getCustomerIDs();
         customerComboBox.getItems().addAll(customerIDs);
-        if (getPrincipalController().getActualCredential().getId() > 0) {
+        if (!getPrincipalController().getActualCredential().getUsername().equals("root")) {
             customerComboBox.setVisible(false);
         }else {
             customerComboBox.setVisible(true);
@@ -172,12 +172,6 @@ public class UpdateOrderController extends BasePantallaController {
     }
 
     public void updateOrder() {
-        int customerId;
-        if (getPrincipalController().getActualCredential().getId() > 0) {
-            customerId = getPrincipalController().getActualCredential().getId();
-        } else {
-            customerId = customerComboBox.getValue();
-        }
         OrderMongo selectedOrder = tableOrders.getSelectionModel().getSelectedItem();
         if (selectedOrder != null) {
             selectedOrder.setTable_id(Integer.parseInt(String.valueOf(tableComboBox.getValue())));

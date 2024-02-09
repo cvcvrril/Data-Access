@@ -15,6 +15,7 @@ import javafx.stage.WindowEvent;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import model.Credential;
+import model.mongo.CredentialMongo;
 import services.ServiceLogin;
 import ui.pantallas.common.BasePantallaController;
 import ui.pantallas.common.Pantallas;
@@ -56,7 +57,7 @@ public class PrincipalController{
     @Getter
     private String password;
     @Getter
-    private Credential actualCredential;
+    private CredentialMongo actualCredential;
     @FXML
     private BorderPane root;
 
@@ -122,12 +123,12 @@ public class PrincipalController{
         cargarPantalla(Pantallas.LOGIN);
     }
 
-    public void onLogin(int id) {
-        this.actualCredential = serviceLogin.get(id).getOrNull();
-        this.user = actualCredential.getUserName();
+    public void onLogin(String username) {
+        this.actualCredential = serviceLogin.get(username).getOrNull();
+        this.user = actualCredential.getUsername();
         this.password = actualCredential.getPassword();
         menuPrincipal.setVisible(true);
-        if(actualCredential.getId() < 0){
+        if(actualCredential.getUsername().equals("root")){
            // cargarPantalla(Pantallas.WELCOME);
             menuCustomers.setDisable(false);
             menuOrdersAdd.setDisable(true);

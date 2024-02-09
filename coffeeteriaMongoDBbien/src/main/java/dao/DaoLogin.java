@@ -1,8 +1,9 @@
 package dao;
 
 import model.Credential;
+import model.mongo.CredentialMongo;
 
 public interface DaoLogin {
-    boolean doLogin(Credential credential);
+    boolean doLogin(CredentialMongo credential);
 
 }

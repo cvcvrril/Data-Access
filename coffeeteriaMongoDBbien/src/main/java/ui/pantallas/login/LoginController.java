@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import model.Credential;
+import model.mongo.CredentialMongo;
 import services.ServiceLogin;
 import services.mongo.ServiceHibernateToMongo;
 import ui.pantallas.common.BasePantallaController;
@@ -30,11 +31,10 @@ public class LoginController extends BasePantallaController {
     @FXML
     private void Login() {
         String username = userText.getText();
-
-        Credential credential = serviceLogin.getCredentialByUsername(username);
+        CredentialMongo credential = serviceLogin.get(username).get();
         if (credential != null) {
             if (serviceLogin.doLogin(credential)) {
-                getPrincipalController().onLogin(credential.getId());
+                getPrincipalController().onLogin(credential.getUsername());
             } else {
                 Alert a = new Alert(Alert.AlertType.ERROR);
                 a.setContentText(Constantes.USUARIO_O_CONTRASENA_INCORRECTOS);
