@@ -236,16 +236,31 @@ public class DaoMongoCustomer {
     }
 
     public Either<ErrorCObject, Integer> updateOrder(OrderMongo orderMongo) {
-        Either<ErrorCObject, Integer> res;
+        Either<ErrorCObject, Integer> res = null;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
             MongoCollection<Document> est = db.getCollection("customers");
-            Bson bsonFilter = Filters.elemMatch("orders", Filters.regex("order_date", gson.toJson(orderMongo.getOrder_date())));
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formDate = orderMongo.getOrder_date().format(dateTimeFormatter);
+            Bson bsonFilter = Filters.elemMatch("orders", Filters.regex("order_date",formDate));
             Document customerDocument = est.find(bsonFilter).first();
             if (customerDocument != null) {
                 List<Document> ordersDocument = (List<Document>) customerDocument.get("orders");
                 for (Document document : ordersDocument){
-                    String credentialMongoJson = gson.toJson(document);
+                   if (document.get("order_date").equals(formDate)){
+                       document.put("table_id", orderMongo.getTable_id());
+                       document.put("order_date", formDate);
+                       List<Document> orderItemsDocuments = orderMongo.getOrder_items().stream()
+                               .map(orderItemMongo -> new Document("quantity", orderItemMongo.getQuantity())
+                                       .append("menu_item_id", orderItemMongo.getMenu_item_id())).toList();
+                       document.put("order_items", orderItemsDocuments);
+                       Bson filter = Filters.eq("_id", customerDocument.getObjectId("_id"));
+                       Bson op = Updates.set("orders", ordersDocument);
+                       est.updateOne(filter, op);
+                       res = Either.right(1);
+                   }else {
+                       res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
+                   }
                 }
             } else {
                 res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));

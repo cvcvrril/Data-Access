@@ -14,7 +14,7 @@ public class Prueba {
         JPAUtil jpaUtil = new JPAUtil();
         DaoMongoCustomer daoMongoCustomer = new DaoMongoCustomer();
         DaoCustomerHibernate daoOrderHibernate = new DaoCustomerHibernate(jpaUtil);
-        ServiceCustomer serviceCustomer = new ServiceCustomer(daoOrderHibernate,daoMongoCustomer);
+        ServiceCustomer serviceCustomer = new ServiceCustomer(daoMongoCustomer);
 
         List<OrderMongo> orderMongoList = serviceCustomer.getAllOrders().get();
         System.out.println(orderMongoList);

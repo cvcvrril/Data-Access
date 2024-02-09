@@ -147,8 +147,6 @@ public class UpdateOrderController extends BasePantallaController {
             Alert a = new Alert(Alert.AlertType.CONFIRMATION);
             a.setContentText(Constantes.THE_MENU_ITEM_HAS_BEEN_ADDED);
             a.show();
-            // Agregar el nuevo OrderItem a la tabla
-            //orderItemTable.getItems().add(new OrderItem(lastOrderItemId, tableOrders.getSelectionModel().getSelectedItem().getIdOrd(), selectedMenuItem.getIdMItem(), quantity, serviceMenuItems.get(lastOrderItemId).getOrNull()));
             orderItemTable.getItems().add(new OrderItemMongo(selectedMenuItem.getIdMItem(), quantity));
             menuItemComboBox.getSelectionModel().clearSelection();
             quantityField.clear();
@@ -173,8 +171,10 @@ public class UpdateOrderController extends BasePantallaController {
 
     public void updateOrder() {
         OrderMongo selectedOrder = tableOrders.getSelectionModel().getSelectedItem();
+        List<OrderItemMongo> orderItemMongos = orderItemTable.getItems();
         if (selectedOrder != null) {
             selectedOrder.setTable_id(Integer.parseInt(String.valueOf(tableComboBox.getValue())));
+            selectedOrder.setOrder_items(orderItemMongos);
             serviceCustomer.updateOrder(selectedOrder);
             Alert a = new Alert(Alert.AlertType.CONFIRMATION);
             a.setContentText(Constantes.ORDER_UPDATED);
