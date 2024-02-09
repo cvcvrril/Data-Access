@@ -47,10 +47,6 @@ public class LoginController extends BasePantallaController {
         }
     }
 
-    //INFO: si hago el transferAllHibernateToMongo me peta
-    //INFO: si los pongo por separado no peta...?
-    //INFO: espera, q igual es cosa del servidor de clase...
-
     @FXML
     private void exportData() {
         try {
