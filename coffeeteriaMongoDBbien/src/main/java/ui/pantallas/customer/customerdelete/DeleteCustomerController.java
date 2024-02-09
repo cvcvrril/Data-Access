@@ -62,9 +62,9 @@ public class DeleteCustomerController extends BasePantallaController {
         boolean conf = false;
         CustomerMongo selCustomer = tableCustomers.getSelectionModel().getSelectedItem();
         if (selCustomer != null) {
-            List<Order> customerOrders = serviceOrder.getOrdersByCustomer(0);
-            for (Order order:customerOrders) {
-                order.setOrderItems(serviceOrderItem.get(order.getIdOrd()).get());
+            List<OrderMongo> customerOrders = selCustomer.getOrders();
+            for (OrderMongo order:customerOrders) {
+                order.getOrder_items();
             }
             if (!customerOrders.isEmpty()) {
                 Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -73,7 +73,7 @@ public class DeleteCustomerController extends BasePantallaController {
                 if (result.isPresent() && result.get() == ButtonType.CANCEL) {
                     conf = false;
                 } else {
-                    serviceOrder.save(serviceOrder.getOrdersByCustomer(0));
+                    //serviceOrder.save(serviceOrder.getOrdersByCustomer(0));
                     conf = true;
                 }
             }

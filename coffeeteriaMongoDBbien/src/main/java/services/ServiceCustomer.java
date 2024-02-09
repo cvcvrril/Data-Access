@@ -45,7 +45,7 @@ public class ServiceCustomer {
     public Either<ErrorCObject, Integer> deleteCustomer(CustomerMongo customerMongo, boolean conf) {
         Either<ErrorCObject, CustomerMongo> res = daoMongoCustomer.getCustomer(customerMongo.getFirst_name(), customerMongo.getSecond_name());
         if (res.isRight()) {
-            return daoMongoCustomer.deleteCustomer(customerMongo);
+            return daoMongoCustomer.deleteCustomer(customerMongo, conf);
             //return daoCustomerHibernate.delete(i, conf);
         } else {
             return Either.left(res.getLeft());
@@ -57,7 +57,6 @@ public class ServiceCustomer {
     }
 
     public Either<ErrorCObject, Integer> update(CustomerMongo customer) {
-        //return daoCustomerHibernate.update(customer);
         return daoMongoCustomer.updateCustomers(customer);
     }
 

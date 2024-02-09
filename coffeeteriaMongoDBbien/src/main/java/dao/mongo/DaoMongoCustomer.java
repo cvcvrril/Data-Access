@@ -238,7 +238,7 @@ public class DaoMongoCustomer {
         return res;
     }
 
-    public Either<ErrorCObject, Integer> deleteCustomer(CustomerMongo customerMongo) {
+    public Either<ErrorCObject, Integer> deleteCustomer(CustomerMongo customerMongo, boolean conf) {
         Either<ErrorCObject, Integer> res;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
@@ -248,6 +248,10 @@ public class DaoMongoCustomer {
             Document filtroCredentials = new Document("_id", customerMongo.get_id());
             Document documentCustomers = estCustomers.find(filtroCustomers).first();
             Document documentCredentials = estCustomers.find(filtroCredentials).first();
+            if (conf){
+
+            }
+
             if (documentCustomers != null){
                 CredentialMongo credentialMongoDelete = gson.fromJson(documentCustomers.toJson(), CredentialMongo.class);
                 if (documentCredentials != null){
