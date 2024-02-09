@@ -13,9 +13,7 @@
          </font>
       </Label>
       <ComboBox fx:id="tableComboBox" layoutX="48.0" layoutY="113.0" prefWidth="150.0" />
-      <ComboBox fx:id="customerComboBox" layoutX="48.0" layoutY="175.0" prefWidth="150.0" />
       <Label layoutX="58.0" layoutY="94.0" text="Table" />
-      <Label layoutX="59.0" layoutY="154.0" text="Customer" />
       <ComboBox fx:id="menuItemsCBox" layoutX="221.0" layoutY="57.0" prefHeight="25.0" prefWidth="158.0" />
       <Label layoutX="321.0" layoutY="36.0" text="Menu item" />
       <Label layoutX="398.0" layoutY="36.0" text="Quantity" />

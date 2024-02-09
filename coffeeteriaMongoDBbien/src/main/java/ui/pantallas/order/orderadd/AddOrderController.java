@@ -16,6 +16,7 @@ import model.errors.ErrorCMenuItem;
 import model.errors.ErrorCObject;
 import model.errors.ErrorCOrder;
 import model.errors.ErrorCTables;
+import model.mongo.CustomerMongo;
 import model.mongo.OrderItemMongo;
 import model.mongo.OrderMongo;
 import org.bson.types.ObjectId;
@@ -98,6 +99,7 @@ public class AddOrderController extends BasePantallaController {
         int tableId = tableComboBox.getValue();
         LocalDateTime orderDate = LocalDateTime.now();
 
+        //CustomerMongo c = getPrincipalController().getActualCredential();
         List<OrderItemMongo> orderItems = new ArrayList<>(mItemTable.getItems());
         OrderMongo newOrder = new OrderMongo(orderDate, tableId, orderItems);
 

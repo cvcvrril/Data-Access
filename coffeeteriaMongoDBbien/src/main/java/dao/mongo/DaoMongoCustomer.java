@@ -8,6 +8,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.UpdateResult;
 import common.LocalDateTimeTypeAdapter;
 import common.LocalDateTypeAdapter;
 import common.ObjectIdTypeAdapter;
@@ -193,6 +194,7 @@ public class DaoMongoCustomer {
             String orderMongoJson = gson.toJson(orderMongo);
             Document document = Document.parse(orderMongoJson);
             est.insertOne(document);
+            //int resint = (int) est.replaceOne(eq("_id",customerMongo), document).getModifiedCount();
             res = Either.right(1);
         }catch (Exception e){
             log.error(e.getMessage(), e);
@@ -287,14 +289,24 @@ public class DaoMongoCustomer {
             MongoCollection<Document> est = db.getCollection("customers");
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String formDate = orderMongo.getOrder_date().format(dateTimeFormatter);
-            Bson bsonfilter = Filters.elemMatch("orders", Filters.regex("order_date", formDate));
-            Document order = est.find()
-                    .projection(fields(excludeId(), include("orders")))
-                    .filter(bsonfilter)
-                    .first();
-            if (order != null) {
-                est.deleteOne(order);
-                res = Either.right(1);
+            Bson bsonFilter = Filters.elemMatch("orders", Filters.regex("order_date", formDate));
+            Document customerDocument = est.find(bsonFilter).first();
+            if (customerDocument != null) {
+                List<Document> ordersDocument = (List<Document>) customerDocument.get("orders");
+                if (ordersDocument != null){
+                    List<Document> newOrdersDocument = ordersDocument.stream()
+                            .filter(orderDocument -> !orderDocument.getString("order_date").equals(formDate))
+                            .toList();
+                    Bson bsonUpdate = Updates.set("orders", newOrdersDocument);
+                    UpdateResult result = est.updateOne(bsonFilter, bsonUpdate);
+                    if (result.getModifiedCount() > 0){
+                        res = Either.right(1);
+                    } else {
+                        res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
+                    }
+                }else {
+                    res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
+                }
             } else {
                 res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
             }
