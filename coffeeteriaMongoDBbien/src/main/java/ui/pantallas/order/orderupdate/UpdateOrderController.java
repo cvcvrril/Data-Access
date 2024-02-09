@@ -14,6 +14,7 @@ import model.Order;
 import model.OrderItem;
 import model.TableRestaurant;
 import model.errors.ErrorCMenuItem;
+import model.errors.ErrorCObject;
 import model.errors.ErrorCTables;
 import model.mongo.MenuItemMongo;
 import model.mongo.OrderItemMongo;
@@ -157,8 +158,6 @@ public class UpdateOrderController extends BasePantallaController {
             errorAlert.setContentText("Ítem de menú no encontrado");
             errorAlert.show();
         }
-
-
     }
 
     public void removeItem() {
@@ -186,7 +185,7 @@ public class UpdateOrderController extends BasePantallaController {
     }
 
     public String getMenuItemNameById(int id) {
-        Either<ErrorCMenuItem, String> result = serviceMenuItems.getMenuItemName(id);
+        Either<ErrorCObject, String> result = serviceMenuItems.getMenuItemName(id);
         return result.get();
     }
 }

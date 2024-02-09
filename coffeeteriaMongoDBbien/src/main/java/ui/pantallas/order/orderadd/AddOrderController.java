@@ -123,12 +123,13 @@ public class AddOrderController extends BasePantallaController {
         String selectedItemName = menuItemsCBox.getValue();
         int quantity = Integer.parseInt(menuItemQuantity.getText());
 
+
         MenuItemMongo selectedMenuItem;
         for (MenuItemMongo menuItem : serviceMenuItems.getAll().getOrElse(Collections.emptyList())) {
             if (menuItem.getName().equals(selectedItemName)) {
                 selectedMenuItem = menuItem;
                 if (selectedMenuItem != null) {
-                    OrderItemMongo newOrderItem = new OrderItemMongo (0, quantity);
+                    OrderItemMongo newOrderItem = new OrderItemMongo (selectedMenuItem.get_id(), quantity);
                     mItemTable.getItems().add(newOrderItem);
                     menuItemsCBox.getSelectionModel().clearSelection();
                     menuItemQuantity.clear();
@@ -149,7 +150,7 @@ public class AddOrderController extends BasePantallaController {
     }
 
     public String getMenuItemNameById(int id) {
-        Either<ErrorCMenuItem, String> result = serviceMenuItems.getMenuItemName(id);
+        Either<ErrorCObject, String> result = serviceMenuItems.getMenuItemName(id);
         if(result.isRight()) {
             return result.get();
         } else {

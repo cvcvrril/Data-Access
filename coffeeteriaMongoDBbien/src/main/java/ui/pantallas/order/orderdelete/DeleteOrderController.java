@@ -101,7 +101,7 @@ public class DeleteOrderController extends BasePantallaController {
     }
 
     public String getMenuItemNameById(int id) {
-        Either<ErrorCMenuItem, String> result = serviceMenuItems.getMenuItemName(id);
+        Either<ErrorCObject, String> result = serviceMenuItems.getMenuItemName(id);
         if(result.isRight()) {
             return result.get();
         } else {

@@ -191,22 +191,25 @@ public class DaoMongoCustomer {
             MongoCollection<Document> est = db.getCollection("customers");
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String formDate = orderMongo.getOrder_date().format(dateTimeFormatter);
-            Bson bsonFilter = Filters.elemMatch("orders", Filters.regex("order_date", formDate));
+            Bson bsonFilter = Filters.elemMatch("_id", Filters.regex("order_date", formDate));
             Document customerDocument = est.find(bsonFilter).first();
             if (customerDocument != null) {
                 List<Document> ordersDocument = (List<Document>) customerDocument.get("orders");
                 for (Document document : ordersDocument) {
-                    document.put("table_id", orderMongo.getTable_id());
-                    document.put("order_date", formDate);
-                    List<Document> orderItemsDocuments = orderMongo.getOrder_items().stream()
-                            .map(orderItemMongo -> new Document("quantity", orderItemMongo.getQuantity())
-                                    .append("menu_item_id", orderItemMongo.getMenu_item_id())).toList();
-                    document.put("order_items", orderItemsDocuments);
-                    Bson filter = Filters.eq("_id", customerDocument.getObjectId("_id"));
-                    Bson op = Updates.set("orders", ordersDocument);
-                    est.updateOne(filter, op);
-                    res = Either.right(1);
-
+                    if (document.get("order_date").equals(formDate)) {
+                        document.put("table_id", orderMongo.getTable_id());
+                        document.put("order_date", formDate);
+                        List<Document> orderItemsDocuments = orderMongo.getOrder_items().stream()
+                                .map(orderItemMongo -> new Document("quantity", orderItemMongo.getQuantity())
+                                        .append("menu_item_id", orderItemMongo.getMenu_item_id())).toList();
+                        document.put("order_items", orderItemsDocuments);
+                        Bson filter = Filters.eq("_id", customerDocument.getObjectId("_id"));
+                        Bson op = Updates.set("orders", ordersDocument);
+                        est.updateOne(filter, op);
+                        res = Either.right(1);
+                    } else {
+                        res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));
+                    }
                 }
             } else {
                 res = Either.left(new ErrorCObject("No se pudo encontrar el objeto", 0));

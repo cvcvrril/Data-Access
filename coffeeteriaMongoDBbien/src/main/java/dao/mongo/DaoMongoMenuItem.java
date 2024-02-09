@@ -54,5 +54,20 @@ public class DaoMongoMenuItem {
         return res;
     }
 
+    public Either<ErrorCObject, MenuItemMongo> get(int id){
+        Either<ErrorCObject, MenuItemMongo> res;
+        try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
+            MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
+            MongoCollection<Document> est = db.getCollection("menu_items");
+            Document filtro = new Document("_id", id);
+            Document document = est.find(filtro).first();
+            MenuItemMongo menuItemMongo = new Gson().fromJson(document.toJson(), MenuItemMongo.class);
+            res = Either.right(menuItemMongo);
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+            res = Either.left(new ErrorCObject(e.getMessage(), 0));
+        }
+        return res;
+    }
 
 }

@@ -13,6 +13,7 @@ import model.Customer;
 import model.Order;
 import model.OrderItem;
 import model.errors.ErrorCMenuItem;
+import model.errors.ErrorCObject;
 import model.errors.ErrorCOrderItem;
 import model.mongo.CustomerMongo;
 import model.mongo.OrderItemMongo;
@@ -178,7 +179,7 @@ public class OrderListController extends BasePantallaController {
     }
 
     public String getMenuItemNameById(int id) {
-        Either<ErrorCMenuItem, String> result = serviceMenuItems.getMenuItemName(id);
+        Either<ErrorCObject, String> result = serviceMenuItems.getMenuItemName(id);
         if (result.isRight()) {
             return result.get();
         } else {
