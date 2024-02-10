@@ -9,6 +9,11 @@ import org.bson.Document;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static com.mongodb.client.model.Aggregates.*;
+import static com.mongodb.client.model.Filters.gt;
+import static com.mongodb.client.model.Projections.*;
+import static com.mongodb.client.model.Sorts.ascending;
+
 public class Exercise2 {
 
     public static void main(String[] args) {
@@ -21,7 +26,12 @@ public class Exercise2 {
         System.out.println("");
 
         collection.aggregate(Arrays.asList(
-                
+                        match(gt("area", 10000)),
+                        sort(ascending("area")),
+                        limit(4),
+                        project(fields(excludeId(),
+                                include("name.common"),
+                                include("currency")))
                 ))
                 .into(new ArrayList<>()).forEach(System.out::println);
 
