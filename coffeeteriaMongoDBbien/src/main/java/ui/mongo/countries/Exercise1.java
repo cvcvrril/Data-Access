@@ -4,16 +4,11 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import dao.connection.JPAUtil;
 import org.bson.Document;
 
-import static com.mongodb.client.model.Accumulators.*;
 import static com.mongodb.client.model.Aggregates.*;
-import static java.util.Arrays.asList;
 import static com.mongodb.client.model.Sorts.*;
-import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Projections.*;
-import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 
 import java.util.ArrayList;
