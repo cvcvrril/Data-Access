@@ -5,7 +5,6 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Aggregates.*;
-import static com.mongodb.client.model.Accumulators.*;
 import static com.mongodb.client.model.Sorts.*;
 import static com.mongodb.client.model.Projections.*;
 import static com.mongodb.client.model.Filters.eq;
@@ -14,7 +13,7 @@ import org.bson.Document;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Exercise1 {
+public class Exercise_a {
 
     public static void main(String[] args) {
 
