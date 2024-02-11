@@ -14,7 +14,7 @@ import org.bson.Document;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Exercise3 {
+public class Exercise4 {
 
     public static void main(String[] args) {
 
@@ -22,16 +22,16 @@ public class Exercise3 {
         MongoDatabase db = mongo.getDatabase("inesmartinez_countries");
         MongoCollection<Document> collection = db.getCollection("countries");
 
-        System.out.println("3. Find the average area of countries in each region");
+        System.out.println("4. Identify countries with the most common bordering countries. Show the first 5 ones:");
         System.out.println("");
 
         collection.aggregate(Arrays.asList(
-                        group("$region",
-                                avg("avg_area", "$area"))
-
-                ))
-                .into(new ArrayList<>()).forEach(System.out::println);
-
+                unwind("$borders"),
+                group("$name.common", addToSet("common_borders", "$borders")),
+                unwind("$common_borders"),
+                group("$_id", sum("count", 1)),
+                sort(descending("count")),
+                limit(5)
+        )).into(new ArrayList<>()).forEach(System.out::println);
     }
-
 }
