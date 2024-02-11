@@ -1,0 +1,20 @@
+[
+  {
+    $match: {
+      landlocked: true,
+    },
+  },
+  {
+    $group: {
+      _id: "$region",
+      number_countries: {
+        $sum: 1,
+      },
+    },
+  },
+  {
+    $sort: {
+      number_countries: -1,
+    },
+  },
+]

@@ -1,0 +1,29 @@
+[
+  {
+    $match: {
+      area: {
+        $gt: 10000,
+      },
+    },
+  },
+  {
+    $limit: 4,
+  },
+  {
+    $unwind: {
+      path: "$currency",
+    },
+  },
+  {
+    $project:
+      /**
+       * specifications: The fields to
+       *   include or exclude.
+       */
+      {
+        _id: 0,
+        currency: 1,
+        name: "$name.common",
+      },
+  },
+]

@@ -1,0 +1,16 @@
+[{
+  "_id": "Africa",
+  "number_countries": 16
+},
+{
+  "_id": "Europe",
+  "number_countries": 15
+},
+{
+  "_id": "Asia",
+  "number_countries": 12
+},
+{
+  "_id": "Americas",
+  "number_countries": 2
+}]
