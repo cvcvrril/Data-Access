@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.mongodb.client.model.Accumulators.*;
 import static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Aggregates.project;
 import static com.mongodb.client.model.Filters.eq;
@@ -85,17 +86,17 @@ public class DaoAggregationsCountries {
             MongoCollection<Document> collection = db.getCollection("countries");
 
             List<Document> documents = collection.aggregate(Arrays.asList(
-                            match(eq("region", "Europe")),
-                            match(eq("currency", "EUR")),
-                            sort(descending("area")),
-                            limit(1),
-                            project(fields(excludeId(),
-                                    include("name.common"),
-                                    include("translations.spa.common")))
+                            group("$region",
+                                    avg("avg_area", "$area"))
                     ))
                     .into(new ArrayList<>());
-            String json = documents.get(0).toJson();
-            res = Either.right(json);
+
+            List<String> jsonList = new ArrayList<>();
+            for (Document doc : documents) {
+                jsonList.add(doc.toJson());
+            }
+            String json = String.join(",", jsonList);
+            res = Either.right("[" + json + "]");
 
         }catch (Exception e){
             res = Either.left(new ErrorCObject("There was an error", 0));
@@ -110,17 +111,20 @@ public class DaoAggregationsCountries {
             MongoCollection<Document> collection = db.getCollection("countries");
 
             List<Document> documents = collection.aggregate(Arrays.asList(
-                            match(eq("region", "Europe")),
-                            match(eq("currency", "EUR")),
-                            sort(descending("area")),
-                            limit(1),
-                            project(fields(excludeId(),
-                                    include("name.common"),
-                                    include("translations.spa.common")))
-                    ))
-                    .into(new ArrayList<>());
-            String json = documents.get(0).toJson();
-            res = Either.right(json);
+                    unwind("$borders"),
+                    group("$name.common", addToSet("common_borders", "$borders")),
+                    unwind("$common_borders"),
+                    group("$_id", sum("count", 1)),
+                    sort(descending("count")),
+                    limit(5)
+            )).into(new ArrayList<>());
+
+            List<String> jsonList = new ArrayList<>();
+            for (Document doc : documents) {
+                jsonList.add(doc.toJson());
+            }
+            String json = String.join(",", jsonList);
+            res = Either.right("[" + json + "]");
 
         }catch (Exception e){
             res = Either.left(new ErrorCObject("There was an error", 0));
@@ -135,17 +139,17 @@ public class DaoAggregationsCountries {
             MongoCollection<Document> collection = db.getCollection("countries");
 
             List<Document> documents = collection.aggregate(Arrays.asList(
-                            match(eq("region", "Europe")),
-                            match(eq("currency", "EUR")),
-                            sort(descending("area")),
-                            limit(1),
-                            project(fields(excludeId(),
-                                    include("name.common"),
-                                    include("translations.spa.common")))
-                    ))
-                    .into(new ArrayList<>());
-            String json = documents.get(0).toJson();
-            res = Either.right(json);
+                    match(eq("landlocked", true)),
+                    group("$region", sum("number_countries", 1)),
+                    sort(descending("number_countries"))
+            )).into(new ArrayList<>());
+
+            List<String> jsonList = new ArrayList<>();
+            for (Document doc : documents) {
+                jsonList.add(doc.toJson());
+            }
+            String json = String.join(",", jsonList);
+            res = Either.right("[" + json + "]");
 
         }catch (Exception e){
             res = Either.left(new ErrorCObject("There was an error", 0));
