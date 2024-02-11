@@ -7,8 +7,6 @@ import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Accumulators.*;
 import static com.mongodb.client.model.Sorts.*;
-import static com.mongodb.client.model.Projections.*;
-import static com.mongodb.client.model.Filters.eq;
 import org.bson.Document;
 
 import java.util.ArrayList;
