@@ -289,8 +289,6 @@ public class DaoAggregationsRestaurant {
         return res;
     }
 
-    //TODO: ARREGLAR
-
     public Either<ErrorCObject, String> exerciseJ() {
         Either<ErrorCObject, String> res;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {

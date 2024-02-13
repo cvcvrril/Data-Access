@@ -15,7 +15,7 @@ public class Exercise_j {
         System.out.println("i. Get the most requested table per customer");
         System.out.println("");
 
-        System.out.println(serviceRestaurant.exerciseI());
+        System.out.println(serviceRestaurant.exerciseJ());
 
     }
 }
