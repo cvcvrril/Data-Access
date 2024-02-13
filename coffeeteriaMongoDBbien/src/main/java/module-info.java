@@ -57,6 +57,10 @@ module coffeeteria {
     exports dao.mongo;
     exports dao.connection;
     exports model.xml;
+    exports services.mongo.aggregations;
+    exports ui.mongo.countries;
+    exports ui.mongo.restaurant;
+    exports dao.aggregations;
 
     /*Abrir módulos*/
 
