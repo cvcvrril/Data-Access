@@ -19,7 +19,6 @@ import java.util.Arrays;
 public class Exercise_a {
 
     public static void main(String[] args) {
-
         DaoAggregationsRestaurant daoAggregationsRestaurant = new DaoAggregationsRestaurant();
         ServiceRestaurant serviceRestaurant =  new ServiceRestaurant(daoAggregationsRestaurant);
 

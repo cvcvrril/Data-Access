@@ -4,6 +4,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import io.vavr.control.Either;
 import model.errors.ErrorCObject;
 import org.bson.Document;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Aggregates.project;
+import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Projections.*;
 import static com.mongodb.client.model.Projections.include;
@@ -85,9 +87,10 @@ public class DaoAggregationsRestaurant {
             MongoCollection<Document> collection = db.getCollection("customers");
 
             List<Document> documents = collection.aggregate(Arrays.asList(
-                    unwind("orders"),
+                    unwind("$orders"),
                     project(fields(
                             include("orders"),
+
                             new Document("num_items", new Document("$size", "$orders.order_items"))
                     ))
             )).into(new ArrayList<>());
@@ -112,11 +115,12 @@ public class DaoAggregationsRestaurant {
             MongoCollection<Document> collection = db.getCollection("customers");
 
             List<Document> documents = collection.aggregate(Arrays.asList(
-                    unwind("orders"),
-                    project(fields(
-                            include("orders"),
-                            new Document("num_items", new Document("$size", "$orders.order_items"))
-                    ))
+                    unwind("$orders"),
+                    unwind("$orders.order_items"),
+                    lookup("menu_items", "orders.order_items.menu_item_id", "_id", "menu_item"),
+                    unwind("$menu_item"),
+                    match(Filters.eq("menu_item.name", "New York Strip Steak")),
+                    group(and(eq("first_name", "$first_name"), eq("second_name", "$second_name")))
             )).into(new ArrayList<>());
 
             List<String> jsonList = new ArrayList<>();
