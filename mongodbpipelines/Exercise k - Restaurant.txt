@@ -1,0 +1,35 @@
+[
+  {
+    $unwind: "$orders",
+  },
+  {
+    $unwind: "$orders.order_items",
+  },
+  {
+    $lookup: {
+      from: "menu_items",
+      localField:
+        "orders.order_items.menu_item_id",
+      foreignField: "_id",
+      as: "menu_item",
+    },
+  },
+  {
+    $unwind: "$menu_item",
+  },
+  {
+    $group: {
+      _id: "$orders._id",
+      total_price: {
+        $sum: "$menu_item.price",
+      },
+    },
+  },
+  {
+    $project: {
+      _id: 0,
+      order_id: "$_id",
+      total_price: 1,
+    },
+  },
+]

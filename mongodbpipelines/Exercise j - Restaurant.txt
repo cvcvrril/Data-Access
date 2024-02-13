@@ -1,0 +1,59 @@
+[
+  {
+    $unwind: "$orders",
+  },
+  {
+    $unwind: "$orders.order_items",
+  },
+  {
+    $group: {
+      _id: {
+        order_id: "$orders._id",
+        menu_item_id:
+          "$orders.order_items.menu_item_id",
+      },
+      count: {
+        $sum: "$orders.order_items.quantity",
+      },
+    },
+  },
+  {
+    $group: {
+      _id: "$_id.menu_item_id",
+      never_requested_more_than_once: {
+        $sum: {
+          $cond: [
+            {
+              $eq: ["$count", 1],
+            },
+            1,
+            0,
+          ],
+        },
+      },
+    },
+  },
+  {
+    $match: {
+      never_requested_more_than_once: {
+        $gt: 0,
+      },
+    },
+  },
+  {
+    $lookup: {
+      from: "menu_items",
+      localField: "_id",
+      foreignField: "_id",
+      as: "menu_item",
+    },
+  },
+  {
+    $project: {
+      _id: 0,
+      "Item Name": {
+        $arrayElemAt: ["$menu_item.name", 0],
+      },
+    },
+  },
+]

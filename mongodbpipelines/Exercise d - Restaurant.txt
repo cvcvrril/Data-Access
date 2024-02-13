@@ -1,0 +1,45 @@
+[
+  {
+    $unwind: "$orders",
+  },
+  {
+    $unwind: "$orders.order_items",
+  },
+  {
+    $lookup: {
+      from: "menu_items",
+      localField:
+        "orders.order_items.menu_item_id",
+      foreignField: "_id",
+      as: "menu_item",
+    },
+  },
+  {
+    $unwind: "$menu_item",
+  },
+  {
+    $match: {
+      "menu_item.name": "New York Strip Steak",
+    },
+  },
+  {
+    $group: {
+      _id: {
+        first_name: "$first_name",
+        second_name: "$second_name",
+      },
+    },
+  },
+  {
+    $project: {
+      _id: 0,
+      name: {
+        $concat: [
+          "$_id.first_name",
+          " ",
+          "$_id.second_name",
+        ],
+      },
+    },
+  },
+]

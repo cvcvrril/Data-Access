@@ -1,0 +1,15 @@
+[
+  {
+    $unwind: {
+      path: "$orders",
+    },
+  },
+  {
+    $project: {
+      order_id: "_id",
+      num_items: {
+        $size: "$orders.order_items",
+      },
+    },
+  },
+]

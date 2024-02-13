@@ -1,0 +1,48 @@
+[
+  {
+    $unwind: {
+      path: "$orders",
+    },
+  },
+  {
+    $unwind: {
+      path: "$orders.order_items",
+    },
+  },
+  {
+    $group: {
+      _id: "$orders.order_items.menu_item_id",
+      count: {
+        $sum: "$orders.order_items.quantity",
+      },
+    },
+  },
+  {
+    $sort: {
+      count: -1,
+    },
+  },
+  {
+    $limit: 1,
+  },
+  {
+    $lookup: {
+      from: "menu_items",
+      localField: "_id",
+      foreignField: "_id",
+      as: "menu_items",
+    },
+  },
+  {
+    $project:
+      /**
+       * specifications: The fields to
+       *   include or exclude.
+       */
+      {
+        _id: 0,
+        most_requested_item: "$menu_items.name",
+        total_quantity: "$count",
+      },
+  },
+]

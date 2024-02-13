@@ -1,0 +1,29 @@
+[
+  {
+    $unwind: "$orders",
+  },
+  {
+    $group: {
+      _id: "$_id",
+      avg_items_per_order: {
+        $avg: {
+          $size: "$orders.order_items",
+        },
+      },
+    },
+  },
+  {
+    $group: {
+      _id: null,
+      overall_avg_items_per_order: {
+        $avg: "$avg_items_per_order",
+      },
+    },
+  },
+  {
+    $project: {
+      _id: 0,
+      overall_avg_items_per_order: 1,
+    },
+  },
+]

@@ -1,0 +1,60 @@
+[
+  {
+    $unwind: "$orders",
+  },
+  {
+    $unwind: "$orders.order_items",
+  },
+  {
+    $lookup: {
+      from: "menu_items",
+      localField:
+        "orders.order_items.menu_item_id",
+      foreignField: "_id",
+      as: "menu_item",
+    },
+  },
+  {
+    $unwind: "$menu_item",
+  },
+  {
+    $group: {
+      _id: "$_id",
+      total_spent: {
+        $sum: "$menu_item.price",
+      },
+    },
+  },
+  {
+    $sort: {
+      total_spent: -1,
+    },
+  },
+  {
+    $limit: 1,
+  },
+  {
+    $lookup: {
+      from: "customers",
+      localField: "_id",
+      foreignField: "_id",
+      as: "customer",
+    },
+  },
+  {
+    $unwind: "$customer",
+  },
+  {
+    $project: {
+      _id: 0,
+      "Customer Name": {
+        $concat: [
+          "$customer.first_name",
+          " ",
+          "$customer.second_name",
+        ],
+      },
+      "Total Spent": "$total_spent",
+    },
+  },
+]
