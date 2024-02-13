@@ -18,5 +18,51 @@ public class ServiceRestaurant {
         return daoAggregationsRestaurant.exerciseA();
     }
 
+    public Either<ErrorCObject, String> exerciseB(){
+        return daoAggregationsRestaurant.exerciseB();
+    }
 
+    public Either<ErrorCObject, String> exerciseC(){
+        return daoAggregationsRestaurant.exerciseC();
+    }
+
+    public Either<ErrorCObject, String> exerciseD(){
+        return daoAggregationsRestaurant.exerciseA();
+    }
+
+    public Either<ErrorCObject, String> exerciseE(){
+        return daoAggregationsRestaurant.exerciseA();
+    }
+
+    public Either<ErrorCObject, String> exerciseF(){
+        return daoAggregationsRestaurant.exerciseA();
+    }
+
+    public Either<ErrorCObject, String> exerciseG(){
+        return daoAggregationsRestaurant.exerciseA();
+    }
+
+    public Either<ErrorCObject, String> exerciseH(){
+        return daoAggregationsRestaurant.exerciseA();
+    }
+
+    public Either<ErrorCObject, String> exerciseI(){
+        return daoAggregationsRestaurant.exerciseA();
+    }
+
+    public Either<ErrorCObject, String> exerciseJ(){
+        return daoAggregationsRestaurant.exerciseA();
+    }
+
+    public Either<ErrorCObject, String> exerciseK(){
+        return daoAggregationsRestaurant.exerciseA();
+    }
+
+    public Either<ErrorCObject, String> exerciseL(){
+        return daoAggregationsRestaurant.exerciseA();
+    }
+
+    public Either<ErrorCObject, String> exerciseM(){
+        return daoAggregationsRestaurant.exerciseA();
+    }
 }
