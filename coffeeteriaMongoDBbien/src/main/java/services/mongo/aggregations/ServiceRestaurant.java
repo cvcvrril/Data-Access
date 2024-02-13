@@ -39,11 +39,11 @@ public class ServiceRestaurant {
     }
 
     public Either<ErrorCObject, String> exerciseG(){
-        return daoAggregationsRestaurant.exerciseA();
+        return daoAggregationsRestaurant.exerciseG();
     }
 
     public Either<ErrorCObject, String> exerciseH(){
-        return daoAggregationsRestaurant.exerciseA();
+        return daoAggregationsRestaurant.exerciseH();
     }
 
     public Either<ErrorCObject, String> exerciseI(){

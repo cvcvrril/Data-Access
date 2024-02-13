@@ -197,4 +197,66 @@ public class DaoAggregationsRestaurant {
         return res;
     }
 
+    public Either<ErrorCObject, String> exerciseG(){
+        Either<ErrorCObject, String> res;
+        try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
+            MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
+            MongoCollection<Document> collection = db.getCollection("customers");
+
+            List<Document> documents = collection.aggregate(Arrays.asList(
+                    match(eq("first_name", "Lucia")),
+                    unwind("$orders"),
+                    unwind("$orders.order_items"),
+                    group("$orders.order_items.menu_item_id",
+                            sum("total_quantity", "$orders.order_items.quantity")),
+                    lookup("menu_items", "_id", "_id", "menu_item"),
+                    project(fields(excludeId(),
+                            computed("Menu Item", new Document("$arrayElemAt", Arrays.asList("$menu_item.name", 0))),
+                            include("total_quantity")))
+            )).into(new ArrayList<>());
+
+            List<String> jsonList = new ArrayList<>();
+            for (Document doc : documents) {
+                jsonList.add(doc.toJson());
+            }
+            String json = String.join(",", jsonList);
+            res = Either.right("[" + json + "]");
+
+        }catch (Exception e){
+            res = Either.left(new ErrorCObject("There was an error", 0));
+        }
+        return res;
+    }
+
+    public Either<ErrorCObject, String> exerciseH(){
+        Either<ErrorCObject, String> res;
+        try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
+            MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
+            MongoCollection<Document> collection = db.getCollection("customers");
+
+            List<Document> documents = collection.aggregate(Arrays.asList(
+                    unwind("$orders"),
+                    group("$orders.table_id",
+                            sum("total_orders", 1)),
+                    sort(descending("total_orders")),
+                    limit(1),
+                    project(fields(
+                            excludeId(),
+                            computed("most_requested_table", "$_id"),
+                            include("total_orders", "total_orders")))
+            )).into(new ArrayList<>());
+
+            List<String> jsonList = new ArrayList<>();
+            for (Document doc : documents) {
+                jsonList.add(doc.toJson());
+            }
+            String json = String.join(",", jsonList);
+            res = Either.right("[" + json + "]");
+
+        }catch (Exception e){
+            res = Either.left(new ErrorCObject("There was an error", 0));
+        }
+        return res;
+    }
+
 }
