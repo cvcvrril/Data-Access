@@ -23,9 +23,10 @@ import static com.mongodb.client.model.Projections.include;
 import static com.mongodb.client.model.Sorts.ascending;
 import static com.mongodb.client.model.Sorts.descending;
 
+
 public class DaoAggregationsRestaurant {
 
-    public Either<ErrorCObject, String> exerciseA(){
+    public Either<ErrorCObject, String> exerciseA() {
         Either<ErrorCObject, String> res;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
@@ -47,13 +48,13 @@ public class DaoAggregationsRestaurant {
             String json = String.join(",", jsonList);
             res = Either.right("[" + json + "]");
 
-        }catch (Exception e){
+        } catch (Exception e) {
             res = Either.left(new ErrorCObject("There was an error", 0));
         }
         return res;
     }
 
-    public Either<ErrorCObject, String> exerciseB(){
+    public Either<ErrorCObject, String> exerciseB() {
         Either<ErrorCObject, String> res;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
@@ -76,13 +77,13 @@ public class DaoAggregationsRestaurant {
             String json = String.join(",", jsonList);
             res = Either.right("[" + json + "]");
 
-        }catch (Exception e){
+        } catch (Exception e) {
             res = Either.left(new ErrorCObject("There was an error", 0));
         }
         return res;
     }
 
-    public Either<ErrorCObject, String> exerciseC(){
+    public Either<ErrorCObject, String> exerciseC() {
         Either<ErrorCObject, String> res;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
@@ -103,13 +104,13 @@ public class DaoAggregationsRestaurant {
             String json = String.join(",", jsonList);
             res = Either.right("[" + json + "]");
 
-        }catch (Exception e){
+        } catch (Exception e) {
             res = Either.left(new ErrorCObject("There was an error", 0));
         }
         return res;
     }
 
-    public Either<ErrorCObject, String> exerciseD(){
+    public Either<ErrorCObject, String> exerciseD() {
         Either<ErrorCObject, String> res;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
@@ -131,13 +132,13 @@ public class DaoAggregationsRestaurant {
             String json = String.join(",", jsonList);
             res = Either.right("[" + json + "]");
 
-        }catch (Exception e){
+        } catch (Exception e) {
             res = Either.left(new ErrorCObject("There was an error", 0));
         }
         return res;
     }
 
-    public Either<ErrorCObject, String> exerciseE(){
+    public Either<ErrorCObject, String> exerciseE() {
         Either<ErrorCObject, String> res;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
@@ -160,13 +161,13 @@ public class DaoAggregationsRestaurant {
             String json = String.join(",", jsonList);
             res = Either.right("[" + json + "]");
 
-        }catch (Exception e){
+        } catch (Exception e) {
             res = Either.left(new ErrorCObject("There was an error", 0));
         }
         return res;
     }
 
-    public Either<ErrorCObject, String> exerciseF(){
+    public Either<ErrorCObject, String> exerciseF() {
         Either<ErrorCObject, String> res;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
@@ -191,13 +192,13 @@ public class DaoAggregationsRestaurant {
             String json = String.join(",", jsonList);
             res = Either.right("[" + json + "]");
 
-        }catch (Exception e){
+        } catch (Exception e) {
             res = Either.left(new ErrorCObject("There was an error", 0));
         }
         return res;
     }
 
-    public Either<ErrorCObject, String> exerciseG(){
+    public Either<ErrorCObject, String> exerciseG() {
         Either<ErrorCObject, String> res;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
@@ -222,13 +223,13 @@ public class DaoAggregationsRestaurant {
             String json = String.join(",", jsonList);
             res = Either.right("[" + json + "]");
 
-        }catch (Exception e){
+        } catch (Exception e) {
             res = Either.left(new ErrorCObject("There was an error", 0));
         }
         return res;
     }
 
-    public Either<ErrorCObject, String> exerciseH(){
+    public Either<ErrorCObject, String> exerciseH() {
         Either<ErrorCObject, String> res;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
@@ -253,15 +254,13 @@ public class DaoAggregationsRestaurant {
             String json = String.join(",", jsonList);
             res = Either.right("[" + json + "]");
 
-        }catch (Exception e){
+        } catch (Exception e) {
             res = Either.left(new ErrorCObject("There was an error", 0));
         }
         return res;
     }
 
-    //TODO: ARREGLAR
-
-    public Either<ErrorCObject, String> exerciseI(){
+    public Either<ErrorCObject, String> exerciseI() {
         Either<ErrorCObject, String> res;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
@@ -269,20 +268,45 @@ public class DaoAggregationsRestaurant {
 
             List<Document> documents = collection.aggregate(Arrays.asList(
                     unwind("$orders"),
-                    group(new Document("customer_id", "$_id").append("table_id", "$orders.table_id"),
+                    group(new Document("_id", new Document("customer_id", "$_id").append("table_id", "$orders.table_id")),
                             sum("total_orders", 1)),
                     sort(descending("total_orders")),
-                    sort(ascending("_id.customer_id")),
-                    group("$_id.customer_id",
-                            first("most_requested_table", "$_id.table_id"),
-                            first("total_orders", "$total_orders")),
-                    lookup("customers", "_id", "_id", "customer"),
-                    unwind("$customer"),
+                    group("$customers._id",
+                            first("most_requested_table", "$orders.table_id"),
+                    first("total_orders", "$total_orders"))
+            )).into(new ArrayList<>());
+
+            List<String> jsonList = new ArrayList<>();
+            for (Document doc : documents) {
+                jsonList.add(doc.toJson());
+            }
+            String json = String.join(",", jsonList);
+            res = Either.right("[" + json + "]");
+
+        } catch (Exception e) {
+            res = Either.left(new ErrorCObject("There was an error", 0));
+        }
+        return res;
+    }
+
+    //TODO: ARREGLAR
+
+    public Either<ErrorCObject, String> exerciseJ() {
+        Either<ErrorCObject, String> res;
+        try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
+            MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
+            MongoCollection<Document> collection = db.getCollection("customers");
+
+            List<Document> documents = collection.aggregate(Arrays.asList(
+                    unwind("$orders"),
+                    unwind("$orders.order_items"),
+                    group(new Document("_id", new Document("customer_id", "$_id")
+                                    .append("menu_item_id", "$orders.order_items.menu_item_id")),
+                    sum("quantity", "$orders.order_items.quantity")),
+                    match(Filters.eq("quantity", 1)),
                     project(fields(
                             excludeId(),
-                            computed("Customer Name", new Document("$concat", Arrays.asList("$customer.first_name", " ", "$customer.second_name"))),
-                            include("Most Requested Table", "$most_requested_table"),
-                            include("Total Orders", "$total_orders")
+                            include("menu_item_id")
                     ))
             )).into(new ArrayList<>());
 
@@ -293,38 +317,13 @@ public class DaoAggregationsRestaurant {
             String json = String.join(",", jsonList);
             res = Either.right("[" + json + "]");
 
-        }catch (Exception e){
+        } catch (Exception e) {
             res = Either.left(new ErrorCObject("There was an error", 0));
         }
         return res;
     }
 
-    //TODO: ARREGLAR
-
-    public Either<ErrorCObject, String> exerciseJ(){
-        Either<ErrorCObject, String> res;
-        try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
-            MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
-            MongoCollection<Document> collection = db.getCollection("customers");
-
-            List<Document> documents = collection.aggregate(Arrays.asList(
-
-            )).into(new ArrayList<>());
-
-            List<String> jsonList = new ArrayList<>();
-            for (Document doc : documents) {
-                jsonList.add(doc.toJson());
-            }
-            String json = String.join(",", jsonList);
-            res = Either.right("[" + json + "]");
-
-        }catch (Exception e){
-            res = Either.left(new ErrorCObject("There was an error", 0));
-        }
-        return res;
-    }
-
-    public Either<ErrorCObject, String> exerciseK(){
+    public Either<ErrorCObject, String> exerciseK() {
         Either<ErrorCObject, String> res;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
@@ -349,13 +348,13 @@ public class DaoAggregationsRestaurant {
             String json = String.join(",", jsonList);
             res = Either.right("[" + json + "]");
 
-        }catch (Exception e){
+        } catch (Exception e) {
             res = Either.left(new ErrorCObject("There was an error", 0));
         }
         return res;
     }
 
-    public Either<ErrorCObject, String> exerciseL(){
+    public Either<ErrorCObject, String> exerciseL() {
         Either<ErrorCObject, String> res;
         try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
             MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
@@ -385,7 +384,37 @@ public class DaoAggregationsRestaurant {
             String json = String.join(",", jsonList);
             res = Either.right("[" + json + "]");
 
-        }catch (Exception e){
+        } catch (Exception e) {
+            res = Either.left(new ErrorCObject("There was an error", 0));
+        }
+        return res;
+    }
+
+    public Either<ErrorCObject, String> exerciseM() {
+        Either<ErrorCObject, String> res;
+        try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
+            MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
+            MongoCollection<Document> collection = db.getCollection("customers");
+
+            List<Document> documents = collection.aggregate(Arrays.asList(
+                    unwind("$orders"),
+                    unwind("$orders.order_items"),
+                    lookup("menu_items", "orders.order_items.menu_item_id", "_id", "menu_item"),
+                    unwind("$menu_item"),
+                    group("$first_name", sum("total_paid_amount",
+                            new Document("$sum", new Document("$multiply", Arrays.asList("$menu_item.price", "$orders.order_items.quantity"))))),
+                    project(fields(excludeId(), include("first_name", "second_name", "email", "total_paid_amount")))
+
+            )).into(new ArrayList<>());
+
+            List<String> jsonList = new ArrayList<>();
+            for (Document doc : documents) {
+                jsonList.add(doc.toJson());
+            }
+            String json = String.join(",", jsonList);
+            res = Either.right("[" + json + "]");
+
+        } catch (Exception e) {
             res = Either.left(new ErrorCObject("There was an error", 0));
         }
         return res;

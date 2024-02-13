@@ -63,6 +63,6 @@ public class ServiceRestaurant {
     }
 
     public Either<ErrorCObject, String> exerciseM(){
-        return daoAggregationsRestaurant.exerciseA();
+        return daoAggregationsRestaurant.exerciseM();
     }
 }

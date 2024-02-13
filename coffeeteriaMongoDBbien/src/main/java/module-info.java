@@ -23,6 +23,7 @@ module coffeeteria {
     requires jakarta.cdi;
     requires mongo.java.driver;
     requires com.google.gson;
+    requires com.sun.el;
 
     /*Pantallas*/
 
