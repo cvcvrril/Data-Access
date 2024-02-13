@@ -1,14 +1,16 @@
 package ui.mongo.restaurant;
 
 import dao.aggregations.DaoAggregationsRestaurant;
+import jakarta.enterprise.inject.se.SeContainer;
+import jakarta.enterprise.inject.se.SeContainerInitializer;
 import services.mongo.aggregations.ServiceRestaurant;
 
 public class Exercise_h {
 
     public static void main(String[] args) {
-
-        DaoAggregationsRestaurant daoAggregationsRestaurant = new DaoAggregationsRestaurant();
-        ServiceRestaurant serviceRestaurant =  new ServiceRestaurant(daoAggregationsRestaurant);
+        SeContainerInitializer seContainerInitializer = SeContainerInitializer.newInstance();
+        final SeContainer container = seContainerInitializer.initialize();
+        ServiceRestaurant serviceRestaurant =  container.select(ServiceRestaurant.class).get();
 
         System.out.println("h. Get the most requested table");
         System.out.println("");
