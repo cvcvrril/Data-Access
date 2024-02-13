@@ -85,12 +85,37 @@ public class DaoAggregationsRestaurant {
             MongoCollection<Document> collection = db.getCollection("customers");
 
             List<Document> documents = collection.aggregate(Arrays.asList(
-                    match(eq("first_name", "Lucia")),
+                    unwind("orders"),
                     project(fields(
-                            excludeId(),
-                            include("first_name"),
-                            include("second_name"),
-                            include("orders")
+                            include("orders"),
+                            new Document("num_items", new Document("$size", "$orders.order_items"))
+                    ))
+            )).into(new ArrayList<>());
+
+            List<String> jsonList = new ArrayList<>();
+            for (Document doc : documents) {
+                jsonList.add(doc.toJson());
+            }
+            String json = String.join(",", jsonList);
+            res = Either.right("[" + json + "]");
+
+        }catch (Exception e){
+            res = Either.left(new ErrorCObject("There was an error", 0));
+        }
+        return res;
+    }
+
+    public Either<ErrorCObject, String> exerciseD(){
+        Either<ErrorCObject, String> res;
+        try (MongoClient mongo = MongoClients.create("mongodb://informatica.iesquevedo.es:2323")) {
+            MongoDatabase db = mongo.getDatabase("inesmartinez_restaurant");
+            MongoCollection<Document> collection = db.getCollection("customers");
+
+            List<Document> documents = collection.aggregate(Arrays.asList(
+                    unwind("orders"),
+                    project(fields(
+                            include("orders"),
+                            new Document("num_items", new Document("$size", "$orders.order_items"))
                     ))
             )).into(new ArrayList<>());
 
