@@ -2,8 +2,8 @@ package config.connection;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import common.Configuration;
-import dao.ConstantsDao;
+
+import config.Configuration;
 import jakarta.annotation.PreDestroy;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -26,10 +26,10 @@ public class DbConnectionPool {
 
     private DataSource getHikariPool() {
         HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setJdbcUrl(config.getPropertySQL(ConstantsDao.PATH_DB));
-        hikariConfig.setUsername(config.getPropertySQL(ConstantsDao.USER_DB));
-        hikariConfig.setPassword(config.getPropertySQL(ConstantsDao.PASS_DB));
-        hikariConfig.setDriverClassName(config.getPropertySQL(ConstantsDao.DRIVER));
+        hikariConfig.setJdbcUrl(config.getPropertySQL("pathDBLocal"));
+        hikariConfig.setUsername(config.getPropertySQL("userDBLocal"));
+        hikariConfig.setPassword(config.getPropertySQL("passDBLocal"));
+        hikariConfig.setDriverClassName(config.getPropertySQL("driver"));
         hikariConfig.setMaximumPoolSize(4);
 
         hikariConfig.addDataSourceProperty("cachePrepStmts", true);
