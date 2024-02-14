@@ -11,7 +11,8 @@ public class Exercise_3_H {
         SeContainerInitializer seContainerInitializer = SeContainerInitializer.newInstance();
         final SeContainer container = seContainerInitializer.initialize();
         ServiceWeaponH servicio = container.select(ServiceWeaponH.class).get();
-        Weapon updatedWeapon = new Weapon(1, "Prueba", 6001);
-        servicio.update(updatedWeapon);
+        System.out.println("3. Update the price of a weapon");
+        Weapon updatedWeapon = new Weapon(1, "Prueba", 6002);
+        if (servicio.update(updatedWeapon).isRight()) System.out.println("Weapon updated");
     }
 }
