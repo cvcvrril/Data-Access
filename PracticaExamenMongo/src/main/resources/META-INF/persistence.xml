@@ -4,11 +4,11 @@
              version="2.0">
 
     <persistence-unit name="unit3.hibernate">
-        <class>model.Customer</class>
-        <class>model.Credential</class>
-        <class>model.Order</class>
-        <class>model.OrderItem</class>
-        <class>model.MenuItem</class>
+        <class>data.hibernate.Weapon</class>
+        <class>data.hibernate.Battle</class>
+        <class>data.hibernate.Faction</class>
+        <class>data.hibernate.Sale</class>
+        <class>data.hibernate.Spy</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
