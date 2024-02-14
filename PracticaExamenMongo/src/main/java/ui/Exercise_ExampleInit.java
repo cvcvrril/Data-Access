@@ -1,6 +1,6 @@
 package ui;
 
-public class Exercise_1 {
+public class Exercise_ExampleInit {
 
     public static void main(String[] args) {
 
