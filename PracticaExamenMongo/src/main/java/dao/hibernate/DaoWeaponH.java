@@ -2,9 +2,13 @@ package dao.hibernate;
 
 import config.connection.JPAUtil;
 import data.error.ErrorObject;
+import data.hibernate.Weapon;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+
+import java.time.LocalDateTime;
 
 public class DaoWeaponH {
 
@@ -21,13 +25,23 @@ public class DaoWeaponH {
         this.jpaUtil = jpaUtil;
     }
 
-    public Either<ErrorObject, Integer> update() {
+    public Either<ErrorObject, Integer> update(Weapon weaponUpdate) {
         Either<ErrorObject, Integer> res;
+        em = jpaUtil.getEntityManager();
+        EntityTransaction et = em.getTransaction();
         try {
+            et.begin();
+            em.merge(weaponUpdate);
+            et.commit();
+
+            res = Either.right(1);
 
         }catch (Exception e){
-
+            if (et.isActive()) et.rollback();
+            res = Either.left(new ErrorObject("Ha habido un error", 0, LocalDateTime.now()));
+        }finally {
+            em.close();
         }
-        return null;
+        return res;
     }
 }

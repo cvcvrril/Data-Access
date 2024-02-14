@@ -16,7 +16,7 @@ public class ServiceWeaponH {
     }
 
     public Either<ErrorObject, Integer> update(Weapon weaponUpdate){
-        return daoWeaponH.update();
+        return daoWeaponH.update(weaponUpdate);
     }
 
 }
