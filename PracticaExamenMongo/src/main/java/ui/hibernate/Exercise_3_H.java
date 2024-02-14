@@ -11,10 +11,7 @@ public class Exercise_3_H {
         SeContainerInitializer seContainerInitializer = SeContainerInitializer.newInstance();
         final SeContainer container = seContainerInitializer.initialize();
         ServiceWeaponH servicio = container.select(ServiceWeaponH.class).get();
-        Weapon updatedWeapon = new Weapon();
+        Weapon updatedWeapon = new Weapon(1, "Prueba", 6001);
         servicio.update(updatedWeapon);
-
-
-
     }
 }
