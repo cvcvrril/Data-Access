@@ -41,13 +41,18 @@ public class DaoWeaponH {
         return res;
     }
 
+    /**
+     * Para usar el createNamedQuery metiendo parámetros, hay que usar el setParameter con el ATRIBUTO del objeto, NO con el de la tabla (esto en el primer campo, luego es meter el parámetro).
+     * De todos modos esto lo marca Hibernate, pero lo aclaro por si las moscas
+     * **/
+
     public Either<ErrorObject, List<Weapon>> getByName(String name){
         Either<ErrorObject, List<Weapon>> res;
         List<Weapon> weaponList;
         em = jpaUtil.getEntityManager();
         try {
             weaponList = em
-                    .createNamedQuery("HQL_GET_ALL_WEAPONS_BY_NAME")
+                    .createNamedQuery("HQL_GET_ALL_WEAPONS_BY_NAME_FACTION")
                     .setParameter("nameFaction", name)
                     .getResultList();
             res = Either.right(weaponList);
