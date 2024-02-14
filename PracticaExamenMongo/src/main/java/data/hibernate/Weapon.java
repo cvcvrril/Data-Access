@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "weapons")
 @NamedQueries({
         @NamedQuery(name = "HQL_GET_ALL_WEAPONS", query = "from Weapon"),
-        @NamedQuery(name = "HQL_GET_ALL_WEAPONS_BY_NAME" , query = "from Weapon where name = :name")
+        @NamedQuery(name = "HQL_GET_ALL_WEAPONS_BY_NAME" , query = "from Weapon w where w.id in (select id from WeaponsFactionsEntity wf where wf.nameFaction = : nameFaction)")
 })
 public class Weapon {
 

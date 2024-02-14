@@ -48,6 +48,7 @@ public class DaoWeaponH {
         try {
             weaponList = em
                     .createNamedQuery("HQL_GET_ALL_WEAPONS_BY_NAME")
+                    .setParameter("nameFaction", name)
                     .getResultList();
             res = Either.right(weaponList);
         }catch (Exception e){
