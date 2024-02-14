@@ -74,3 +74,7 @@ S
 -src/main/java/ui/exercises/MainExercise5.java,e\e\ee223329587178bc3c2ecdf8f9fc973c52a194e9
 ]
 -src/main/java/ui/exercises/MainExercise6.java,8\f\8f8accdc75223318e95eb30ae0c852ce13755347
+]
+-src/main/java/ui/exercises/MainExercise1.java,e\f\ef344445a6daee6661e430822123ffb8ede05630
+]
+-src/main/java/ui/exercises/MainExercise2.java,e\9\e9fe2f89c3d82ab290e3374cb8ef364f278aa62f

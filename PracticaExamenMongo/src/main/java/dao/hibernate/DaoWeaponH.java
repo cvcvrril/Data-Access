@@ -1,6 +1,8 @@
 package dao.hibernate;
 
 import config.connection.JPAUtil;
+import data.error.ErrorObject;
+import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
@@ -17,5 +19,15 @@ public class DaoWeaponH {
     @Inject
     public DaoWeaponH(JPAUtil jpaUtil) {
         this.jpaUtil = jpaUtil;
+    }
+
+    public Either<ErrorObject, Integer> update() {
+        Either<ErrorObject, Integer> res;
+        try {
+
+        }catch (Exception e){
+
+        }
+        return null;
     }
 }
