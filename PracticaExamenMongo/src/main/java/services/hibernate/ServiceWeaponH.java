@@ -24,4 +24,8 @@ public class ServiceWeaponH {
     public Either<ErrorObject, List<Weapon>> getAll() {
         return daoWeaponH.getAll();
     }
+
+    public Either<ErrorObject, List<Weapon>> getByName(String name){
+        return daoWeaponH.getByName(name);
+    }
 }

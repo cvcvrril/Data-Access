@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "weapons")
 @NamedQueries({
-        @NamedQuery(name = "HQL_GET_ALL_WEAPONS", query = "from Weapon")
+        @NamedQuery(name = "HQL_GET_ALL_WEAPONS", query = "from Weapon"),
+        @NamedQuery(name = "HQL_GET_ALL_WEAPONS_BY_NAME" , query = "from Weapon where name = :name")
 })
 public class Weapon {
 

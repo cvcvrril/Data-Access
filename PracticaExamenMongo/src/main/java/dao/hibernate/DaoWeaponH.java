@@ -41,6 +41,21 @@ public class DaoWeaponH {
         return res;
     }
 
+    public Either<ErrorObject, List<Weapon>> getByName(String name){
+        Either<ErrorObject, List<Weapon>> res;
+        List<Weapon> weaponList;
+        em = jpaUtil.getEntityManager();
+        try {
+            weaponList = em
+                    .createNamedQuery("HQL_GET_ALL_WEAPONS_BY_NAME")
+                    .getResultList();
+            res = Either.right(weaponList);
+        }catch (Exception e){
+            res = Either.left(new ErrorObject("Ha habido un error", 0, LocalDateTime.now()));
+        }
+        return res;
+    }
+
     public Either<ErrorObject, Integer> update(Weapon weaponUpdate) {
         Either<ErrorObject, Integer> res;
         em = jpaUtil.getEntityManager();
