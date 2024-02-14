@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "weapons")
+@NamedQueries({
+        @NamedQuery(name = "HQL_GET_ALL_WEAPONS", query = "from Weapon")
+})
 public class Weapon {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)

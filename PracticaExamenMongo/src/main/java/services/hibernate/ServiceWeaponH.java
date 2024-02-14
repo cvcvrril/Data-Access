@@ -6,6 +6,8 @@ import data.hibernate.Weapon;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 
+import java.util.List;
+
 public class ServiceWeaponH {
 
     private final DaoWeaponH daoWeaponH;
@@ -19,4 +21,7 @@ public class ServiceWeaponH {
         return daoWeaponH.update(weaponUpdate);
     }
 
+    public Either<ErrorObject, List<Weapon>> getAll() {
+        return daoWeaponH.getAll();
+    }
 }

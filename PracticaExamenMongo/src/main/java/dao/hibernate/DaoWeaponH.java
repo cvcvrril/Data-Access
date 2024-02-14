@@ -9,6 +9,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class DaoWeaponH {
 
@@ -23,6 +24,21 @@ public class DaoWeaponH {
     @Inject
     public DaoWeaponH(JPAUtil jpaUtil) {
         this.jpaUtil = jpaUtil;
+    }
+
+    public Either<ErrorObject, List<Weapon>> getAll(){
+        Either<ErrorObject, List<Weapon>> res;
+        List<Weapon> weaponList;
+        em = jpaUtil.getEntityManager();
+        try {
+            weaponList = em
+                    .createNamedQuery("HQL_GET_ALL_WEAPONS", Weapon.class)
+                    .getResultList();
+            res = Either.right(weaponList);
+        }catch (Exception e){
+            res = Either.left(new ErrorObject("Ha habido un error", 0, LocalDateTime.now()));
+        }
+        return res;
     }
 
     public Either<ErrorObject, Integer> update(Weapon weaponUpdate) {
