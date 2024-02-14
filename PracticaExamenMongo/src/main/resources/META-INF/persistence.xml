@@ -15,7 +15,7 @@
             <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/practicaExamenMongoHibernate"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
             <property name="jakarta.persistence.jdbc.user" value="root"/>
-            <property name="jakarta.persistence.jdbc.password" value="quevedo2dam"/>
+            <property name="jakarta.persistence.jdbc.password" value="alumno"/>
         </properties>
 
     </persistence-unit>
