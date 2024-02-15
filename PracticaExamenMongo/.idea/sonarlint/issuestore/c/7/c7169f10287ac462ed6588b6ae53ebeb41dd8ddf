@@ -1,7 +1,4 @@
 
-M
-java:S1172$"+Remove this unused method parameter "gson".(ÇÅšùÿÿÿÿ8Ÿ‡ğîÚ1
-O
-java:S1172,"-Remove this unused method parameter "weapon".(‹’úÿşÿÿÿÿ8‹’ÛîÚ1
-Q
-java:S14810"/Remove this unused "collection" local variable.(®ï·¼ıÿÿÿÿ8¢áèîÚ1
+£
+java:S1186)"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(·•¾íşÿÿÿÿ8Æ¸¦ïÚ1
+psecrets:S6694/"PMake sure this MongoDB database password gets changed and removed from the code.(ª¢¾ô8÷¬ˆïÚ1

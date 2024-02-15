@@ -63,3 +63,5 @@ W
 +src/main/java/dao/hibernate/DaoBattleH.java,3\d\3da86ea9a86bc910a79ccee9f5149437d6cd6958
 Z
 *src/main/java/dao/mongo/db/DaoWeaponM.java,c\7\c7169f10287ac462ed6588b6ae53ebeb41dd8ddf
+\
+,src/main/java/ui/hibernate/Exercise_3_H.java,1\f\1f65302c40d1b5e246672eccfcef897207510e7b
