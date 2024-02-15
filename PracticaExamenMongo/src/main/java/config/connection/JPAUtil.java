@@ -8,7 +8,16 @@ import jakarta.persistence.Persistence;
 
 /**
  *
- * @author Lucia
+ * Para Hibernate no se necesita la clase Config ni un fichero xml/txt de donde sacar la contraseña y demás.
+ * Se saca del Persistance. El Persistance se copia y se pega tal cual está puesto aquí.
+ *
+ * -----------------------------------------------------------
+ *
+ * Usuario base de datos SQL : root
+ * Contraseña base de datos SQL : alumno
+ * Usuario base de datos Mongo : root
+ * Contraseña base de datos Mongo : root
+ *
  */
 
 @Singleton

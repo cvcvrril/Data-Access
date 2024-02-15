@@ -2,12 +2,12 @@
 
 ### General
 
-* Meter nota sobre daos llamando a otros daos (La nota en código se encuentra en la clase DaoWeaponH).
+* [HECHO] Meter nota sobre daos llamando a otros daos (La nota en código se encuentra en la clase DaoWeaponH).
 
 ### Hibernate
 
 * Montarme apuntes de cada una de las relaciones. 
-* Montarme apuntes de las queries con HQL (porque seguramente vaya a haber algo).
+* [HECHO] Montarme apuntes de las queries con HQL (porque seguramente vaya a haber algo).
 
 ### Mongo
 

@@ -1,3 +1,5 @@
 
 l
 java:S1450"QRemove the "em" field and declare it as a local variable in the relevant methods.(‘æ¿Úúÿÿÿÿ
+O
+java:S1128"2Remove this unused import 'data.hibernate.Weapon'.(›²ü¡8çïîìÚ1

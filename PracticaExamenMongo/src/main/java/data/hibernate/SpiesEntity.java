@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "spies", schema = "practicaExamenMongoHibernate", catalog = "")
+@Table(name = "spies", schema = "practicaExamenMongoHibernate")
 public class SpiesEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

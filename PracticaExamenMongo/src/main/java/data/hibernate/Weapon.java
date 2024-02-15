@@ -10,6 +10,10 @@ import lombok.NoArgsConstructor;
  * Para el tema de tomar datos de otras tablas que estén vinculadas (como por ejemplo, en el HQL_GET_ALL_WEAPONS_BY_NAME_FACTION) hay que hacer un select anidado, o sino en la vida va a pillarlo bien
  * **/
 
+/**
+ * Las queries de DELETE se tienen que hacer en el objeto que se tiene que eliminar (sino, no funciona).
+ * **/
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
