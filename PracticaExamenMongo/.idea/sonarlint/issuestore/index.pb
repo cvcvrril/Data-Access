@@ -65,3 +65,9 @@ Z
 *src/main/java/dao/mongo/db/DaoWeaponM.java,c\7\c7169f10287ac462ed6588b6ae53ebeb41dd8ddf
 \
 ,src/main/java/ui/hibernate/Exercise_3_H.java,1\f\1f65302c40d1b5e246672eccfcef897207510e7b
+k
+;src/main/java/data/hibernate/gen/WeaponsFactionsEntity.java,1\5\15ec3586e2b20eaed95eb09328dbea24f2ff3ebd
+d
+4src/main/java/dao/hibernate/DaoWeaponsFactionsH.java,8\2\82ef3e1a9caa7d261696a90f79306cb464e665a8
+[
++src/main/java/dao/mongo/db/DaoFactionM.java,8\d\8da2b9e6813e6fa9a8b21581ece9ddf4fa82bc07

@@ -6,6 +6,10 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "weapons_factions", schema = "practicaExamenMongoHibernate", catalog = "")
+@NamedQueries({
+        @NamedQuery(name = "HQL_GET_ALL_WEAPONSFACTIONS", query = "from WeaponsFactionsEntity "),
+        @NamedQuery(name = "HQL_GET_ALL_WEAPONSFACTIONS_BY_NAME_FACTION", query = "from WeaponsFactionsEntity w where w.nameFaction = : nameFaction")
+})
 public class WeaponsFactionsEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
