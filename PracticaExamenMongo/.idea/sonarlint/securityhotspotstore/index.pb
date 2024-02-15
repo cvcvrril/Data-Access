@@ -67,3 +67,11 @@ d
 4src/main/java/dao/hibernate/DaoWeaponsFactionsH.java,8\2\82ef3e1a9caa7d261696a90f79306cb464e665a8
 [
 +src/main/java/dao/mongo/db/DaoFactionM.java,8\d\8da2b9e6813e6fa9a8b21581ece9ddf4fa82bc07
+[
++src/main/java/ui/mongo/db/Exercise_7_M.java,8\e\8e5a3f485956fb465eefb6451090f4ed33345497
+c
+3src/main/java/services/mongo/db/ServiceWeaponM.java,d\a\da038c2985336e445e74b193e70b8abe3a7623d3
+d
+4src/main/java/services/mongo/db/ServiceFactionM.java,7\f\7fa92df902b3d4928e3cbfbc412c76afba66247c
+[
++src/main/java/ui/mongo/db/Exercise_9_M.java,3\8\38b0f7c3c3b9380b55b1877c7f49f4332b887401
