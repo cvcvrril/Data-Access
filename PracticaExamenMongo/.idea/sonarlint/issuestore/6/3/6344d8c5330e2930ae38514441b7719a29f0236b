@@ -1,3 +1,8 @@
 
-_
-java:S2094"BRemove this empty class, write its code or make it an "interface".(™ï¬Ì8ÿ¸¹îÚ1
+T
+java:S1854%"7Remove this useless assignment to local variable "res".(Ì™¡–8˜æÑîÚ1
+J
+java:S1481"(Remove this unused "res" local variable.(¦—öƒûÿÿÿÿ8™æÑîÚ1
+H
+java:S1481 "+Remove this unused "weapon" local variable.(óÎÓÇ8æÑîÚ1
+E	java:S108 ")Either remove or fill this block of code.(óÎÓÇ8æÑîÚ1

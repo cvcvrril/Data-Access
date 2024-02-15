@@ -59,3 +59,7 @@ k
 ;src/main/java/services/mongo/ConverterHibernateToMongo.java,6\3\6344d8c5330e2930ae38514441b7719a29f0236b
 W
 'src/main/java/ui/mongo/ConvertMain.java,3\e\3edf1266d21fd50768da3bcf1b942daad52ddc23
+[
++src/main/java/dao/hibernate/DaoBattleH.java,3\d\3da86ea9a86bc910a79ccee9f5149437d6cd6958
+Z
+*src/main/java/dao/mongo/db/DaoWeaponM.java,c\7\c7169f10287ac462ed6588b6ae53ebeb41dd8ddf
