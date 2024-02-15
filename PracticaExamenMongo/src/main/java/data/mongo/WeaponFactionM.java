@@ -8,10 +8,8 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @ToString
-public class WeaponM {
+public class WeaponFactionM {
 
-    private int id;
-    private String wname;
-    private double wprice;
+    private int id_weapon;
 
 }

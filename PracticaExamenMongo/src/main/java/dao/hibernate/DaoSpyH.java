@@ -2,7 +2,6 @@ package dao.hibernate;
 
 import config.connection.JPAUtil;
 import data.error.ErrorObject;
-import data.hibernate.SpiesEntity;
 import data.hibernate.Spy;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;

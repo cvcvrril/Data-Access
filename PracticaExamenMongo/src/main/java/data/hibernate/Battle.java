@@ -7,6 +7,11 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 
+
+/**
+ * Las queries de DELETE se tienen que hacer en el objeto que se tiene que eliminar (sino, no funciona).
+ * **/
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

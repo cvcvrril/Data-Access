@@ -1,4 +1,4 @@
-package data.hibernate;
+package data.hibernate.gen;
 
 import jakarta.persistence.*;
 

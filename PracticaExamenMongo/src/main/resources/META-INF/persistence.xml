@@ -9,11 +9,11 @@
         <class>data.hibernate.Faction</class>
         <class>data.hibernate.Sale</class>
         <class>data.hibernate.Spy</class>
-        <class>data.hibernate.BattlesEntity</class>
-        <class>data.hibernate.FactionEntity</class>
-        <class>data.hibernate.SalesEntity</class>
-        <class>data.hibernate.SpiesEntity</class>
-        <class>data.hibernate.WeaponsFactionsEntity</class>
+        <class>data.hibernate.gen.BattlesEntity</class>
+        <class>data.hibernate.gen.FactionEntity</class>
+        <class>data.hibernate.gen.SalesEntity</class>
+        <class>data.hibernate.gen.SpiesEntity</class>
+        <class>data.hibernate.gen.WeaponsFactionsEntity</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
