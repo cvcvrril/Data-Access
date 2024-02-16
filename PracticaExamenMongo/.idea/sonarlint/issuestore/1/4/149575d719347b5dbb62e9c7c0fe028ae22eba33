@@ -1,0 +1,10 @@
+
+e
+java:S1192C"HDefine a constant instead of duplicating this literal "weapons" 3 times.(·âúó8¿Üõ†Û1
+d
+java:S1128"BRemove this unused import 'com.mongodb.client.model.Accumulators'.(ÌÜêåÿÿÿÿÿ8íÜõ†Û1
+c
+java:S1128"ARemove this unused import 'com.mongodb.client.model.Filters.lte'.(ª¶‘ıÿÿÿÿ8íÜõ†Û1
+c
+java:S1128"FRemove this unused import 'com.mongodb.client.model.Sorts.descending'.(òõ€8íÜõ†Û1
+psecrets:S6694<"PMake sure this MongoDB database password gets changed and removed from the code.(ª¢¾ô8¬ıé†Û1

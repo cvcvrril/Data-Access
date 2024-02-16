@@ -5,6 +5,8 @@ import data.error.ErrorObject;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 
+import java.util.List;
+
 public class ServiceAggregations {
 
     private final DaoAggregations daoAggregations;

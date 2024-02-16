@@ -89,3 +89,5 @@ r
 Bsrc/main/java/services/mongo/aggregations/ServiceAggregations.java,c\a\ca3eda466a9290a0079ef77b68f71c494c9d776d
 i
 9src/main/java/dao/mongo/aggregations/DaoAggregations.java,1\4\149575d719347b5dbb62e9c7c0fe028ae22eba33
+p
+@src/main/java/ui/mongo/aggregations/Exercise_7_Aggregations.java,e\2\e22524c1532946e1a8e43d0d2f3e87e9c9be485f
