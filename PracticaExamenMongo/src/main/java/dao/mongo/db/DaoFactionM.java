@@ -20,6 +20,10 @@ import org.bson.types.ObjectId;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.pull;
 
 public class DaoFactionM {
 
@@ -71,25 +75,93 @@ public class DaoFactionM {
     }
 
     /**
-     * Jaja, por alguna razón no me va el update
+     * Vale, el update funciona si no uso la fecha.
+     * Creo que es porque está mal formateada. Pero no debería.
+     * En cualquier caso, se podría usar otro atributo único, pero en este caso he tirado del nombre del objeto.
      * **/
 
-    public Either<ErrorObject, Integer> update(FactionM modifiedfactionM){
+
+    public Either<ErrorObject, Integer> update(FactionM modifiedFactionM){
         Either<ErrorObject, Integer> res;
         try (MongoClient mongo = MongoClients.create("mongodb://root:root@localhost:27017")) {
             MongoDatabase db = mongo.getDatabase("practica_mongo");
             MongoCollection<Document> collection = db.getCollection("factions");
 
-            String factionToJson = gson.toJson(modifiedfactionM);
+            String factionToJson = gson.toJson(modifiedFactionM);
             Document factionToDocument = Document.parse(factionToJson);
 
-            Document filter = new Document("date_last_purchase", modifiedfactionM.getDate_last_purchase());
+            Document filter = new Document("fname", modifiedFactionM.getFname());
             UpdateResult updateResult = collection.replaceOne(filter, factionToDocument);
 
             if (updateResult.getModifiedCount() > 0){
                 res = Either.right(1);
             }else {
                 res = Either.left(new ErrorObject("There was an error updating the object", 0, LocalDateTime.now()));
+            }
+        }catch (Exception e){
+            res = Either.left(new ErrorObject(e.getMessage(), 0, LocalDateTime.now()));
+        }
+        return res;
+    }
+
+
+    /**
+     * Lo que hay que hacer en esta operación anidada es tirar de la colección donde se encuentra el objeto que queremos editar.
+     * Sacamos el documento al completo, y luego filtramos por algún atributo (en este caso filtramos por el nombre del objeto).
+     * Sacamos un atributo del objeto que queremos eliminar (el id, porque el objeto no tiene nada más).
+     * Fijarse también en el ejemplo de Fran.
+     * **/
+
+    public Either<ErrorObject, Integer> deleteWeaponFaction(FactionM deleteWeaponsFactionM){
+        Either<ErrorObject, Integer> res;
+
+        try (MongoClient mongo = MongoClients.create("mongodb://root:root@localhost:27017")) {
+            MongoDatabase db = mongo.getDatabase("practica_mongo");
+            MongoCollection<Document> collection = db.getCollection("factions");
+
+            int idWeapon = deleteWeaponsFactionM.getWeapons().get(1).getId_weapon();
+
+            Long rows = collection.updateOne(eq("fname", deleteWeaponsFactionM.getFname()), pull("weapons", eq("id_weapon", idWeapon))).getModifiedCount();
+
+            res = Either.right(rows.intValue());
+        }catch (Exception e){
+            res = Either.left(new ErrorObject(e.getMessage(), 0, LocalDateTime.now()));
+        }
+
+        return res;
+    }
+
+    /**
+     * Me añade de nuevo el objeto...?
+     * A saber por qué.
+     * Pero funciona a pachas.
+     * **/
+
+    public Either<ErrorObject, Integer> addWeaponFaction(FactionM addWeaponsFactionsM){
+        Either<ErrorObject, Integer> res;
+
+        try (MongoClient mongo = MongoClients.create("mongodb://root:root@localhost:27017")) {
+            MongoDatabase db = mongo.getDatabase("practica_mongo");
+            MongoCollection<Document> collection = db.getCollection("factions");
+
+            Document query = new Document("fname", addWeaponsFactionsM.getFname());
+            Document factionMDocument = collection.find(query).first();
+
+            if (factionMDocument  != null){
+
+                List<Document> weaponsFactionsDoc = (List<Document>) factionMDocument.get("weapons");
+
+                String factionJson = gson.toJson(addWeaponsFactionsM);
+
+                Document newWeaponFactionDocument = Document.parse(factionJson);
+
+                weaponsFactionsDoc.add(newWeaponFactionDocument);
+
+                collection.updateOne(query, new Document("$set", new Document("weapons", weaponsFactionsDoc)));
+
+                res = Either.right(1);
+            }else {
+                res = Either.left(new ErrorObject("No se pudo encontrar la facción", 0, LocalDateTime.now()));
             }
         }catch (Exception e){
             res = Either.left(new ErrorObject(e.getMessage(), 0, LocalDateTime.now()));

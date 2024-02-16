@@ -23,4 +23,12 @@ public class ServiceFactionM {
         return daoFactionM.get(name);
     }
 
+    public Either<ErrorObject, Integer> deleteWeaponFaction(FactionM deleteFactionWeaponsM){
+        return daoFactionM.deleteWeaponFaction(deleteFactionWeaponsM);
+    }
+
+    public Either<ErrorObject, Integer> addWeaponFaction(FactionM addWeaponsFactionsM){
+        return daoFactionM.addWeaponFaction(addWeaponsFactionsM);
+    }
+
 }

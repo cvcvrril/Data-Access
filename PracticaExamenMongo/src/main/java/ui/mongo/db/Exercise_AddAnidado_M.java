@@ -1,28 +1,37 @@
 package ui.mongo.db;
 
 import data.mongo.FactionM;
+import data.mongo.WeaponFactionM;
 import jakarta.enterprise.inject.se.SeContainer;
 import jakarta.enterprise.inject.se.SeContainerInitializer;
 import services.mongo.db.ServiceFactionM;
 
-public class Exercise_9_M {
+import java.util.List;
+
+public class Exercise_AddAnidado_M {
 
     public static void main(String[] args) {
 
         SeContainerInitializer seContainerInitializer = SeContainerInitializer.newInstance();
         final SeContainer container = seContainerInitializer.initialize();
         ServiceFactionM serviceFactionM = container.select(ServiceFactionM.class).get();
-        FactionM factionM = serviceFactionM.get("New order").get();
+        FactionM factionM = serviceFactionM.get("Rebels").get();
         if (factionM != null){
-            factionM.setContact("Pruebaaaaaaa");
-            if (serviceFactionM.update(factionM).isRight()){
-                System.out.println("Updated successfully");
+            List<WeaponFactionM> weaponFactionMList = factionM.getWeapons();
+            WeaponFactionM newWeaponFactionM = new WeaponFactionM(3);
+            weaponFactionMList.add(newWeaponFactionM);
+            factionM.setWeapons(weaponFactionMList);
+            if (serviceFactionM.addWeaponFaction(factionM).isRight()){
+                System.out.println("WeaponFaction added successfully");
             } else {
-                System.out.println("There was a problem with the update");
+                System.out.println("There was a problem with the delete");
             }
         }else {
             System.out.println("No se ha podido encontrar");
         }
+
+
     }
+
 
 }

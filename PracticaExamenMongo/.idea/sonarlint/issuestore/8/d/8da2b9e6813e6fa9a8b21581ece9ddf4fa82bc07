@@ -1,12 +1,18 @@
 
 
-java:S1192'"dDefine a constant instead of duplicating this literal "mongodb://root:root@localhost:27017" 3 times.(ª¢¾ô8ÉïşòÚ1
+java:S1192+"dDefine a constant instead of duplicating this literal "mongodb://root:root@localhost:27017" 5 times.(ª¢¾ô8¹ËÁƒÛ1
+h
+java:S1192/"FDefine a constant instead of duplicating this literal "fname" 4 times.(˜ó²øÿÿÿÿ8ºËÁƒÛ1
 q
-java:S1192("ODefine a constant instead of duplicating this literal "practica_mongo" 3 times.(—ÆŞóüÿÿÿÿ8ÊïşòÚ1
+java:S1192,"ODefine a constant instead of duplicating this literal "practica_mongo" 5 times.(—ÆŞóüÿÿÿÿ8ºËÁƒÛ1
+e
+java:S1192|"HDefine a constant instead of duplicating this literal "weapons" 3 times.(ş¼¶8ºËÁƒÛ1
 k
-java:S1192)"IDefine a constant instead of duplicating this literal "factions" 3 times.(‡úö¸ÿÿÿÿÿ8ÊïşòÚ1
+java:S1192-"IDefine a constant instead of duplicating this literal "factions" 5 times.(‡úö¸ÿÿÿÿÿ8ºËÁƒÛ1
 
-java:S1186""€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(È“âM8øïşòÚ1
-psecrets:S6694'"PMake sure this MongoDB database password gets changed and removed from the code.(ª¢¾ô8£™øñÚ1
-psecrets:S6694;"PMake sure this MongoDB database password gets changed and removed from the code.(ª¢¾ô8ÁàòÚ1
-psecrets:S6694O"PMake sure this MongoDB database password gets changed and removed from the code.(ª¢¾ô8ÁàòÚ1
+java:S1186&"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(È“âM8ÜËÁƒÛ1
+psecrets:S6694+"PMake sure this MongoDB database password gets changed and removed from the code.(ª¢¾ô8£™øñÚ1
+psecrets:S6694?"PMake sure this MongoDB database password gets changed and removed from the code.(ª¢¾ô8ÁàòÚ1
+psecrets:S6694V"PMake sure this MongoDB database password gets changed and removed from the code.(ª¢¾ô8ÁàòÚ1
+psecrets:S6694v"PMake sure this MongoDB database password gets changed and removed from the code.(ª¢¾ô8ï˜á‚Û1
+qsecrets:S6694"PMake sure this MongoDB database password gets changed and removed from the code.(ª¢¾ô8ıÅ¤ƒÛ1

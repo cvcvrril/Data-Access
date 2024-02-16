@@ -79,3 +79,7 @@ d
 4src/main/java/services/mongo/db/ServiceFactionM.java,7\f\7fa92df902b3d4928e3cbfbc412c76afba66247c
 [
 +src/main/java/ui/mongo/db/Exercise_9_M.java,3\8\38b0f7c3c3b9380b55b1877c7f49f4332b887401
+g
+7src/main/java/ui/mongo/db/Exercise_DeleteAnidado_M.java,c\2\c2b3726f3d469b862b6a6b65c747c6ab895a011c
+d
+4src/main/java/ui/mongo/db/Exercise_AddAnidado_M.java,4\2\42108ae992220530035527033f9cdd100b763e5a
