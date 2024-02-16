@@ -79,3 +79,9 @@ g
 7src/main/java/ui/mongo/db/Exercise_DeleteAnidado_M.java,c\2\c2b3726f3d469b862b6a6b65c747c6ab895a011c
 d
 4src/main/java/ui/mongo/db/Exercise_AddAnidado_M.java,4\2\42108ae992220530035527033f9cdd100b763e5a
+x
+Hsrc/main/java/services/mongo/aggregations/ServiceWeaponAggregations.java,1\0\104166ca2ec03b3c9961cff7ec8c872538aefaf7
+r
+Bsrc/main/java/services/mongo/aggregations/ServiceAggregations.java,c\a\ca3eda466a9290a0079ef77b68f71c494c9d776d
+i
+9src/main/java/dao/mongo/aggregations/DaoAggregations.java,1\4\149575d719347b5dbb62e9c7c0fe028ae22eba33
