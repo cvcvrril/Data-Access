@@ -1,5 +1,0 @@
-
-…	java:S116"dRename this field "number_controlled_systems" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(âéÚÖùÿÿÿÿ8åÃ§îÚ1
-~	java:S116"]Rename this field "date_last_purchase" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ºè‹üÿÿÿÿ8åÃ§îÚ1
-d
-java:S1128"GRemove this unused import 'com.google.gson.annotations.SerializedName'.(äöúõ8ÓışòÚ1

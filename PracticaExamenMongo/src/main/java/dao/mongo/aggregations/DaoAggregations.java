@@ -22,59 +22,65 @@ import java.util.List;
 
 public class DaoAggregations {
 
-    /**[
-     {
-     $match: {
-     date_last_purchase: "2023-12-01"
-     }
-     },
-     {
-     $unwind: {
-     path: "$weapons"
-     }
-     },
-     {
-     $lookup: {
-     from: "weapons",
-     localField: "weapons.id_weapon",
-     foreignField: "id",
-     as: "weapons"
-     }
-     },
-     {
-     $project: {
-     _id: 0,
-     weapons: 1
-     }
-     },
-     {
-     $project: {
-     orderId: "$weapons.id",
-     name: "$weapons.wname"
-     }
-     }
-     ]**/
+    /**
+     * [
+     *   {
+     *     $match: {
+     *       date_last_purchase: "1591-01-19",
+     *     },
+     *   },
+     *   {
+     *     $unwind: {
+     *       path: "$weapons",
+     *     },
+     *   },
+     *   {
+     *     $lookup: {
+     *       from: "weapons",
+     *       localField: "weapons.id_weapon",
+     *       foreignField: "id",
+     *       as: "weapons",
+     *     },
+     *   },
+     *   {
+     *     $project: {
+     *       _id: 0,
+     *       orderId: {
+     *         $first: "$weapons.id",
+     *       },
+     *       name: {
+     *         $first: "$weapons.wname",
+     *       },
+     *     },
+     *   },
+     * ]
+     **/
 
-    public Either<ErrorObject,String> exercise7(){
-        Either<ErrorObject, String> res;
+    /**
+     * Para usar el first, preferiblemente en los groups: no sé cómo usarlo en los project.
+     * **/
+
+    /**
+     * En caso de que haya una query que no pueda o no sepa hacr en java, exportar la query a Java y dejarlo comentado.
+     * **/
+
+
+    public Either<ErrorObject, List<Document>> exercise7() {
+        Either<ErrorObject, List<Document>> res;
         try (MongoClient mongo = MongoClients.create("mongodb://root:root@localhost:27017")) {
             MongoDatabase db = mongo.getDatabase("practica_mongo");
             MongoCollection<Document> collection = db.getCollection("factions");
 
             List<Document> documents = collection.aggregate(Arrays.asList(
-                    match(eq("date_last_purchase", "2023-12-01")),
+                    match(eq("date_last_purchase", "1591-01-19")),
                     unwind("$weapons"),
                     lookup("weapons", "weapons.id_weapon", "id", "weapons"),
                     project(fields(excludeId(), include("weapons")))
-
+                    //group(excludeId(), first("name", "$weapons.wname"))
             )).into(new ArrayList<>());
-            List<String> jsonList = new ArrayList<>();
-            for (Document doc : documents) {
-                jsonList.add(doc.toJson());
-            }
-            String json = String.join(",", jsonList);
-            res = Either.right("[" + json + "]");
-        }catch (Exception e){
+
+            res = Either.right(documents);
+        } catch (Exception e) {
             res = Either.left(new ErrorObject(e.getMessage(), 0, LocalDateTime.now()));
         }
         return res;
