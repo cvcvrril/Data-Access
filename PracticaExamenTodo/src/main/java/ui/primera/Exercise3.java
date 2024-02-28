@@ -5,19 +5,19 @@ import jakarta.enterprise.inject.se.SeContainerInitializer;
 import model.primera.jdbc.Weapon;
 import service.primera.jdbc.ServiceWeaponJ;
 
-import java.util.List;
+public class Exercise3 {
 
-public class Exercise5 {
+    /**
+     * (JDBC) Update the price of a weapon
+     * **/
+
     public static void main(String[] args) {
-
-        /**
-         * (JDBC) Select the name and the price of all the weapons of a faction.
-         * **/
-
         SeContainerInitializer initializer = SeContainerInitializer.newInstance();
         final SeContainer container = initializer.initialize();
         ServiceWeaponJ service = container.select(ServiceWeaponJ.class).get();
-        List<Weapon> weapons = service.getAllByNameFaction("Empire").getOrElseThrow(() -> new RuntimeException());
-        System.out.println(weapons);
+        Weapon actualizadoWeapon = new Weapon(2, "Prueba", 50.40);
+        Integer res = service.update(actualizadoWeapon).get();
+        System.out.println(res);
     }
+
 }

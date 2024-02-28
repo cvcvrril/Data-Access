@@ -49,7 +49,32 @@ public class DaoWeaponJ {
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
-            res = Either.left(new ExamError(0, "There was an error"));
+            res = Either.left(new ExamError(0, "There was an unexpected error"));
+        }
+        return res;
+    }
+
+    /**
+     * Para los update, hay que mandar el objeto al completo
+     * Y hay que hacer un update a partir de una query
+     * Como hay que usar una query, posteriormente habrá que hacer Sets de los atributos del objeto
+     * **/
+
+    public Either<ExamError, Integer> update(Weapon updatedWeapon){
+        Either<ExamError, Integer> res;
+        int rowsAffected;
+        try (Connection connection = db.getConnection()){
+            connection.setAutoCommit(false);
+            PreparedStatement pstmt = connection.prepareStatement("update weapons set wname=?, wprice=? where id=?");
+            pstmt.setString(1, updatedWeapon.getName());
+            pstmt.setDouble(2, updatedWeapon.getPrice());
+            pstmt.setInt(3, updatedWeapon.getId());
+            rowsAffected = pstmt.executeUpdate();
+            connection.commit();
+            res = Either.right(rowsAffected);
+        }catch (SQLException e){
+            log.error(e.getMessage(), e);
+            res = Either.left(new ExamError(0, "There was an unexpected error"));
         }
         return res;
     }

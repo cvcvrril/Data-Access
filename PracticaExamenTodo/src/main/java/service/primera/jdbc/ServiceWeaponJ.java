@@ -21,5 +21,8 @@ public class ServiceWeaponJ {
         return daoWeaponJ.getAllByNameFaction(nameFaction);
     }
 
+    public Either<ExamError, Integer> update(Weapon updatedWeapon){
+        return daoWeaponJ.update(updatedWeapon);
+    }
 
 }

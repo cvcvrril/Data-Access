@@ -47,7 +47,7 @@ public class DaoFactionJ {
             }
         }catch (SQLException e){
             log.error(e.getMessage(), e);
-            res = Either.left(new ExamError(0, "There was an error"));
+            res = Either.left(new ExamError(0, "There was an unexpected error"));
         }
         return res;
     }

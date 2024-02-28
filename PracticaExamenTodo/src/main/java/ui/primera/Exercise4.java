@@ -9,6 +9,10 @@ import java.util.List;
 
 public class Exercise4 {
 
+    /**
+     * (JDBC) Select all factions, and all weapons
+     * **/
+
     public static void main(String[] args) {
         SeContainerInitializer initializer = SeContainerInitializer.newInstance();
         final SeContainer container = initializer.initialize();
