@@ -52,6 +52,25 @@ public class DaoFactionJ {
         return res;
     }
 
+    public Either<ExamError, Faction> getByName(String nameFaction){
+        Either<ExamError, Faction> res;
+        try(Connection connection = db.getConnection()) {
+            PreparedStatement pstmt = connection.prepareStatement("select * from faction where fname =?");
+            pstmt.setString(1, nameFaction);
+            ResultSet rs = pstmt.executeQuery();
+            List<Faction> read = readRS(rs);
+            if (read.isEmpty()){
+                res = Either.left(new ExamError(0, "There's no faction with that name"));
+            }else {
+                res = Either.right(read.get(0));
+            }
+        }catch (SQLException e){
+            log.error(e.getMessage(), e);
+            res = Either.left(new ExamError(0, "There was an unexpected error"));
+        }
+        return res;
+    }
+
 
     /**
      * !!!! IMPORTANTE !!!!

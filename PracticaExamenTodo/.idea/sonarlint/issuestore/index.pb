@@ -37,3 +37,17 @@ _
 /src/main/java/dao/primera/jdbc/DaoFactionJ.java,0\e\0e1a868d3066332ac58f6cd5393864ebf592da19
 W
 'src/main/java/ui/primera/Exercise3.java,f\0\f02c7c08fcd92c7ee1c236a6d9f280b14d65f781
+W
+'src/main/java/ui/primera/Exercise2.java,0\5\052f6e6161d691a0ed6fa4837258a3dbe854fb1b
+]
+-src/main/java/dao/primera/jdbc/DaoBattle.java,6\9\699d3f28f9940507948646128e2be725250379c6
+^
+.src/main/java/dao/primera/jdbc/DaoBattleJ.java,3\b\3be12830e7a2cc9b1ca29785b32642736b1a9a0c
+\
+,src/main/java/model/primera/jdbc/Battle.java,c\6\c6c9a1c7478d1f11dbb1f47f7c5db96977dee08d
+f
+6src/main/java/service/primera/jdbc/ServiceBattleJ.java,8\d\8ddaef1b11a2944710722733c688b0c444ada059
+]
+-src/main/java/ui/primera/Exercise2simple.java,c\9\c972c349f98825073d2504a4aa87d60407058303
+^
+.src/main/java/ui/primera/Exercise2complex.java,f\b\fbfdaa75e5863db16b5894087c2959fa17386fb0
