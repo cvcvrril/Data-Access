@@ -13,10 +13,6 @@ X
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 7
 TODO.md,b\5\b5b096f958319b1c7782c800c78c4c358a58d709
-[
-+src/main/java/ui/mongo/db/Exercise_3_M.java,d\4\d494e51c73aafbdac2ceb85f4d20007c654a55cf
-e
-5src/main/java/config/connection/DbConnectionPool.java,5\c\5cd32cd31a0c044abb3c1df3e4a6245400a386bd
 \
 ,src/main/java/config/connection/JPAUtil.java,d\8\d837163ce81d96dd516d05f58b9ea9f0605dc185
 U
@@ -33,7 +29,5 @@ Z
 *src/main/java/dao/mongo/db/DaoWeaponM.java,c\7\c7169f10287ac462ed6588b6ae53ebeb41dd8ddf
 \
 ,src/main/java/ui/hibernate/Exercise_3_H.java,1\f\1f65302c40d1b5e246672eccfcef897207510e7b
-c
-3src/main/java/services/mongo/db/ServiceWeaponM.java,d\a\da038c2985336e445e74b193e70b8abe3a7623d3
-x
-Hsrc/main/java/services/mongo/aggregations/ServiceWeaponAggregations.java,1\0\104166ca2ec03b3c9961cff7ec8c872538aefaf7
+Z
+*src/main/java/ui/Exercise_ExampleInit.java,d\0\d05919483deb25fffd526c61844559363fb68426
