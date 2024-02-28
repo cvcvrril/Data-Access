@@ -51,3 +51,15 @@ f
 -src/main/java/ui/primera/Exercise2simple.java,c\9\c972c349f98825073d2504a4aa87d60407058303
 ^
 .src/main/java/ui/primera/Exercise2complex.java,f\b\fbfdaa75e5863db16b5894087c2959fa17386fb0
+W
+'src/main/java/ui/primera/Exercise6.java,3\7\377000a12a887d86ce441f7c746e2d0f85e1482b
+[
++src/main/java/dao/primera/jdbc/DaoSpyJ.java,0\3\03e603b21b40878261e8cd7141789053323ead15
+c
+3src/main/java/service/primera/jdbc/ServiceSpyK.java,1\8\183d8eb2b51231db40dcd56fe852467d1c40b45c
+c
+3src/main/java/service/primera/jdbc/ServiceSpyJ.java,d\2\d29a378c93914411f9423396c68f3ecd706c67d1
+Y
+)src/main/java/model/primera/jdbc/Spy.java,6\6\66be9cfc50cb3a2a2079415186adfd2688413dca
+W
+'src/main/java/ui/primera/Exercise7.java,1\2\12ac8570a516c962f04f9e3f54329c270e776b9f

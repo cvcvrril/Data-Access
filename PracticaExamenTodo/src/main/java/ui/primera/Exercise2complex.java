@@ -24,7 +24,7 @@ public class Exercise2complex {
         final SeContainer container = initializer.initialize();
         ServiceBattleJ service = container.select(ServiceBattleJ.class).get();
         Battle newBattle = new Battle(0, "Prueba", "Prueba", "Empire", "Hoth", LocalDate.now(), 1);
-        service.add(newBattle);
+        System.out.println(service.add(newBattle));
     }
 
 }
