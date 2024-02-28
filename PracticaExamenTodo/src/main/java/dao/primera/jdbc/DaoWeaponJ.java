@@ -11,7 +11,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +27,12 @@ public class DaoWeaponJ {
     public DaoWeaponJ(DBConnectionPool db) {
         this.db = db;
     }
+
+    /**
+     * Los métodos de JDBC se hacen a partir de queries en SQL
+     * Es muy sencillito; se consigue a partir de joins y demás
+     * Siempre van a haber tablas intermedias o relaciones con las que ir sacando cosas
+     * **/
 
     public Either<ExamError, List<Weapon>> getAllByNameFaction(String nameFaction) {
         Either<ExamError, List<Weapon>> res;

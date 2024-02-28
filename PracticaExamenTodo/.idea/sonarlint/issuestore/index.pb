@@ -27,3 +27,11 @@ f
 -src/main/java/model/primera/jdbc/Faction.java,9\5\952724b76c2a416b22255797cb30bb1cdf80b87d
 f
 6src/main/java/dao/primera/common/DBConnectionPool.java,d\1\d1a0fd3b121300415299700f029d954b4f2afc63
+c
+3src/main/java/model/primera/jdbc/WeaponFaction.java,7\1\714625073d88b5ed7355f02be7db7ad9249dd2cc
+W
+'src/main/java/ui/primera/Exercise4.java,1\1\11a50b96acc2bc824eda63d5e8ddc546c9cb07fd
+g
+7src/main/java/service/primera/jdbc/ServiceFactionJ.java,9\d\9d0fa80e4a2809428ab9dd449fc80876f934ff41
+_
+/src/main/java/dao/primera/jdbc/DaoFactionJ.java,0\e\0e1a868d3066332ac58f6cd5393864ebf592da19
