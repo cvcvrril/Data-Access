@@ -11,10 +11,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Faction {
-    private String name;
+    private String fname;
     private String contact;
     private String planet;
-    private int numberControlledSystems;
-    private LocalDate datePurchase;
+    private int number_controlled_systems;
+    private LocalDate date_last_purchase;
     private List<Weapon> weaponList;
 }

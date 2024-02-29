@@ -59,3 +59,9 @@ g
 0src/main/java/dao/primera/spring/DaoBattleS.java,d\b\dbb1830291332f0dc23352f61da893f0164f67e3
 W
 'src/main/java/ui/primera/Exercise8.java,a\a\aa2d14960716bc843abb95519e77ae09ab8e250d
+W
+'src/main/java/ui/primera/Exercise9.java,c\5\c597fb7ba4a76a896f6c4713d019d4ed3e8bb839
+h
+8src/main/java/service/primera/sping/ServiceFactionS.java,3\4\34ba9c4a2fa85b8bc4202db17fa5e730eb614c22
+a
+1src/main/java/dao/primera/spring/DaoFactionS.java,d\7\d7c1e9aeea464e704e87ba0ddfb80d9876f46473
