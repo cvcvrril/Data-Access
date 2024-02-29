@@ -18,8 +18,8 @@ public class ServiceWeaponS {
         this.daoWeaponS = daoWeaponS;
     }
 
-    public Either<ExamError, List<Weapon>> getAll(LocalDate lastPurchase){
-        return daoWeaponS.getAll(lastPurchase);
+    public Either<ExamError, List<Weapon>> getAllByDate(LocalDate lastPurchase){
+        return daoWeaponS.getAllByDate(lastPurchase);
     }
 
 }

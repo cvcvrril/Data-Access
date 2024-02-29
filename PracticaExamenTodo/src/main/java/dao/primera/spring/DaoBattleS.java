@@ -4,14 +4,14 @@ import dao.primera.common.DBConnectionPool;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import model.error.ExamError;
-import model.primera.jdbc.Weapon;
+import model.primera.jdbc.Battle;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public class DaoWeaponS {
+public class DaoBattleS {
 
     /**
      * Importamos el DB Connection, muy importante hacer el inject
@@ -26,21 +26,22 @@ public class DaoWeaponS {
     private final DBConnectionPool db;
 
     @Inject
-    public DaoWeaponS(DBConnectionPool db) {
+    public DaoBattleS(DBConnectionPool db) {
         this.db = db;
     }
 
     /**
      * Query de SQL usada:
      *
-     * select * from weapons w inner join weapons_factions wf on w.id = wf.id_weapon inner join faction f on wf.name_faction = f.fname where date_last_purchase = "1525-03-02"
+     * SELECT sname, bname FROM spies s inner join battles b on s.id = b.id_spy where s.id = 1;
+     *
      * **/
 
-    public Either<ExamError, List<Weapon>> getAllByDate(LocalDate lastPurchase){
-        Either<ExamError,List<Weapon>> either;
+    public Either<ExamError, List<Battle>> getAllByIdSpy(int idSpy){
+        Either<ExamError,List<Battle>> either;
         JdbcTemplate jdbcTemplate = new JdbcTemplate(db.getDataSource());
-        List<Weapon> weapons = jdbcTemplate.query("select * from weapons w inner join weapons_factions wf on w.id = wf.id_weapon inner join faction f on wf.name_faction = f.fname where date_last_purchase = ?", BeanPropertyRowMapper.newInstance(Weapon.class), lastPurchase);
-        either = weapons.isEmpty() ? Either.left(new ExamError(0, "The list with this date is empty")) : Either.right(weapons);
+        List<Battle> weapons = jdbcTemplate.query("SELECT sname, bname FROM spies s inner join battles b on s.id = b.id_spy where s.id = ?", BeanPropertyRowMapper.newInstance(Battle.class), idSpy);
+        either = weapons.isEmpty() ? Either.left(new ExamError(0, "The list with this id is empty")) : Either.right(weapons);
         return either;
     }
 

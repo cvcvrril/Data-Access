@@ -2,21 +2,21 @@ package ui.primera;
 
 import jakarta.enterprise.inject.se.SeContainer;
 import jakarta.enterprise.inject.se.SeContainerInitializer;
-import service.primera.sping.ServiceWeaponS;
+import service.primera.sping.ServiceBattleS;
 
-import java.time.LocalDate;
-
-public class Exercise7 {
+public class Exercise8 {
 
     /**
-     * (Spring) Select the data of all weapons purchased by a faction from a given date.
+     * (Spring) Select all battles reported by a spy, returning battle name and spy name.
      * **/
 
     public static void main(String[] args) {
+
         SeContainerInitializer initializer = SeContainerInitializer.newInstance();
         final SeContainer container = initializer.initialize();
-        ServiceWeaponS service = container.select(ServiceWeaponS.class).get();
-        System.out.println(service.getAllByDate(LocalDate.parse("1525-03-02")));
+        ServiceBattleS service = container.select(ServiceBattleS.class).get();
+        System.out.println(service.getAllByIdSpy(1));
+
     }
 
 }
