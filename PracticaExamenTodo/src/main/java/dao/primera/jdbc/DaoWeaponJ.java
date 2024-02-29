@@ -66,8 +66,8 @@ public class DaoWeaponJ {
         try (Connection connection = db.getConnection()){
             connection.setAutoCommit(false);
             PreparedStatement pstmt = connection.prepareStatement("update weapons set wname=?, wprice=? where id=?");
-            pstmt.setString(1, updatedWeapon.getName());
-            pstmt.setDouble(2, updatedWeapon.getPrice());
+            pstmt.setString(1, updatedWeapon.getWname());
+            pstmt.setDouble(2, updatedWeapon.getWprice());
             pstmt.setInt(3, updatedWeapon.getId());
             rowsAffected = pstmt.executeUpdate();
             connection.commit();

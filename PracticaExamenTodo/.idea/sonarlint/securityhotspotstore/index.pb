@@ -1,8 +1,6 @@
 
 7
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
-7
-TODO.md,b\5\b5b096f958319b1c7782c800c78c4c358a58d709
 E
 Cosas que estudiar.md,1\1\11683361244e58cddcb51874a35f54bb5ca1f483
 W
@@ -15,10 +13,6 @@ Z
 *src/main/java/ui/Exercise_ExampleInit.java,d\0\d05919483deb25fffd526c61844559363fb68426
 f
 6src/main/java/service/primera/jdbc/ServiceWeaponJ.java,c\9\c9ae890dc81d85af35872ff5f9968e4ca8c11830
-`
-0src/main/java/model/primera/jbdc/DaoWeaponJ.java,6\f\6fb09369fd240b0b0b100075214276fe1a7be31c
-`
-0src/main/java/model/primera/jdbc/DaoWeaponJ.java,a\b\abe1d9f24492cd2b13ae99173a46739fbe9f603d
 ^
 .src/main/java/dao/primera/jdbc/DaoWeaponJ.java,5\b\5b58b9948693500e3329830e07fa6ccecf1d3081
 \
@@ -27,8 +21,6 @@ f
 -src/main/java/model/primera/jdbc/Faction.java,9\5\952724b76c2a416b22255797cb30bb1cdf80b87d
 f
 6src/main/java/dao/primera/common/DBConnectionPool.java,d\1\d1a0fd3b121300415299700f029d954b4f2afc63
-c
-3src/main/java/model/primera/jdbc/WeaponFaction.java,7\1\714625073d88b5ed7355f02be7db7ad9249dd2cc
 W
 'src/main/java/ui/primera/Exercise4.java,1\1\11a50b96acc2bc824eda63d5e8ddc546c9cb07fd
 g
@@ -37,10 +29,6 @@ _
 /src/main/java/dao/primera/jdbc/DaoFactionJ.java,0\e\0e1a868d3066332ac58f6cd5393864ebf592da19
 W
 'src/main/java/ui/primera/Exercise3.java,f\0\f02c7c08fcd92c7ee1c236a6d9f280b14d65f781
-W
-'src/main/java/ui/primera/Exercise2.java,0\5\052f6e6161d691a0ed6fa4837258a3dbe854fb1b
-]
--src/main/java/dao/primera/jdbc/DaoBattle.java,6\9\699d3f28f9940507948646128e2be725250379c6
 ^
 .src/main/java/dao/primera/jdbc/DaoBattleJ.java,3\b\3be12830e7a2cc9b1ca29785b32642736b1a9a0c
 \
@@ -56,10 +44,12 @@ W
 [
 +src/main/java/dao/primera/jdbc/DaoSpyJ.java,0\3\03e603b21b40878261e8cd7141789053323ead15
 c
-3src/main/java/service/primera/jdbc/ServiceSpyK.java,1\8\183d8eb2b51231db40dcd56fe852467d1c40b45c
-c
 3src/main/java/service/primera/jdbc/ServiceSpyJ.java,d\2\d29a378c93914411f9423396c68f3ecd706c67d1
 Y
 )src/main/java/model/primera/jdbc/Spy.java,6\6\66be9cfc50cb3a2a2079415186adfd2688413dca
 W
 'src/main/java/ui/primera/Exercise7.java,1\2\12ac8570a516c962f04f9e3f54329c270e776b9f
+`
+0src/main/java/dao/primera/spring/DaoWeaponS.java,4\4\4426e889feb6885ef5a842a456234d0b2511675d
+g
+7src/main/java/service/primera/sping/ServiceWeaponS.java,8\e\8ea8850ee15497ed10e419ed6cbb60cdf3525c30

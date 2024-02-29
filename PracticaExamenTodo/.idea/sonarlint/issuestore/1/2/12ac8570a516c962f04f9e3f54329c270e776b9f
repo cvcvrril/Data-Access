@@ -1,5 +1,2 @@
 
-_
-java:S1854"=Remove this useless assignment to local variable "container".(‡ªÅ¡üÿÿÿÿ8É¬”…ß1
-P
-java:S1481".Remove this unused "container" local variable.(‡ªÅ¡üÿÿÿÿ8Ê¬”…ß1
+G	java:S106"+Replace this use of System.out by a logger.(½çë™8þêñˆß1
