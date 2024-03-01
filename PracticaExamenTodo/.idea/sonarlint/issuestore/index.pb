@@ -85,3 +85,9 @@ h
 8src/main/java/service/primera/xml/ServiceFactionXML.java,a\4\a404cc67760c73289e5fc198bab6ea5e3845ff69
 i
 9src/main/java/dao/primera/common/LocalDateAdapterXML.java,a\5\a5556ea0135b03c1d519287dd996ddb35278ca9c
+b
+2src/main/java/model/segunda/hibernate/BattleH.java,f\a\fade87fff83eadd8e29b3e1b78cd74daefc2166e
+_
+/src/main/java/model/segunda/hibernate/SpyH.java,d\e\de90fe4b17b93ec1c543295391b87607750261f6
+W
+'src/main/java/ui/segunda/Exercise5.java,5\2\5247a97ee4191304b33e9178e9d76cc128bd3945
